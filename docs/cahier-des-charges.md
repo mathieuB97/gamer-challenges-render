@@ -1,6 +1,5 @@
 🎮 GamerChallenges — Cahier des charges
-
-1. 📌 Présentation du projet
+📌 1. Présentation du projet
 Nom du projet : GamerChallenges
 
 GamerChallenges est une plateforme communautaire permettant aux joueurs de proposer, relever et voter pour des défis (challenges) sur différents jeux vidéo.
@@ -9,8 +8,8 @@ Un classement met en avant les joueurs les plus actifs et les plus performants.
 
 Ce projet est réalisé en équipe de 4 développeurs, dans le cadre du projet d’apothéose de la formation O’Clock.
 
-2. 🎯 Définition des besoins et des objectifs
-2.1 🧩 Problèmes identifiés (besoins)
+🎯 2. Définition des besoins et des objectifs
+🧩 2.1 Problèmes identifiés (besoins)
 Les communautés gaming sont dispersées (YouTube, Twitch, Discord, etc.) et il manque une plateforme centralisée, ludique et compétitive permettant :
 
 de créer et relever des défis entre joueurs,
@@ -29,7 +28,7 @@ Mettre en avant les joueurs les plus actifs grâce à un tableau des leaders.
 
 Concevoir une application fonctionnelle, sécurisée et évolutive, respectant les bonnes pratiques du web.
 
-2.2 🎯 Objectifs du projet (solutions)
+🎯 2.2 Objectifs du projet (solutions)
 Offrir une plateforme intuitive pour créer et relever des défis.
 
 Permettre aux utilisateurs de soumettre des vidéos comme preuve de participation.
@@ -40,7 +39,7 @@ Proposer un leaderboard mettant en avant les joueurs les plus actifs et les plus
 
 Construire une communauté autour du gaming, de la compétition et du partage.
 
-3. 🧠 Fonctionnalités du projet
+🧠 3. Fonctionnalités du projet
 🔥 Fonctionnalités principales (MVP)
 🏠 Page d’accueil : présentation du site, défis populaires, défis récents.
 
@@ -65,7 +64,7 @@ Construire une communauté autour du gaming, de la compétition et du partage.
 
 🔔 Notifications (nouveau vote, commentaire, défi).
 
-4. 🛠️ Technologies utilisées
+🛠️ 4. Technologies utilisées
 🎨 Frontend
 SvelteKit
 
@@ -82,14 +81,14 @@ PostgreSQL (via Sequelize ORM)
 
 JWT pour l’authentification
 
-5. 🎯 Cible du projet
+🎯 5. Cible du projet
 Joueurs amateurs et passionnés de jeux vidéo
 
 Tous niveaux (casual → confirmé)
 
 Public jeune, connecté, habitué aux plateformes communautaires
 
-6. 🌐 Navigateurs compatibles
+🌐 6. Navigateurs compatibles
 Google Chrome (dernière version)
 
 Mozilla Firefox
