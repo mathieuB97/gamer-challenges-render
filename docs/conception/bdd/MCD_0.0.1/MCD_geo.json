@@ -1,0 +1,53 @@
+{
+  "width": 896,
+  "height": 179,
+  "cx": [
+    [ "ROLE", 52 ],
+    [ "OBTIENT", 164 ],
+    [ "UTILISATEUR", 284 ],
+    [ "POSSEDE", 406 ],
+    [ "PARTICIPATION", 535 ],
+    [ "REALISE", 661 ],
+    [ "JEUX_VIDEO", 52 ],
+    [ "PROPOSE", 164 ],
+    [ "GAGNE", 284 ],
+    [ "POINT", 406 ],
+    [ "ADHERE", 535 ],
+    [ "DEFI", 661 ],
+    [ "VOTER", 755 ],
+    [ "VOTE", 851 ]
+  ],
+  "cy": [
+    [ "ROLE", 43 ],
+    [ "OBTIENT", 43 ],
+    [ "UTILISATEUR", 43 ],
+    [ "POSSEDE", 43 ],
+    [ "PARTICIPATION", 43 ],
+    [ "REALISE", 43 ],
+    [ "JEUX_VIDEO", 136 ],
+    [ "PROPOSE", 136 ],
+    [ "GAGNE", 136 ],
+    [ "POINT", 136 ],
+    [ "ADHERE", 136 ],
+    [ "DEFI", 136 ],
+    [ "VOTER", 136 ],
+    [ "VOTE", 136 ]
+  ],
+  "shift": [
+    [ "OBTIENT,ROLE,0", 0 ],
+    [ "OBTIENT,UTILISATEUR,0", 0 ],
+    [ "POSSEDE,PARTICIPATION,0", 0 ],
+    [ "POSSEDE,UTILISATEUR,0", 0 ],
+    [ "REALISE,PARTICIPATION,0", 0 ],
+    [ "REALISE,DEFI,0", 0 ],
+    [ "PROPOSE,JEUX_VIDEO,0", 0 ],
+    [ "PROPOSE,UTILISATEUR,0", 0 ],
+    [ "GAGNE,UTILISATEUR,0", 0 ],
+    [ "GAGNE,POINT,0", 0 ],
+    [ "ADHERE,DEFI,0", 0 ],
+    [ "ADHERE,UTILISATEUR,0", 0 ],
+    [ "VOTER,VOTE,0", 0 ],
+    [ "VOTER,DEFI,0", 0 ]
+  ],
+  "ratio": []
+}
