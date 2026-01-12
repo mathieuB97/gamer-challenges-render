@@ -1,98 +1,87 @@
-🎮 GamerChallenges — Cahier des charges
-📌 1. Présentation du projet
-Nom du projet : GamerChallenges
+# 🎮 GamerChallenges — Cahier des charges
 
-GamerChallenges est une plateforme communautaire permettant aux joueurs de proposer, relever et voter pour des défis (challenges) sur différents jeux vidéo.
-Les utilisateurs soumettent des preuves vidéo de leurs réalisations, et la communauté vote pour élire les meilleures performances.
+## 1. 📌 Présentation du projet
+
+**Nom du projet** : GamerChallenges  
+
+GamerChallenges est une plateforme communautaire permettant aux joueurs de **proposer**, **relever** et **voter** pour des défis (challenges) sur différents jeux vidéo.  
+
+Les utilisateurs soumettent des preuves vidéo de leurs réalisations, et la communauté vote pour élire les meilleures performances.  
 Un classement met en avant les joueurs les plus actifs et les plus performants.
 
-Ce projet est réalisé en équipe de 4 développeurs, dans le cadre du projet d’apothéose de la formation O’Clock.
+Ce projet est réalisé **en équipe de 4 développeurs**, dans le cadre du projet d’apothéose de la formation **O’Clock**.
 
-🎯 2. Définition des besoins et des objectifs
-🧩 2.1 Problèmes identifiés (besoins)
-Les communautés gaming sont dispersées (YouTube, Twitch, Discord, etc.) et il manque une plateforme centralisée, ludique et compétitive permettant :
+## 2. 🎯 Définition des besoins et des objectifs
 
-de créer et relever des défis entre joueurs,
+### 2.1 🧩 Problèmes identifiés (besoins)
 
-de valider les performances via vidéos + votes,
+Les communautés gaming sont dispersées (YouTube, Twitch, Discord, etc.) et il manque une plateforme **centralisée**, **ludique** et **compétitive** permettant :
 
-de valoriser les joueurs les plus actifs.
+- de créer et relever des défis entre joueurs  
+- de valider les performances via vidéos + votes  
+- de valoriser les joueurs les plus actifs
 
-GamerChallenges répond aux besoins suivants :
+**GamerChallenges répond aux besoins suivants :**
 
-Permettre aux utilisateurs de proposer et relever des défis sur différents jeux vidéo.
+- Permettre aux utilisateurs de proposer et relever des défis sur différents jeux vidéo  
+- Favoriser l’interaction communautaire via les votes  
+- Mettre en avant les joueurs les plus actifs grâce à un tableau des leaders  
+- Concevoir une application fonctionnelle, sécurisée et évolutive, respectant les bonnes pratiques du web
 
-Favoriser l’interaction communautaire via les votes.
+### 2.2 🎯 Objectifs du projet (solutions)
 
-Mettre en avant les joueurs les plus actifs grâce à un tableau des leaders.
+- Offrir une plateforme intuitive pour créer et relever des défis  
+- Permettre aux utilisateurs de soumettre des vidéos comme preuve de participation  
+- Mettre en place un système de votes pour élire les meilleures performances  
+- Proposer un leaderboard mettant en avant les joueurs les plus actifs et les plus votés  
+- Construire une communauté autour du gaming, de la compétition et du partage
 
-Concevoir une application fonctionnelle, sécurisée et évolutive, respectant les bonnes pratiques du web.
+## 3. 🧠 Fonctionnalités du projet
 
-🎯 2.2 Objectifs du projet (solutions)
-Offrir une plateforme intuitive pour créer et relever des défis.
+### 🔥 Fonctionnalités principales (MVP)
 
-Permettre aux utilisateurs de soumettre des vidéos comme preuve de participation.
+- 🏠 **Page d’accueil** : présentation du site, défis populaires, défis récents  
+- 🔐 **Inscription / Connexion** : création de compte, authentification sécurisée  
+- 📝 **Création de challenge** : formulaire (titre, description, règles, jeu concerné)  
+- 📄 **Page de détail d’un challenge** : description, règles, participations vidéo  
+- 🎥 **Soumission de participation** : upload vidéo ou lien externe (YouTube, Twitch…)  
+- 👍 **Système de votes** : pour les défis et les participations  
+- 🏆 **Leaderboard** : classement selon défis réalisés + votes obtenus
 
-Mettre en place un système de votes pour élire les meilleures performances.
+### 🌱 Fonctionnalités secondaires (évolutions)
 
-Proposer un leaderboard mettant en avant les joueurs les plus actifs et les plus votés.
+- 💬 Commentaires sur les participations  
+- 🔍 Filtres de recherche (jeu, difficulté, popularité)  
+- 🏅 Système de récompenses (badges, points, niveaux)  
+- 🔔 Notifications (nouveau vote, commentaire, défi)
 
-Construire une communauté autour du gaming, de la compétition et du partage.
+## 4. 🛠️ Technologies utilisées
 
-🧠 3. Fonctionnalités du projet
-🔥 Fonctionnalités principales (MVP)
-🏠 Page d’accueil : présentation du site, défis populaires, défis récents.
+### 🎨 Frontend
 
-🔐 Inscription / Connexion : création de compte, authentification sécurisée.
+- SvelteKit  
+- TailwindCSS  
+- Fetch API  
+- Vite  
 
-📝 Création de challenge : formulaire (titre, description, règles, jeu concerné).
+### ⚙️ Backend
 
-📄 Page de détail d’un challenge : description, règles, participations vidéo.
+- Node.js + Express  
+- PostgreSQL (via Sequelize ORM)  
+- JWT pour l’authentification  
 
-🎥 Soumission de participation : upload vidéo ou lien externe (YouTube, Twitch…).
+## 5. 🎯 Cible du projet
 
-👍 Système de votes : pour les défis et les participations.
+- Joueurs amateurs et passionnés de jeux vidéo  
+- Tous niveaux (casual → confirmé)  
+- Public jeune, connecté, habitué aux plateformes communautaires  
 
-🏆 Leaderboard : classement selon défis réalisés + votes obtenus.
+## 6. 🌐 Navigateurs compatibles
 
-🌱 Fonctionnalités secondaires (évolutions)
-💬 Commentaires sur les participations.
+- Google Chrome (dernière version)  
+- Mozilla Firefox  
+- Microsoft Edge  
+- Safari  
 
-🔍 Filtres de recherche (jeu, difficulté, popularité).
-
-🏅 Système de récompenses (badges, points, niveaux).
-
-🔔 Notifications (nouveau vote, commentaire, défi).
-
-🛠️ 4. Technologies utilisées
-🎨 Frontend
-SvelteKit
-
-TailwindCSS
-
-Fetch API
-
-Vite
-
-⚙️ Backend
-Node.js  + Express
-
-PostgreSQL (via Sequelize ORM)
-
-JWT pour l’authentification
-
-🎯 5. Cible du projet
-Joueurs amateurs et passionnés de jeux vidéo
-
-Tous niveaux (casual → confirmé)
-
-Public jeune, connecté, habitué aux plateformes communautaires
-
-🌐 6. Navigateurs compatibles
-Google Chrome (dernière version)
-
-Mozilla Firefox
-
-Microsoft Edge
-
-Safari
+---
+Projet réalisé dans le cadre de la formation O’Clock – Apothéose – Janvier 2026
