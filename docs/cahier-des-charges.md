@@ -55,15 +55,53 @@ Les communautés gaming sont dispersées (YouTube, Twitch, Discord, etc.) et il 
 ## 4. 🛠️ Technologies utilisées
 
 ### 🎨 Frontend
-- Svelt  
-- Tailwind CSS  
-- Fetch API  
-- Vite  
+
+#### Framework & outils
+
+- Vite [serveur de dev + bundler Frontend]
+- Svelte [framework UI compilant en HTML/CSS/JS côté client]
+- Données
+  - Fetch API (communication avec le backend)
+  - Gestion des états (stores Svelte)
+- CSS
+  - Tailwind CSS (base, reset CSS)
+  - Daisyui (composants UI)
+
+#### Évolutions possible du Frontend
+- SvelteKit pour un rendu côté serveur afin d'améliorer le SEO et les performances.
 
 ### ⚙️ Backend
-- Node.js + Express  
-- PostgreSQL (via Sequelize ORM)  
-- JWT pour l’authentification  
+
+#### Base de données
+  - type PostgreSQL
+
+#### Runtime
+ - Node.js [runtime JavaScript côté serveur]
+
+#### Framework
+ - Express [serveur HTTP, routage, middlewares]
+  - modules utilisés :
+    - **cors**
+      - gestion des requêtes cross-origin
+    - **express-xss-sanitizer**
+      - protection contre les attaques XSS
+    - **dotenv**
+      - gestion des variables d'environnement
+    - **jsonwebtoken**
+      - authentification via JWT
+      - génération de tokens
+      - vérification de tokens
+      - gestion des sessions (expiration, renouvellement)
+    - **bcrypt**
+      - hachage des mots de passe
+      - comparaison des mots de passe hachés
+    - **Sequelize**
+      - ORM pour la gestion de la base de données
+      - création des modèles (tables)
+      - gestion des relations entre les tables
+      - exécution des requêtes SQL
+    - **joi**
+      - validation des données entrantes (schémas de validation)
 
 ## 5. 🎯 Cible du projet
 
