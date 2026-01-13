@@ -1,0 +1,22 @@
+%%mocodo
+:::
+CHALLENGE: num_défi, nom, description, difficulté, durée, #num_jeu > JEU > num_jeu, #num_utilisateur > UTILISATEUR > num_utilisateur
+:::
+JEU: num_jeu, nom, description
+:
+
+
+:
+PARTICIPATION: num_participation, video_url, #num_défi > CHALLENGE > num_défi, #num_utilisateur > UTILISATEUR > num_utilisateur
+:
+VOTE_PARTICIPATION: #num_utilisateur > UTILISATEUR > num_utilisateur, _#num_participation > PARTICIPATION > num_participation
+:
+VOTE_CHALLENGE: #num_utilisateur > UTILISATEUR > num_utilisateur, _#num_défi > CHALLENGE > num_défi
+:::
+
+
+:::::
+UTILISATEUR: num_utilisateur, nom, mot_de_passe, #num_role > ROLE > num_role
+:
+ROLE: num_role, nom
+:
