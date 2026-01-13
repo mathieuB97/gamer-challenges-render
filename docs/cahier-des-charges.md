@@ -2,7 +2,8 @@
 
 ## 1. 📌 Présentation du projet
 
-**Nom du projet** : GamerChallenges  
+**Nom du projet** : GamerChallenges
+  
 GamerChallenges est une plateforme communautaire permettant aux joueurs de **proposer**, **relever** et **voter** pour des défis (challenges) sur différents jeux vidéo.  
 Les utilisateurs soumettent des preuves vidéo de leurs réalisations, et la communauté vote pour élire les meilleures performances.  
 Un classement met en avant les joueurs les plus actifs et les plus performants.  
