@@ -74,14 +74,47 @@ Les communautés gaming sont dispersées (YouTube, Twitch, Discord, etc.) et il 
 
 - Joueurs amateurs et passionnés de jeux vidéo  
 - Tous niveaux (débutant → confirmé)  
-- Public jeune, connecté, habitué aux plateformes communautaires  
+- Public jeune, connecté, habitué aux plateformes communautaires 
 
+## 7. 🌐 UX/UI 
+
+### UX (User Experience)
+
+ - Page d'accueil, 
+ - Page d'inscription et de connexion, 
+ - Création, proposition d'un challenge par la communauté
+ - Page de détail d'un challenge
+ - Tableau d'affichage des meilleurs participants
+
+### UI (User Interface)
+
+- Page d'accueil : 	
+	- Bloc de présentation du site
+	- Bloc affichant les défis en cours (derniers uploadés)
+	- Bloc affichant les défils les plus populaires (en fonction des votes)
+	- Bloc affichant les meilleurs participants (en fonction des votes et du nombre de participations)
+	- Filtres de recherche : par jeux, par challenge et par popularité
+	
+- Header : 
+	- Filtre de recherche (par jeux, par challenge et par popularité)
+	- Lien vers la page de création de compte
+	- Lien vers la page de connexion de compte
+	- Logo "GamerChallenges"
+	- Navigation principale 
+
+- Footer : 
+	- Point RGPD (page informant les utilisateurs sur leurs droits concernant la protection des données)
+	- Copyright "GamerChallenge" 2026, 
+	
+	
 ## 6. 🌐 Navigateurs compatibles
 
 - Google Chrome (dernière version)  
 - Mozilla Firefox  
 - Microsoft Edge  
 - Safari  
+
+## 7. 🌐 Arborescence de l'application
 
 ---
 Projet réalisé dans le cadre de la formation O’Clock – Apothéose – Janvier 2026
