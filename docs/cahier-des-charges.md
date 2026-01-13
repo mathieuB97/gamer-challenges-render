@@ -59,8 +59,8 @@ Les communautés gaming sont dispersées (YouTube, Twitch, Discord, etc.) et il 
 
 ### 🎨 Frontend
 
-- SvelteKit  
-- TailwindCSS  
+- Svelt  
+- Tailwind CSS  
 - Fetch API  
 - Vite  
 
@@ -73,7 +73,7 @@ Les communautés gaming sont dispersées (YouTube, Twitch, Discord, etc.) et il 
 ## 5. 🎯 Cible du projet
 
 - Joueurs amateurs et passionnés de jeux vidéo  
-- Tous niveaux (casual → confirmé)  
+- Tous niveaux (débutant → confirmé)  
 - Public jeune, connecté, habitué aux plateformes communautaires  
 
 ## 6. 🌐 Navigateurs compatibles
