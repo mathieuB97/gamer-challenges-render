@@ -1,151 +1,125 @@
-🎮 GamerChallenges — Cahier des charges
-📌 1. Présentation du projet
-Nom du projet : GamerChallenges
+# 🎮 GamerChallenges — Cahier des charges
 
-GamerChallenges est une plateforme communautaire permettant aux joueurs de proposer, relever et voter pour des défis (challenges) sur différents jeux vidéo.
+## 1. 📌 Présentation du projet
 
-Les utilisateurs soumettent des preuves vidéo de leurs réalisations, et la communauté vote pour élire les meilleures performances.
-Un classement met en avant les joueurs les plus actifs et les plus performants.
+**Nom du projet** : GamerChallenges  
+**Type** : Plateforme communautaire compétitive gaming  
+**Description** :  
+GamerChallenges est une plateforme qui permet aux joueurs de **proposer**, **relever** et **voter** pour des défis (challenges) sur une grande variété de jeux vidéo.  
+Les utilisateurs soumettent des preuves vidéo de leurs réalisations, la communauté vote pour les meilleures performances et un classement valorise les joueurs les plus actifs et les plus appréciés.
 
-Ce projet est réalisé en équipe de 4 développeurs, dans le cadre du projet d’apothéose de la formation O’Clock.
+**Contexte** : Projet d’apothéose réalisé **en équipe de 4 développeurs** dans le cadre de la formation **O’Clock** – Janvier 2026
 
-🎯 2. Définition des besoins et des objectifs
-🧩 2.1 Problèmes identifiés (besoins)
-Les communautés gaming sont dispersées (YouTube, Twitch, Discord, etc.) et il manque une plateforme centralisée, ludique et compétitive permettant :
+## 2. 🎯 Besoins et objectifs
 
-de créer et relever des défis entre joueurs
+### 2.1 🧩 Problèmes identifiés
 
-de valider les performances via vidéos + votes
+Les communautés gaming sont très fragmentées (YouTube, Twitch, Discord, Reddit, forums…) et il manque aujourd’hui une plateforme **centralisée**, **ludique** et **compétitive** qui permette de :
 
-de valoriser les joueurs les plus actifs
+- Créer et relever facilement des défis entre joueurs
+- Valider objectivement les performances via des preuves vidéo
+- Récompenser et valoriser les meilleures réalisations par le vote communautaire
+- Mettre en lumière les joueurs les plus talentueux et les plus actifs
 
-GamerChallenges répond aux besoins suivants :
+### 2.2 🎯 Objectifs du projet
 
-Permettre aux utilisateurs de proposer et relever des défis sur différents jeux vidéo
+- Offrir une expérience intuitive pour **proposer**, **relever** et **voter** des défis
+- Permettre la soumission de preuves vidéo (upload ou lien externe)
+- Mettre en place un système de votes démocratique pour les défis et les participations
+- Valoriser les meilleurs joueurs via un **leaderboard** dynamique
+- Créer une véritable communauté autour de la compétition, du fun et du partage gaming
 
-Favoriser l’interaction communautaire via les votes
+## 3. 🧠 Fonctionnalités
 
-Mettre en avant les joueurs les plus actifs grâce à un tableau des leaders
+### 🔥 MVP – Fonctionnalités prioritaires
 
-Concevoir une application fonctionnelle, sécurisée et évolutive, respectant les bonnes pratiques du web
+- 🏠 **Page d’accueil** : présentation + défis populaires + défis récents + mini-leaderboard
+- 🔐 **Inscription & Connexion** : création de compte + authentification sécurisée (JWT)
+- 📝 **Proposition de challenge** : formulaire (titre, jeu, description, règles, difficulté, tags…)
+- 📄 **Page détail challenge** : description complète, règles, liste des participations vidéo
+- 🎥 **Soumission de participation** : upload vidéo ou lien YouTube/Twitch + commentaire optionnel
+- 👍 **Système de votes** : vote pour les défis proposés + vote pour les meilleures participations
+- 🏆 **Leaderboard** : classement global (défis réussis + votes obtenus)
 
-🎯 2.2 Objectifs du projet (solutions)
-Offrir une plateforme intuitive pour créer et relever des défis
+### 🌱 Évolutions futures (post-MVP)
 
-Permettre aux utilisateurs de soumettre des vidéos comme preuve de participation
+- 💬 Système de commentaires sur les participations
+- 🔍 Filtres & recherche avancée (par jeu, difficulté, popularité, date…)
+- 🏅 Système de récompenses (badges, points, niveaux)
+- 🔔 Notifications (nouveau vote, nouveau commentaire, défi relevé…)
+- Profil utilisateur détaillé + galerie de participations
 
-Mettre en place un système de votes pour élire les meilleures performances
+## 4. 🛠️ Stack technique
 
-Proposer un leaderboard mettant en avant les joueurs les plus actifs et les plus votés
+### 🎨 Frontend
+- Svelte (ou SvelteKit)
+- Tailwind CSS
+- Vite
+- Fetch API + gestion d’état légère (stores Svelte)
 
-Construire une communauté autour du gaming, de la compétition et du partage
+### ⚙️ Backend
+- Node.js + Express
+- PostgreSQL
+- Sequelize (ORM)
+- JWT pour l’authentification
 
-🧠 3. Fonctionnalités du projet
-🔥 Fonctionnalités principales (MVP)
-🏠 Page d’accueil : présentation du site, défis populaires, défis récents
+## 5. 👥 Cible & personas
 
-🔐 Inscription / Connexion : création de compte, authentification sécurisée
+- **Public principal** : Joueurs passionnés de jeux vidéo (amateurs → semi-pros)
+- Âge moyen : 16–35 ans
+- Habitués aux plateformes sociales et communautaires
+- Tous niveaux de compétence acceptés (le fun et la créativité priment)
 
-📝 Création de challenge : formulaire (titre, description, règles, jeu concerné)
+## 6. 🌐 Navigateurs compatibles
 
-📄 Page de détail d’un challenge : description, règles, participations vidéo
+- Google Chrome ≥ dernière version
+- Mozilla Firefox ≥ dernière version
+- Microsoft Edge ≥ dernière version
+- Safari ≥ dernière version
 
-🎥 Soumission de participation : upload vidéo ou lien externe (YouTube, Twitch…)
+## 7. 🎨 UX/UI – Principes directeurs
 
-👍 Système de votes : pour les défis et les participations
+### UX – Parcours utilisateurs clés
+- Découverte rapide des défis tendances
+- Proposition de challenge simple et guidée
+- Consultation et vote rapide sur les participations
+- Valorisation personnelle via le profil et le leaderboard
 
-🏆 Leaderboard : classement selon défis réalisés + votes obtenus
+### UI – Éléments majeurs de la page d’accueil
 
-🌱 Fonctionnalités secondaires (évolutions)
-💬 Commentaires sur les participations
+**Header**  
+- Logo GamerChallenges  
+- Barre de recherche (jeux / défis / tags)  
+- Boutons Connexion / Inscription  
+- Menu navigation (Accueil, Challenges, Leaderboard, Proposer)
 
-🔍 Filtres de recherche (jeu, difficulté, popularité)
+**Contenu principal**  
+- Hero banner dynamique (slogan + CTA « Proposer un défi » / « Voir les challenges »)  
+- Section « Défis tendance » (cartes avec miniature jeu + titre + compteur votes)  
+- Section « Derniers défis ajoutés »  
+- Section « Meilleures participations récentes » (vignettes vidéo)  
+- Mini-leaderboard latéral ou bas de page
 
-🏅 Système de récompenses (badges, points, niveaux)
+**Footer**  
+- Liens mentions légales  
+- Politique de confidentialité & RGPD  
+- Copyright © GamerChallenges 2026
 
-🔔 Notifications (nouveau vote, commentaire, défi)
+**Ambiance graphique globale**  
+- Dark mode par défaut  
+- Accents néon (bleu électrique + violet/magenta)  
+- Effets subtils de glow & micro-animations sur interactions
 
-🛠️ 4. Technologies utilisées
-🎨 Frontend
-Svelte
+## 8. 👥 Équipe & rôles
 
-Tailwind CSS
+- **Manu de Vries** :  
+- **Brahim El Ghachi** :  
+- **Michael Sauviat** :  
+- **Mathieu Bordes** :
 
-Fetch API
+**Projet réalisé dans le cadre de la formation O’Clock – Apothéose – Janvier 2026**
 
-Vite
+---
 
-⚙️ Backend
-Node.js  + Express
-
-PostgreSQL (via Sequelize ORM)
-
-JWT pour l’authentification
-
-🎯 5. Cible du projet
-Joueurs amateurs et passionnés de jeux vidéo
-
-Tous niveaux (débutant → confirmé)
-
-Public jeune, connecté, habitué aux plateformes communautaires
-
-🎨 6. UX / UI
-🧭 UX (User Experience)
-Page d’accueil
-
-Page d’inscription et de connexion
-
-Création et proposition d’un challenge par la communauté
-
-Page de détail d’un challenge
-
-Tableau d’affichage des meilleurs participants
-
-🎨 UI (User Interface)
-🏠 Page d’accueil
-Bloc de présentation du site
-
-Bloc affichant les défis en cours (derniers ajoutés)
-
-Bloc affichant les défis les plus populaires (selon les votes)
-
-Bloc affichant les meilleurs participants (votes + nombre de participations)
-
-Filtres de recherche : par jeu, par type de challenge, par popularité
-
-🧭 Header
-Barre de recherche (jeu, challenge, popularité)
-
-Lien vers la création de compte
-
-Lien vers la connexion
-
-Logo GamerChallenges
-
-Navigation principale
-
-📌 Footer
-Lien vers la page RGPD (droits des utilisateurs)
-
-Copyright
-© GamerChallenges — 2026
-
-🌐 7. Navigateurs compatibles
-Google Chrome (dernière version)
-
-Mozilla Firefox
-
-Microsoft Edge
-
-Safari
-
-👥 8. Rôle de chacun
-Manu de Vries :
-
-Brahim El Ghachi :
-
-Michael Sauviat :
-
-Mathieu Bordes :
-
-Projet réalisé dans le cadre de la formation O’Clock – Apothéose – Janvier 2026.
+Bonne chance à toute l’équipe pour cette apothéose ! 🚀  
+N’hésitez pas à me dire si vous voulez approfondir une section (wireframes, user stories, MCD, etc.)
