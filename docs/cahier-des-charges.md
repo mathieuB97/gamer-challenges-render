@@ -118,8 +118,3 @@ Les communautés gaming sont très fragmentées (YouTube, Twitch, Discord, Reddi
 - **Mathieu Bordes** :
 
 **Projet réalisé dans le cadre de la formation O’Clock – Apothéose – Janvier 2026**
-
----
-
-Bonne chance à toute l’équipe pour cette apothéose ! 🚀  
-N’hésitez pas à me dire si vous voulez approfondir une section (wireframes, user stories, MCD, etc.)
