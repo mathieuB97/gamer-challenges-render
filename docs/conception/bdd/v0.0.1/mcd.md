@@ -7,12 +7,12 @@ Schéma conceptuel disponible sur [MOCODO](https://www.mocodo.net/?mcd=eNptkMFqw
 - 1 rôle est acquis  0,N utilisateur
 
 ## **VOTE** DÉFI
-- 1 utilisateur vote 1,1 défi
+- 1 utilisateur vote 0,N défi
 - 1 défi est voté par 0,N utilisateur
 
 ## **RELÈVE** DÉFI
-- 1 utilisateur relève 1,1 défi
-- 1 défi est relevé 1,N utilisateur 
+- 1 utilisateur relève 0,N défi
+- 1 défi est relevé 0,N utilisateur
 
 ## **CRÉER** DÉFI
 - 1 utilisateur crée 0,N défi
@@ -20,10 +20,10 @@ Schéma conceptuel disponible sur [MOCODO](https://www.mocodo.net/?mcd=eNptkMFqw
 
 ## **ÉLIRE** PARTICIPATION
 - 1 utilisateur élit 0,N participation
-- 1 participation est élue par 1,1 utilisateur
+- 1 participation est élue par 0,N utilisateur
 
 ## DÉFI **CONCERNÉ** PAR JEUX VIDEO
-- 1 jeu vidéo est concerné  1,N défi
+- 1 jeu vidéo est concerné  0,N défi
 - 1 défi concerne 1,1 jeu vidéo
 
 ## **GÉNÈRE** PARTICIPATION
