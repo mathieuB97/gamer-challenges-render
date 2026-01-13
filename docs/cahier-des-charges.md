@@ -101,10 +101,10 @@ Les communautés gaming sont dispersées (YouTube, Twitch, Discord, etc.) et il 
 
 ## 6. 🌐 Navigateurs compatibles
 
-- Google Chrome (dernière version)  
-- Mozilla Firefox  
-- Microsoft Edge  
-- Safari  
+- Google Chrome (version 120+)  
+- Mozilla Firefox (version 121+)
+- Microsoft Edge (version 120+)  
+- Safari (version 17+)  
 
 ## Role de chacun
 
