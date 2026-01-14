@@ -156,10 +156,12 @@ La sécurité est assurée via le hachage des mots de passe (bcrypt), l’authen
 
 ## Role de chacun
 
-Manu de Vries : Product owner
-Brahim El Ghachi :  Scrum master
-Michael Sauviat :  Lead developer Frontend
-Mathieu Bordes :  Lead developer Backend
+Rôle,Responsable,Missions principales
+🧭 Product Owner,Manu de Vries,"Vision produit, priorisation du backlog, conformité au cahier des charges."
+🔄 Scrum Master,Brahim El Ghachi,"Gestion des sprints, animation des daily meetings, levée des blocages."
+🎨 Lead Dev Front,Michael Sauviat,"Architecture Svelte, UI/UX, intégration Tailwind, responsive design."
+⚙️ Lead Dev Back,Mathieu Bordes,"Architecture API REST, modélisation BDD, sécurité & authentification."
+🧩 Git Master,Brahim El Ghachi,"Gestion des branches, revues de code (PR), résolution des conflits."
 
 ---
 
