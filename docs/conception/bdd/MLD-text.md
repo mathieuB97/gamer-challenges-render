@@ -9,13 +9,13 @@
 
 > Nombre de tables : 7 dont 2 tables de liaison [VOTE_CHALLENGE, VOTE_PARTICIPATION]
 
-- UTILISATEUR (id, nom, mot_de_passe, #role_id)
-- ROLE (id, nom)
-- CHALLENGE (id, nom, description, difficulté, durée, #utilisateur_id, #jeu_id)
-- JEU (id, nom, description)
-- PARTICIPATION (id, video_url, #utilisateur_id, #challenge_id)
-- VOTE_CHALLENGE (#utilisateur_id, #challenge_id)
-- VOTE_PARTICIPATION (#utilisateur_id, #participation_id)
+- UTILISATEUR ( num_utilisateur, email, nom, adresse, url_chaine, pseudo, mot_de_passe, #num_role )
+- ROLE ( num_role, nom )
+- CHALLENGE ( num_challenge, nom, description, règles, difficulté, durée_réference, #num_utilisateur, #num_jeu )
+- JEU ( num_jeu, nom, catégorie, description )
+- PARTICIPATION ( num_participation, durée, video_url, #num_challenge, #num_utilisateur )
+- VOTE_CHALLENGE ( #num_utilisateur, #num_challenge )
+- VOTE_PARTICIPATION ( #num_utilisateur, #num_participation )
 
 ## Contraintes et index
 
