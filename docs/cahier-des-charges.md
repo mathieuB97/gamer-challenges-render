@@ -119,7 +119,7 @@ La sécurité est assurée via le hachage des mots de passe (bcrypt), l’authen
 - Tous niveaux (débutant → confirmé)  
 - Public jeune, connecté, habitué aux plateformes communautaires  
 
-## 7. 🌐 UX/UI
+## 6. 🌐 UX/UI
 
 ### UX (User Experience)
 - Page d'accueil,  
@@ -147,16 +147,15 @@ La sécurité est assurée via le hachage des mots de passe (bcrypt), l’authen
   - Point RGPD (page informant les utilisateurs sur leurs droits concernant la protection des données)  
   - Copyright "GamerChallenge" 2026,  
 
-## 6. 🌐 Navigateurs compatibles
+## 7. 🌐 Navigateurs compatibles
 
 - Google Chrome (version 120+)  
 - Mozilla Firefox (version 121+)
 - Microsoft Edge (version 120+)  
 - Safari (version 17+)  
 
-## Role de chacun
 
-## 👥 Répartition des rôles au sein de l’équipe
+## 8. 👥 Répartition des rôles au sein de l’équipe
 
 | Membre              | Rôle principal              | Responsabilités clés |
 |---------------------|-----------------------------|----------------------|
