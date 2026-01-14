@@ -156,12 +156,19 @@ La sécurité est assurée via le hachage des mots de passe (bcrypt), l’authen
 
 ## Role de chacun
 
-Rôle,Responsable,Missions principales
-🧭 Product Owner,Manu de Vries,"Vision produit, priorisation du backlog, conformité au cahier des charges."
-🔄 Scrum Master,Brahim El Ghachi,"Gestion des sprints, animation des daily meetings, levée des blocages."
-🎨 Lead Dev Front,Michael Sauviat,"Architecture Svelte, UI/UX, intégration Tailwind, responsive design."
-⚙️ Lead Dev Back,Mathieu Bordes,"Architecture API REST, modélisation BDD, sécurité & authentification."
-🧩 Git Master,Brahim El Ghachi,"Gestion des branches, revues de code (PR), résolution des conflits."
+## 👥 Répartition des rôles au sein de l’équipe
+
+| Membre              | Rôle principal              | Responsabilités clés |
+|---------------------|-----------------------------|----------------------|
+| Manu de Vries       | Product Owner               | Définition de la vision produit, priorisation du backlog, validation des fonctionnalités, interface avec l’équipe pédagogique |
+| Brahim El Ghachi    | Scrum Master / Git Master   | Organisation des sprints, animation des points d’équipe, suivi de l’avancement, gestion du workflow Git, revue des pull requests |
+| Michael Sauviat     | Lead Developer Frontend     | Architecture frontend, intégration Svelte et Tailwind CSS, mise en œuvre de l’UX/UI, responsive design |
+| Mathieu Bordes      | Lead Developer Backend      | Architecture de l’API REST, modélisation de la base de données, sécurité (authentification, autorisations), cohérence et qualité du code backend |
+
+> Chaque membre de l’équipe participe également aux autres parties du projet afin de conserver une vision globale full-stack et favoriser la montée en compétences.
+
+
+
 
 ---
 
