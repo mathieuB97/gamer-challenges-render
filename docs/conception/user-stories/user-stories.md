@@ -5,21 +5,24 @@ User Stories Gamer Challenges
 
 ## Stories (MVP)
 
-| ID | Thème | En tant que… | J’ai besoin de… | Afin de… | Domaine | Sprint |
-|----|-------|-------------|----------------|----------|---------|--------|
-| 1 | Accueil | Utilisateur | Une page d’accueil qui présente la plateforme dédiée aux défis de jeux vidéo | - Connaître le but principal du site<br>- Présenter les défis populaires<br>- Présenter les défis en cours | Interface | ? |
-| 2 | Système d’inscription | Utilisateur | Un formulaire de création de compte | Me créer un compte | Sécurité | ? |
-| 3 | Système de connexion | Utilisateur | Un formulaire de connexion | Me connecter à mon compte | Sécurité | ? |
-| 4 | Page de soumission d’un challenge | Utilisateur | Pouvoir proposer un ou des défis à réaliser | Partager les défis avec les autres utilisateurs | Interaction utilisateur plateforme | ? |
-| 5 | Page détail d’un challenge | Utilisateur | Consulter la page de détail d’un challenge | - Lire la description<br>- Lire les règles<br>- Voir les vidéos des défis déjà réalisés sur ce challenge | Informations | ? |
-| 6 | Vote | Utilisateur | Voter pour les défis et pour les meilleures participations | Choisir les meilleurs défis et les meilleurs participants | Classification | ? |
-| 7 | Page de classement / affichage limité sur la page d’accueil | Utilisateur | Voir la liste des utilisateurs ayant réalisé le plus de défis et obtenu le plus de votes | Voir les meilleurs participants et/ou les plus populaires | Classification | ? |
-| 8 | Upload de vidéos | Utilisateur | Pouvoir téléverser une vidéo | Prouver la réalisation d’un challenge | Upload médias | ? |
+| StoriesID | Thème                        | En tant que...     | J'ai besoin de …                                      | Afin de …                                              | Domaine         |
+|-----------|------------------------------|--------------------|-------------------------------------------------------|--------------------------------------------------------|-----------------|
+| 1         | Accueil                      | Visiteur           | Une page d'accueil                                    | Découvrir les défis populaires et en cours sans avoir de compte | Interface       |
+| 2         | Page à propos                | Visiteur           | Connaitre le sujet de la plateforme GamerChallenges   | Comprendre et découvrir le concept de GamerChallenge   | Page /about     |
+| 3         | Système d'inscription        | Visiteur           | Un formulaire de création de compte                   | Me créer un compte pour devenir membre                 | Sécurité        |
+| 4         | Détail                       | Visiteur           | Consulter un challenge                                | Lire les règles et voir les participations sans avoir à voter | Informations    |
+| 5         | Système de connexion         | Utilisateur        | Un formulaire de connexion                            | Me connecter à mon compte                              | Sécurité        |
+| 7         | Page de soumission           | Utilisateur        | Pouvoir proposer un challenge à réaliser              | Partager ce défi avec les autres utilisateurs          | Interface       |
+| 8         | Page détail challenge        | Utilisateur        | Pouvoir soumettre une vidéo pour ce challenge         | Prouver ma participation / Réussite à un challenge     | Upload médias   |
+| 9         | Vote                         | Utilisateur        | Voter pour un challenge / participation               | Soutenir les contenus que j'apprécie (1 vote max/contenu) | Classification  |
+| 10        | Page de classement / vote défi | Utilisateur      | Voir la liste des utilisateurs ayant réalisé des défis | Voir les utilisateurs par ordre de défis réalisés      | Classification  |
+| 11        | Page de classement / popularité | Utilisateur     | Voir la liste des utilisateurs ayant obtenu des votes | Voir les meilleurs participants et/ou les plus populaires | Classification  |
+| 12        | Administration               | Administrateur     | Supprimer un utilisateur qui ne respecte pas les CGU  | —                                                      | —               |
 
-## Propositions d'évolution possibles
+### Propositions d’évolutions possibles
 
-| ID | Thème | En tant que… | J’ai besoin de… | Afin de… | Domaine | Sprint |
-|----|-------|-------------|----------------|----------|---------|--------|
-| 1 | Commentaire | Utilisateur | Laisser un commentaire sur un participant | Partager des tips ou autres avec un utilisateur | Échange | ? |
-| 2 | Recherche | Utilisateur | Un moteur de recherche | - Chercher un challenge par jeu<br>- Filtrer les types de challenges<br>- Filtrer par popularité | Moteur de recherche<br>Base de données | ? |
-| 3 | Système de récompenses | Système | Donner des points aux utilisateurs | - Récompenser les participations<br>- Récompenser les votes obtenus | Comptes utilisateurs | ? |
+| #  | Fonctionnalité                | En tant que... | J'ai besoin de …                              | Afin de …                                                                 | Domaine                  |
+|----|-------------------------------|----------------|-----------------------------------------------|---------------------------------------------------------------------------|--------------------------|
+| 1  | Commentaire                   | Utilisateur    | Laisser un commentaire sur une participation  | Partager des tips ou autre avec un autre utilisateur                      | Échange                  |
+| 2  | Recherche                     | Utilisateur    | Un moteur de recherche                        | Rechercher un challenge par jeu<br>Filtrer les types de challenges<br>Filtrer par popularité | Moteur de recherche / BDD |
+| 3  | Système de récompenses        | Système        | Donner des points aux utilisateurs            | Récompenser :<br>• les participations<br>• les votes obtenus             | Comptes utilisateurs     |
