@@ -1,70 +1,166 @@
-# 🎨 Charte Graphique – GamerChallenges  
+🎮 Charte Graphique – GamerChallenges
+1. 🎯 Identité du projet
 
+Univers : Gaming compétitif, communauté, défi, performance
+Ambiance : Futuriste, néon, sombre, immersive
 
-## 1. Logo
-- **Style**            : Typographique moderne + symbole néon subtil (cercle/œil/masque gamer stylisé)  
-- **Couleurs principales** : Cyan néon principal (#00D4FF), Violet néon secondaire (#A020F0), Blanc glow  
-- **Utilisation**      : Header central ou gauche sur fond sombre/gradient  
-- **Variantes**        : Logo complet horizontal / icône ronde seule / version glow pour animations
+2. 🖼️ Logo
+Style
 
-## 2. Palette de couleurs (extraite de la maquette)
+Typographique moderne
 
-| Nom                     | Usage principal                               | HEX       | RGB              | Exemple visible dans la maquette                     |
-|-------------------------|-----------------------------------------------|-----------|------------------|------------------------------------------------------|
-| Noir profond            | Fond global                                   | #0A0A0E   | 10, 10, 14       | Fond principal de la page                            |
-| Violet très foncé       | Header, sections secondaires                  | #12081F   | 18, 8, 31        | Sous la bannière héroïque                            |
-| Gradient volcanique     | Bannière héroïque (background)                | #1A0B00 → #4A1A00 → #8B2500 | Orange feu/noir  | Image de fond massive avec volcans et explosions     |
-| Cyan néon               | Titres principaux, bordures actives, accents  | #00D4FF   | 0, 212, 255      | Glow autour leaderboard actif, flèches carrousel     |
-| Violet néon             | Boutons Inscription, hover states             | #A020F0   | 160, 32, 240     | Bouton Inscription                                   |
-| Gris bleuté clair       | Textes secondaires, stats                     | #A0B0C8   | 160, 176, 200    | Votes, participants, pseudos secondaires             |
-| Blanc pur               | Texte principal, noms défis                   | #FFFFFF   | 255, 255, 255    | Slogans, noms de défis, top leaderboard              |
-| Orange feu (accent)     | Glow subtil, éléments "hot"                   | #FF4500   | 255, 69, 0       | Effets de feu dans la bannière héroïque              |
+Inspiration gaming / e-sport
 
+Effet néon lumineux
 
+Lisible sur fond sombre
 
-## 3. Typographie
+Couleurs du logo
 
-- **Police principale** : Inter (très lisible sur fond sombre)  
-- **Police accentuée** (titres épiques) : Orbitron ou Exo 2 (style sci-fi/gaming)  
-- **Hiérarchie** :
+Cyan néon pour l’énergie et la technologie
 
-| Élément                  | Police          | Poids     | Taille desktop | Couleur principale | Espacement |
-|--------------------------|-----------------|-----------|----------------|--------------------|------------|
-| H1 – Slogan principal    | Orbitron / Inter | Bold     | 64–80px        | #FFFFFF + glow cyan | 1.05      |
-| H2 – Sections (Top / Nouveaux) | Inter      | Bold     | 36–44px        | #00D4FF            | 1.15      |
-| H3 – Noms défis / Pseudos | Inter         | SemiBold | 20–26px        | #FFFFFF            | 1.3       |
-| Texte courant            | Inter           | Regular  | 16–18px        | #FFFFFF            | 1.5       |
-| Stats (votes, participants) | Inter       | Medium   | 13–15px        | #A0B0C8            | 1.4       |
+Violet néon pour l’univers gaming
 
-## 4. Composants UI clés (observés dans la maquette)
+Utilisation possible du rose néon en accent
 
-| Élément UI               | Description                                                                 | Style principal                                      |
-|--------------------------|-----------------------------------------------------------------------------|------------------------------------------------------|
-| Header                   | Large, logo centré ou gauche, menu fin, boutons Inscription/Connexion droite | Fond violet foncé + léger gradient                   |
-| Bannière héroïque        | Image cinématique pleine largeur (volcans, explosions, soldats) + texte overlay | Gradient sombre + texte blanc + glow cyan            |
-| Barre de recherche       | Centrée, champ large + icône loupe + bouton Connexion à droite             | Fond semi-transparent + bordure cyan subtile         |
-| Sidebar Leaderboard      | Cartes verticales empilées (top joueurs), glow cyan sur le n°1 actif       | Fond #12081F, bordure néon cyan                      |
-| Cartes Challenges        | Format paysage, image cinématique pleine largeur, overlay gradient bas     | Fond sombre, border-radius 12–16px, ombre glow       |
-| Carrousel horizontal     | Flèches → →, scroll smooth, hover lift + glow                               | Cartes espacées 20–32px, overflow hidden             |
-| Footer                   | Liens centrés simples : Contact • Mentions légales (RGPD) • Copyright      | Fond très sombre, texte gris clair                   |
+Bonnes pratiques
 
-## 5. Ambiance & Ton global
+Toujours sur fond sombre
 
-- **Univers visuel**      : Épique sombre – champs de bataille post-apo – explosions – néons cyan/violet  
-- **Ton**                 : Intense – Immersif – Compétitif – Épique ("Défiez les autres et dominez !")  
-- **Accessibilité**       : Contrastes élevés, focus visible cyan, alt texts sur toutes les images cinématiques  
-- **Responsive**          : Mobile-first  
-  - Bannière → réduit en hauteur  
-  - Sidebar → burger menu  
-  - Carrousels → vertical ou cartes empilées
+Effet glow léger autorisé
 
-## ✅ Bonus & Recommandations
+Éviter toute déformation ou rotation
 
-- **Effets spéciaux**     : Glow néon cyan/violet sur titres, bordures actives et CTA (box-shadow 0 0 16px #00D4FF)  
-- **Images**              : Artworks cinématiques haute qualité (soldats, paysages apocalyptiques, explosions) – Unsplash Gaming / ArtStation style épique  
-- **Icônes**              : Remix Icon ou Heroicons filled, couleur cyan/blanc  
-- **Animations**          : Fade-in scroll, hover scale + glow, particules légères sur bannière (optionnel)  
-- **Réseaux sociaux**     : Icônes couleur native (Discord violet, Twitter/X bleu, Instagram gradient)
+3. 🌈 Palette de couleurs
+🎨 Couleurs principales
+Nom	Usage	HEX
+Dark Background	Fond principal	#0a0e1a
+Darker Background	Sections profondes	#060912
+Card Background	Cartes	#12172b
+Card Hover	Hover cartes	#1a2139
+Texte principal	Texte	#e8ecf4
+Texte secondaire	Labels, aides	#9ca3af
+⚡ Couleurs néon (gaming)
+Nom	Usage	HEX
+Neon Cyan	Actions principales	#00d9ff
+Neon Purple	Secondaire	#7b2cbf
+Neon Pink	Accent / highlights	#ff006e
+Neon Yellow	Stats / badges	#ffd60a
+Neon Green	Succès / validation	#00f5d4
+🚨 Couleurs fonctionnelles
+Nom	Usage	HEX
+Destructive	Erreurs	#ef4444
+Border	Bordures	rgba(255,255,255,0.1)
+Ring	Focus / accessibilité	#00d9ff
+4. ✍️ Typographie
+Police
 
+Sans-serif moderne
 
+Lisibilité prioritaire
 
+Compatible Tailwind CSS
+
+Hiérarchie
+Élément	Taille	Poids
+H1	2xl	600
+H2	xl	600
+H3	lg	600
+H4	base	600
+Texte	base	400
+Boutons	base	600
+5. 🧱 Composants UI
+🃏 Cartes (Challenges, jeux)
+
+Fond : --card
+
+Coins arrondis : 0.75rem
+
+Hover :
+
+Fond plus clair
+
+Glow léger cyan ou violet
+
+Contenu :
+
+Image immersive
+
+Titre fort
+
+Auteur discret
+
+Icônes votes / participants
+
+🔘 Boutons
+Bouton primaire
+
+Fond : Neon Cyan
+
+Texte : Dark background
+
+Hover : glow cyan
+
+Bouton secondaire
+
+Fond : Neon Purple
+
+Texte : blanc
+
+Hover : glow violet
+
+Bouton accent
+
+Fond : Neon Pink
+
+Usage ponctuel (CTA fort)
+
+🧭 Navigation
+
+Fond sombre
+
+Liens clairs
+
+Élément actif :
+
+Soulignement néon
+
+Glow discret
+
+Boutons Connexion / Inscription bien distincts
+
+6. 📊 Icônes & Statistiques
+
+Icônes simples et lisibles
+
+Couleurs :
+
+Votes → Cyan
+
+Participants → Violet
+
+Nouveauté → Rose ou Jaune
+
+Taille modérée pour ne pas surcharger
+
+7. 🌑 Thème Dark (par défaut)
+
+Dark mode obligatoire
+
+Fort contraste texte / fond
+
+Fond uniforme pour immersion
+
+Animations douces (hover, focus)
+
+8. ✨ Effets visuels
+
+Glow néon léger
+
+Transitions :
+
+0.2s – 0.3s ease-in-out
+
+Ombres douces
+
+Aucune animation agressive
