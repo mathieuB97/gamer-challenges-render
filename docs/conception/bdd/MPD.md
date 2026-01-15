@@ -4,4 +4,5 @@
 
 ## Schéma MPD
 
-App dbdiagram.io: https://dbdiagram.io/d/GamerChallenge-6967690ed6e030a02401c436
+- App dbdiagram.io lecture seul: https://dbdiagram.io/d/GamerChallenge-6967690ed6e030a02401c436
+- App dbdiagram.io écriture: https://dbdiagram.io/d/GamerChallenge-6967690ed6e030a02401c436
