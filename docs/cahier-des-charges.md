@@ -53,10 +53,11 @@ Structure des routes principales du projet :
 | `/`                                    | HomePage                                | Oui                         | Page d'accueil avec lien accès liste jeux/à propos, trending challenges, leaderboard   |
 | `/a-propos`                            | AboutPage                               | Oui                         | Page statique expliquant la philosophie, l'équipe, la vision du site                    |
 | `/inscription`                         | RegisterPage                            | Oui                         | Formulaire pour créer un compte                                                          |
-| `/connexion`                           | LoginPage                               | Oui                         | Formulaire pour se connecter                                                             |
-| `/game`                                | GamesListPage                           | Oui (ou après login ?)      | Liste / catalogue de tous les jeux disponibles                                           |
-| `/jeux/:gameId`                        | GameChallengesListPage                  | Oui ou après login          | Liste des challenges pour un jeu précis (ex : `/jeux/elden-ring`)                       |
-| `/jeux/:gameId/challenges/:challengesId` | ChallengeDetailPage                   | Oui ou après login          | Détail complet d’un challenge (description, vidéos participants, stats, etc.)           |
+| `/connexion`                           | LoginPage                               | Oui                         | Formulaire pour se connecter
+| `/CGV      `                           | Terms and conditions                    | Oui                         | Conditions générales d'utilisation                                                      |
+| `/games`                               | GamesListPage                           | Oui (ou après login ?)      | Liste / catalogue de tous les jeux disponibles                                           |
+| `/slug/:gameId`                        | GameChallengesListPage                  | Oui ou après login          | Liste des challenges pour un jeu précis (ex : `/jeux/elden-ring`)                       |
+| `/slug/:gameId/challenges/:challengesId` | ChallengeDetailPage                   | Oui ou après login          | Détail complet d’un challenge (description, vidéos participants, stats, vote etc.)           |
 | `/jeux/:gameId/createChallenge`        | CreateChallengePage                     | Après login                 | Formulaire pour proposer un nouveau challenge                                            |
 
 
