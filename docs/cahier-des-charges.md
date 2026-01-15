@@ -43,7 +43,22 @@ Les communautés gaming sont dispersées (YouTube, Twitch, Discord, etc.) et il 
 - 📄 **Page de détail d’un challenge** : description, règles, participations vidéo  
 - 🎥 **Soumission de participation** : upload vidéo ou lien externe (YouTube, Twitch…)  
 - 👍 **Système de votes** : pour les défis et les participations  
-- 🏆 **Leaderboard** : classement selon défis réalisés + votes obtenus  
+- 🏆 **Leaderboard** : classement selon défis réalisés + votes obtenus
+
+
+Structure des routes principales du projet :
+
+| Route (URL)                            | Composant / Page affichée               | Accessible sans connexion ? | Description / Remarques                                                                 |
+|----------------------------------------|-----------------------------------------|-----------------------------|------------------------------------------------------------------------------------------|
+| `/`                                    | HomePage                                | Oui                         | Page d'accueil avec lien accès liste jeux/à propos, trending challenges, leaderboard   |
+| `/a-propos`                            | AboutPage                               | Oui                         | Page statique expliquant la philosophie, l'équipe, la vision du site                    |
+| `/inscription`                         | RegisterPage                            | Oui                         | Formulaire pour créer un compte                                                          |
+| `/connexion`                           | LoginPage                               | Oui                         | Formulaire pour se connecter                                                             |
+| `/game`                                | GamesListPage                           | Oui (ou après login ?)      | Liste / catalogue de tous les jeux disponibles                                           |
+| `/jeux/:gameId`                        | GameChallengesListPage                  | Oui ou après login          | Liste des challenges pour un jeu précis (ex : `/jeux/elden-ring`)                       |
+| `/jeux/:gameId/challenges/:challengesId` | ChallengeDetailPage                   | Oui ou après login          | Détail complet d’un challenge (description, vidéos participants, stats, etc.)           |
+| `/jeux/:gameId/createChallenge`        | CreateChallengePage                     | Après login                 | Formulaire pour proposer un nouveau challenge                                            |
+
 
 ### 🌱 Fonctionnalités secondaires (évolutions)
 
