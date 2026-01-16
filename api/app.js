@@ -1,20 +1,22 @@
+import dotenv from "dotenv";
 import express from "express";
 
-import authRoutes from '../routes/auth.routes.js';
+
+import authRouteur from './routes/auth.router.js';
 
 const app = express();
-const PORT = 3000;
-//routes//
-app.use(express.json());
 
-app.use(authRoutes);
 
-// Route de test
-app.get("/", (req, res) => {
-  res.send("🚀 Serveur Express opérationnel !");
-});
+// Indique à express qu'on utiliser du JSON dans le body des requetes et des reponses HTTP
+app.use(express.json()); 
+ 
 
-// Démarrage du serveur
+// Router inscription + authentification
+app.use(authRouteur);
+
+
+// Start server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`✅ Serveur lancé sur http://localhost:${PORT}`);
+  console.log(`🚀 API started at http://localhost:${PORT}`);
 });
