@@ -1,0 +1,129 @@
+{
+  "roles": [
+    {
+      "name": "admin"
+    },
+    {
+      "name": "user"
+    }
+  ],
+
+  "users": [
+    {
+      "email": "admin@apotheose.com",
+      "name": "Josiane Admin",
+      "adress": "123 Rue du Code, Paris",
+      "url_chaine": "https://twitch.tv/josiane_dev",
+      "pseudo": "JosieAdmin",
+      "password": "hello",
+      "roleName": "admin"
+    },
+    {
+      "email": "m.jouelle@gmail.com",
+      "name": "Marie Jouelle",
+      "adress": "45 Avenue de la République, Lyon",
+      "url_chaine": "https://youtube.com/mariejouelle",
+      "pseudo": "MarieJ",
+      "password": "coucou",
+      "roleName": "user"
+    },
+    {
+      "email": "jlouis.gamer@outlook.fr",
+      "name": "Jean Louis",
+      "adress": null,
+      "url_chaine": "https://twitch.tv/jeanlouis_live",
+      "pseudo": "JeanLouis",
+      "password": "bye",
+      "roleName": "user"
+    }
+  ],
+
+  "games": [
+    {
+      "name": "Super Mario Odyssey",
+      "category": "Plateforme",
+      "description": "Une aventure épique à travers de nombreux royaumes pour sauver la princesse Peach."
+    },
+    {
+      "name": "League of Legends",
+      "category": "MOBA",
+      "description": "Un jeu de stratégie en équipe où deux équipes de cinq champions s'affrontent."
+    },
+    {
+      "name": "Elden Ring",
+      "category": "Action RPG",
+      "description": "Levez-vous, Sans-éclat, et laissez la grâce guider vos pas."
+    }
+  ],
+
+  "challenges": [
+    {
+      "name": "Speedrun Cascade",
+      "description": "Finir le Royaume des Cascades le plus rapidement possible.",
+      "rules": "Le temps s'arrête à la collecte de la lune principale.",
+      "level": "medium",
+      "time limit" : "120 minutes"
+    },
+    {
+      "num_challenge": 2,
+      "name": "Pentakill Challenge",
+      "description": "Réaliser un Pentakill en partie classée.",
+      "rules": "Preuve vidéo obligatoire du tableau des scores.",
+      "level": "hard",
+      "time limit" : "60 minutes"
+    },
+    {
+      "num_challenge": 3,
+      "name": "No Damage Boss",
+      "description": "Vaincre le premier boss sans perdre un seul point de vie.",
+      "rules": "Toute barre de vie entamée annule le défi.",
+      "level": "easy",
+      "time limit" : "90 minutes"
+    }
+  ],
+
+  "contributions": [
+    {
+      "duration": 450,
+      "video_url": "https://youtube.com/watch?v=mario_run"
+    },
+    {
+      "duration": 1200,
+      "video_url": "https://twitch.tv/clip/lol_pentakill"
+    },
+    {
+      "duration": 300,
+      "video_url": "https://youtube.com/watch?v=elden_perfect"
+    }
+  ],
+
+  "user_contribution": [
+    {
+      "user_id": 1,
+      "contribution_id": "1"
+    },
+    {
+      "user_id": 2,
+      "contribution_id": "2"
+    },
+    {
+      "user_id": 3,
+      "contribution_id": "3"
+    }
+  ],
+
+  "user_challenge": [
+    {
+      "challenge_id": 1,
+      "user_id": "1"
+    },
+    {
+      "challenge_id": 2,
+      "user_id": "2"
+    },
+    {
+      "challenge_id": 3,
+      "user_id": "3"
+    }
+  ]
+}
