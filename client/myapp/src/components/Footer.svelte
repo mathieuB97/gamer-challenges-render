@@ -1,5 +1,5 @@
 <footer class="border-t border-white/10 bg-[#0a0e1a]/50">
-  <div class="container mx-auto px-4 py-6">
+  <div class="mx-auto py-6">
     <div
       class="flex flex-col md:flex-row items-center justify-center gap-4 text-sm text-muted-foreground"
     >
