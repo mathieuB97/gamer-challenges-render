@@ -5,10 +5,12 @@
 	import Footer from "./components/Footer.svelte";
 </script>
 
-<div class="h-screen flex flex-col w-7xl m-auto mt-0 mb-0 bg-[#0a0e1a]">
+<div
+	class="h-screen flex flex-col w-full max-w-7xl m-auto mt-0 mb-0 bg-[#0a0e1a]"
+>
 	<Header />
 
-	<main class="flex-1 pt-4 pb-4">
+	<main class="flex-1 pt-[16px] pb-[72px]">
 		<svelte:component this={$currentComponent} {...$params} />
 	</main>
 
