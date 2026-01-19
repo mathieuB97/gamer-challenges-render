@@ -91,96 +91,56 @@
     ];
 </script>
 
-<div class="flex items-center justify-center min-h-full p-4">
-    <div class="flex flex-col md:flex-row gap-8">
-        <!-- Leaderboard -->
-        <div
-            class="w-full md:w-64 bg-[#12172b] rounded-xl p-4 h-fit sticky top-40"
-        >
-            <h2 class="text-xl mb-4">Leaderboard</h2>
-            <div class="space-y-3">
-                {#each leaderboardData as player (player.rank)}
-                    <div class="relative group cursor-pointer">
-                        <!-- rank best player-->
-                        <div
-                            class="absolute -top-2 -left-2 w-8 h-8 rounded-lg flex items-center justify-center z-10
+<div class="flex flex-col md:flex-row gap-8 w-full">
+    <!-- Leaderboard -->
+    <div class="w-full md:w-64 bg-[#12172b] rounded-xl p-4 h-fit sticky top-40">
+        <h2 class="text-xl mb-4">Leaderboard</h2>
+        <div class="space-y-3">
+            {#each leaderboardData as player (player.rank)}
+                <div class="relative group cursor-pointer">
+                    <!-- rank best player-->
+                    <div
+                        class="absolute -top-2 -left-2 w-8 h-8 rounded-lg flex items-center justify-center z-10
 								{player.rank === 1
-                                ? 'bg-gradient-to-br from-yellow-400 to-yellow-600'
-                                : player.rank === 2
-                                  ? 'bg-gradient-to-br from-gray-300 to-gray-500'
-                                  : player.rank === 3
-                                    ? 'bg-gradient-to-br from-amber-600 to-amber-800'
-                                    : 'bg-gradient-to-br from-[#1a2139] to-[#12172b]'}"
-                        >
-                            <span class="font-bold">{player.rank}</span>
-                        </div>
-                        <!-- Card -->
-                        <div class="relative overflow-hidden rounded-lg">
-                            <img
-                                src={player.image}
-                                alt={player.name}
-                                class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"
-                            />
-                            <div
-                                class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"
-                            ></div>
-                            <div class="absolute bottom-2 left-2 right-2">
-                                <p class="text-sm mb-0.5">{player.name}</p>
-                                <p class="text-xs text-[#00d9ff] italic">
-                                    {player.pseudo}
-                                </p>
-                            </div>
+                            ? 'bg-gradient-to-br from-yellow-400 to-yellow-600'
+                            : player.rank === 2
+                              ? 'bg-gradient-to-br from-gray-300 to-gray-500'
+                              : player.rank === 3
+                                ? 'bg-gradient-to-br from-amber-600 to-amber-800'
+                                : 'bg-gradient-to-br from-[#1a2139] to-[#12172b]'}"
+                    >
+                        <span class="font-bold">{player.rank}</span>
+                    </div>
+                    <!-- Card -->
+                    <div class="relative overflow-hidden rounded-lg">
+                        <img
+                            src={player.image}
+                            alt={player.name}
+                            class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"
+                        />
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"
+                        ></div>
+                        <div class="absolute bottom-2 left-2 right-2">
+                            <p class="text-sm mb-0.5">{player.name}</p>
+                            <p class="text-xs text-[#00d9ff] italic">
+                                {player.pseudo}
+                            </p>
                         </div>
                     </div>
-                {/each}
-            </div>
+                </div>
+            {/each}
         </div>
+    </div>
 
-        <!-- Challenges Section -->
-        <div class="flex-1 space-y-8">
-            <!-- Top Challenges -->
-            <section>
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl">Top Challenges</h2>
-                    <span
-                        ><svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                        >
-                            <path
-                                d="M5 12H19"
-                                stroke="#00D9FF"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            />
-                            <path
-                                d="M12 5L19 12L12 19"
-                                stroke="#00D9FF"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            />
-                        </svg></span
-                    >
-                </div>
-                <div
-                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto"
-                >
-                    {#each topChallenges as challenge (challenge.id)}
-                        <ChallengeCard {...challenge} />
-                    {/each}
-                </div>
-            </section>
-
-            <!-- New Challenges -->
-            <section>
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl">Nouveaux challenges</h2>
-                    <svg
+    <!-- Challenges Section -->
+    <div class="flex-1 space-y-8">
+        <!-- Top Challenges -->
+        <section>
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl">Top Challenges</h2>
+                <span
+                    ><svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
                         height="24"
@@ -201,17 +161,51 @@
                             stroke-linecap="round"
                             stroke-linejoin="round"
                         />
-                    </svg>
-                </div>
-                <div
-                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+                    </svg></span
                 >
-                    {#each newChallenges as challenge (challenge.id)}
-                        <ChallengeCard {...challenge} />
-                    {/each}
-                </div>
-            </section>
-        </div>
+            </div>
+            <div
+                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto"
+            >
+                {#each topChallenges as challenge (challenge.id)}
+                    <ChallengeCard {...challenge} />
+                {/each}
+            </div>
+        </section>
+
+        <!-- New Challenges -->
+        <section>
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl">Nouveaux challenges</h2>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                >
+                    <path
+                        d="M5 12H19"
+                        stroke="#00D9FF"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                    <path
+                        d="M12 5L19 12L12 19"
+                        stroke="#00D9FF"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                </svg>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {#each newChallenges as challenge (challenge.id)}
+                    <ChallengeCard {...challenge} />
+                {/each}
+            </div>
+        </section>
     </div>
 </div>
 
