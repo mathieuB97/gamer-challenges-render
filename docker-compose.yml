@@ -1,0 +1,48 @@
+services:
+  # 1. Base de données
+  db:
+    image: postgres:17-alpine
+    container_name: gamerChallenges_db
+    restart: always
+    environment:
+      POSTGRES_USER: gamer
+      POSTGRES_PASSWORD: gamer
+      POSTGRES_DB: gamer
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # 2. Backend (API)
+  api:
+    build: ./api
+    container_name: gamerChallenges_api
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://gamer:gamer@db:5432/gamer
+    volumes:
+      - ./api:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - db
+    # On utilise node directement car nodemon n'est pas trouvé dans tes logs
+    command: node app.js
+
+  # 3. Frontend (Client)
+  client:
+    # Le Dockerfile est dans client/myapp selon ton arborescence
+    build: ./client/myapp
+    container_name: gamerChallenges_client
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client/myapp:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - api
+    # Commande pour lancer le serveur de dev Vite/Svelte en mode exposé
+    command: npm run dev -- --host
+
+volumes:
+  postgres_data:
