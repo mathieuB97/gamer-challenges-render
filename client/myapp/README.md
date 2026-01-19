@@ -1,3 +1,20 @@
+# installation de tailwindcss
+
+> branch: feature/front-css
+
+## installation via npx (recommandé)
+
+```npx sv add tailwindcss```
+
+## redémarrer le service docker
+
+```docker-compose down```
+```docker-compose up -d --build```
+
+## Vérifier que le front fonctionne
+
+```docker compose logs client```
+
 # Svelte + Vite
 
 This template should help get you started developing with Svelte in Vite.
