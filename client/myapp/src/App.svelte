@@ -8,7 +8,7 @@
 <div class="h-screen flex flex-col w-7xl m-auto mt-0 mb-0 bg-[#0a0e1a]">
 	<Header />
 
-	<main class="flex-1">
+	<main class="flex-1 pt-4 pb-4">
 		<svelte:component this={$currentComponent} {...$params} />
 	</main>
 
