@@ -26,6 +26,7 @@ body {
 
 #app {
 	@apply h-full flex flex-col;
+	@apply overflow-y-auto;
 }
 
 h1 {
