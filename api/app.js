@@ -22,7 +22,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// 3. IMPORTS DES ROUTEURS (Après les middlewares globaux)
+// 3. Import des routeurs
 import authRouteur from './routes/auth.router.js';
 import gameRouter from './routes/game.router.js';
 

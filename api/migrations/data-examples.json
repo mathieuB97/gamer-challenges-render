@@ -53,23 +53,24 @@
       "description": "Finir le Royaume des Cascades le plus rapidement possible.",
       "rules": "Le temps s'arrête à la collecte de la lune principale.",
       "level": "medium",
-      "time limit" : "120 minutes"
+      "time limit" : "120 minutes",
+      "name of the game": "Super Mario Odyssey"
     },
     {
-      "num_challenge": 2,
       "name": "Pentakill Challenge",
       "description": "Réaliser un Pentakill en partie classée.",
       "rules": "Preuve vidéo obligatoire du tableau des scores.",
       "level": "hard",
-      "time limit" : "60 minutes"
+      "time limit" : "60 minutes",
+      "name of the game": "League of Legends"
     },
     {
-      "num_challenge": 3,
       "name": "No Damage Boss",
       "description": "Vaincre le premier boss sans perdre un seul point de vie.",
       "rules": "Toute barre de vie entamée annule le défi.",
       "level": "easy",
-      "time limit" : "90 minutes"
+      "time limit" : "90 minutes",
+      "name of the game": "Elden Ring"
     }
   ],
 

@@ -1,9 +1,9 @@
-import { Game, Challenge } from '../models/index.js';
+import { Challenge, User } from '../models/index.js';
 import BaseController from './base.controller.js';
 
-class GameController extends BaseController {
+class ChallengeController extends BaseController {
     constructor() {
-        super(Game, 'Game');
+        super(Challenge, 'Challenge');
     }
 
     // On surcharge getRequestOptions pour permettre le filtrage (MVP)
