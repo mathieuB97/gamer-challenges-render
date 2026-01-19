@@ -8,7 +8,7 @@
 <header
   class="border-b border-white/10 bg-[#0a0e1a]/95 backdrop-blur-sm sticky top-0 z-50"
 >
-  <div class="container mx-auto px-4 py-3">
+  <div class="mx-auto px-4 py-3">
     <div class="flex items-center justify-between gap-2">
       <!-- Burger Menu (Mobile) -->
       <!-- <span
@@ -23,7 +23,9 @@
       </span> -->
 
       <!-- Logo - Responsive -->
-      <BrandLogo />
+      <a href="/">
+        <BrandLogo />
+      </a>
 
       <!-- Navigation Desktop -->
       <nav class="hidden md:flex items-center gap-8">
