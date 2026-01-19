@@ -10,28 +10,19 @@
 
   "users": [
     {
-      "email": "admin@apotheose.com",
-      "name": "Josiane Admin",
-      "adress": "123 Rue du Code, Paris",
-      "url_chaine": "https://twitch.tv/josiane_dev",
+      "email": "josie.gamer@outlook.fr",
       "pseudo": "JosieAdmin",
       "password": "hello",
       "roleName": "admin"
     },
     {
-      "email": "m.jouelle@gmail.com",
-      "name": "Marie Jouelle",
-      "adress": "45 Avenue de la République, Lyon",
-      "url_chaine": "https://youtube.com/mariejouelle",
+      "email": "marieJ.gamer@outlook.fr",
       "pseudo": "MarieJ",
       "password": "coucou",
       "roleName": "user"
     },
     {
       "email": "jlouis.gamer@outlook.fr",
-      "name": "Jean Louis",
-      "adress": null,
-      "url_chaine": "https://twitch.tv/jeanlouis_live",
       "pseudo": "JeanLouis",
       "password": "bye",
       "roleName": "user"
