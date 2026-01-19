@@ -14,21 +14,6 @@ User.init(
       },
     },
 
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-
-    adress: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-
-    url_chaine: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-
     pseudo: {
       type: DataTypes.STRING,
       allowNull: false,
