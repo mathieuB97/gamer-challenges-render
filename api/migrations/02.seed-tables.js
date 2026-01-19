@@ -64,9 +64,6 @@ async function seed() {
 			await User.create(
 				{
 				email: user.email,      // Vient du JSON
-                name: user.name,        // Vient du JSON
-                adress: user.adress,    // Vient du JSON
-                url_chaine: user.url_chaine, // Vient du JSON
                 pseudo: user.pseudo,    // Vient du JSON (et pas "username")
                 password: hash,
                 role_id: role.id        // L'ID qu'on a récupéré juste au-dessus
