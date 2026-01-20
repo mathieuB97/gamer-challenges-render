@@ -2,8 +2,6 @@ import { Router } from "express";
 import authController from "../controllers/auth.controller.js";
 import { validateToken, validateUser } from "../middlewares/auth.middleware.js";
 
-// Middleware à créer pour l'authentification et la validation des données
-import {validateUser, validateToken} from '../middlewares/common.middleware.js';
 
 const routeur = Router();
 
@@ -12,7 +10,7 @@ const routeur = Router();
 routeur.post('/auth/register', validateUser, authController.registerUser);
 
 /* Connexion*/
-routeur.post('/auth/login', validateUser authController.login)
-routeur.get('/auth/me', validateToken, authController.getMe)
+routeur.post('/auth/login', validateUser, authController.login);
+routeur.get('/auth/me', validateToken, authController.getMe);
 
 export default routeur;
