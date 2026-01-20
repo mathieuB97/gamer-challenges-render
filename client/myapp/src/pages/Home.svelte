@@ -93,7 +93,7 @@
 
 <div class="flex flex-col md:flex-row gap-8 w-full">
     <!-- Leaderboard -->
-    <div class="w-full md:w-64 bg-[#12172b] rounded-xl p-4 h-fit sticky top-40">
+    <div class="w-full md:w-64 bg-[#12172b] rounded-xl p-4 h-fit sticky top-20">
         <h2 class="text-xl mb-4">Leaderboard</h2>
         <div class="space-y-3">
             {#each leaderboardData as player (player.rank)}
