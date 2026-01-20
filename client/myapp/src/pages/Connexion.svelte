@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import BrandLogo from "../components/Brand-logo.svelte";
+    import LabelInput from "../components/LabelInput.svelte";
 
     onMount(async () => {
         try {
@@ -13,9 +14,6 @@
             return false;
         }
     });
-    function handleSubmit(params) {
-        
-    }
 
     const formData = {
         email: "",
@@ -24,54 +22,49 @@
 
     const isLoading = false;
 
-    function navigateToSignup() {
-        window.location.href = "/inscription";
+    function login(e) {
+        const formDataObj = new FormData(e.target);
+        const data = Object.fromEntries(formDataObj);
+        alert(JSON.stringify(data));
+    }
+
+    function handleInput(field, event) {
+        formData[field] = event.target.value;
     }
 </script>
 
 <main class="min-h-[calc(100vh-200px)] flex items-center justify-center px-4 py-12">
-    <div class="w-full max-w-md">
+    <div class="h-full flex flex-col items-center justify-center p-4">
+    <div class="mb-6">
         <BrandLogo />
-
+    </div>
         <div class="bg-[#141824] border border-white/10 rounded-2xl p-8">
             <h2 class="text-2xl mb-6 text-center text-white">Connexion</h2>
-            
-            <!-- {#if error}
-                <div class="mb-4 p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm">
-                    {error}
-                </div>
-            {/if} -->
 
-            <form on:submit={handleSubmit} class="space-y-6">
-                <div>
-                    <label for="email" class="block text-sm mb-2 text-white/70">
-                        Email
-                    </label>
-                    <input
-                        type="email"
-                        id="email"
-                        bind:value={formData.email}
-                        class="w-full px-4 py-3 bg-[#0a0e1a] border border-white/10 rounded-lg focus:border-[#00d9ff] focus:outline-none transition-colors"
-                        placeholder="votre@email.com"
-                        required
-                        disabled={isLoading}
-                    />
-                </div>
+            <form class="space-y-4" onsubmit={login}>
+                <LabelInput
+                    id="email"
+                    name="email"
+                    label="Email"
+                    type="email"
+                    value={formData.email}
+                    placeholder="votre@email.com"
+                    mandatory={true}
+                    required={true}
+                    on:input={(e) => handleInput("email", e)}
+                />
 
-                <div>
-                    <label for="password" class="block text-sm mb-2 text-white/70">
-                        Mot de passe
-                    </label>
-                    <input
-                        type="password"
-                        id="password"
-                        bind:value={formData.password}
-                        class="w-full px-4 py-3 bg-[#0a0e1a] border border-white/10 rounded-lg focus:border-[#00d9ff] focus:outline-none transition-colors"
-                        placeholder="••••••••"
-                        required
-                        disabled={isLoading}
-                    />
-                </div>
+                <LabelInput
+                    id="password"
+                    name="password"
+                    label="Mot de passe"
+                    type="password"
+                    value={formData.password}
+                    placeholder="Votre mot de passe"
+                    mandatory={true}
+                    required={true}
+                    on:input={(e) => handleInput("password", e)}
+                />
 
                 <button
                     type="submit"
