@@ -83,6 +83,10 @@
                 text="S'inscrire"
                 className="max-w-73 mx-auto block"
             />
+
+            <p class=" mx-auto block">
+                Déjà un compte ?<a href="/connexion"> Se connecter</a>
+            </p>
         </form>
     </div>
 </div>
