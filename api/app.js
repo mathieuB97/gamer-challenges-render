@@ -25,10 +25,12 @@ app.use((req, res, next) => {
 // 3. Import des routeurs
 import authRouteur from './routes/auth.router.js';
 import gameRouter from './routes/game.router.js';
+import challengeRouter from './routes/challenge.router.js';
 
 // 4. BRANCHEMENT DES ROUTES
 app.use(authRouteur);
 app.use(gameRouter);
+app.use(challengeRouter);
 
 // 5. DÉMARRAGE
 const PORT = process.env.PORT || 3000;
