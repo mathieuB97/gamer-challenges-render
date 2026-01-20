@@ -88,14 +88,72 @@
             pseudo: "Pseudo meilleur joueur",
             image: "https://images.unsplash.com/photo-1765430847336-596f709e8b3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
         },
+        {
+            rank: 6,
+            name: "Nom du jeu",
+            pseudo: "Pseudo meilleur joueur",
+            image: "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
+        },
+        {
+            rank: 7,
+            name: "Nom du jeu",
+            pseudo: "Pseudo meilleur joueur",
+            image: "https://images.unsplash.com/photo-1765430847336-596f709e8b3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
+        },
+        {
+            rank: 8,
+            name: "Nom du jeu",
+            pseudo: "Pseudo meilleur joueur",
+            image: "https://images.unsplash.com/photo-1635372730136-06b29022281c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
+        },
+        {
+            rank: 9,
+            name: "Nom du jeu",
+            pseudo: "Pseudo meilleur joueur",
+            image: "https://images.unsplash.com/photo-1759167625075-ee6173d53f8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
+        },
+        {
+            rank: 10,
+            name: "Nom du jeu",
+            pseudo: "Pseudo meilleur joueur",
+            image: "https://images.unsplash.com/photo-1765430847336-596f709e8b3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
+        },
+    ];
+    // !!!!Exemple de données, à remplacer!!!!
+    let ongoingChallenges = 
+    [
+         {
+            id: 20,
+            title: "Nom du jeu",
+            challengeName: "Nom du défi",
+            image: "https://images.unsplash.com/photo-1759167625075-ee6173d53f8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
+            likes: 234,
+            participants: 120,
+        },
+        {
+            id: 2,
+            title: "Nom du jeu",
+            challengeName: "Nom du défi",
+            image: "https://images.unsplash.com/photo-1765430847336-596f709e8b3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+            likes: 234,
+            participants: 120,
+        },
+        {
+            id: 9,
+            title: "Nom du jeu",
+            challengeName: "Nom du défi",
+            image: "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+            likes: 234,
+            participants: 120,
+        },
     ];
 </script>
 
 <div class="flex flex-col md:flex-row gap-8 w-full">
     <!-- Leaderboard -->
-    <div class="w-full md:w-64 bg-[#12172b] rounded-xl p-4 h-fit sticky top-20">
+    <div class="w-full md:w-64 bg-[#12172b] rounded-xl p-4  sticky top-20 h-[498px] overflow-y-scroll" >
         <h2 class="text-xl mb-4">Leaderboard</h2>
-        <div class="space-y-3">
+        <div class="space-y-4 ">
             {#each leaderboardData as player (player.rank)}
                 <div class="relative group cursor-pointer">
                     <!-- rank best player-->
@@ -202,6 +260,40 @@
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {#each newChallenges as challenge (challenge.id)}
+                    <ChallengeCard {...challenge} />
+                {/each}
+            </div>
+        </section>
+
+        <!-- Ongoing Challenges -->
+        <section>
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl">Défis en cours</h2>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                >
+                    <path
+                        d="M5 12H19"
+                        stroke="#00D9FF"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                    <path
+                        d="M12 5L19 12L12 19"
+                        stroke="#00D9FF"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                </svg>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {#each ongoingChallenges as challenge (challenge.id)}
                     <ChallengeCard {...challenge} />
                 {/each}
             </div>
