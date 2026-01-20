@@ -71,6 +71,14 @@ async function seed() {
 			);
 		}
 
+		// =================
+		// ** import des games
+		// =================
+
+		for (let game of games) {
+			// INSERT
+			await Game.create(game)
+		}
 
 		// =================
 		// ** import des challenges
@@ -82,22 +90,19 @@ async function seed() {
 		}
 
 		// =================
-		// ** import des games
-		// =================
-
-		for (let game of games) {
-			// INSERT
-			await Game.create(game)
-		}
-
-		// =================
 		// ** import des contributions
 		// =================
 
 		for (let contribution of contributions) {
-			// INSERT
-			await Contribution.create(contribution)
-		}
+    // On crée un objet propre pour correspondre au modèle Sequelize
+    	await Contribution.create({
+        video_url: contribution.video_url,
+        challenge_id: contribution.challenge_id,
+        user_id: contribution.user_id,
+        // On mappe "duration_minutes" du JSON vers "duration" de la BDD
+        duration: contribution.duration_minutes 
+    });
+}
 
 		// =================
 		// ** Liens entre user et contribution

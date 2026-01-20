@@ -15,13 +15,12 @@
 | Méthode | Route                     | Description                                      | Auth ? | Paramètres / Query                       | Priorité |
 |---------|---------------------------|--------------------------------------------------|--------|------------------------------------------|----------|
 | GET     | `/games`                  | Liste de tous les jeux                           | Non    | `?search=...&category=...&limit=20&page=1` | ★★★★★   |
-| GET     | `/games/:gameId`          | Détails d’un jeu spécifique                      | Non    | —                                        | ★★★★★   |
+| GET     | `/games/:gameId`          | Détails d’un jeu spécifique ainsi que ses challenges associés                      | Non    | —                                        | ★★★★★   |
 
 ## 3. Challenges
 
 | Méthode | Route                                      | Description                                            | Auth ? | Corps / Paramètres                       | Priorité |
-|---------|--------------------------------------------|--------------------------------------------------------|--------|------------------------------------------|----------|
-| GET     | `/games/:gameId/challenges`                | Liste de tous les challenges d’un jeu                  | Non    | `?level=...&sort=votes&page=1`           | ★★★★★   |
+|---------|--------------------------------------------|--------------------------------------------------------|--------|------------------------------------------|----------||
 | GET     | `/challenges/:challengeId`                 | Détails complet d’un challenge (règles, stats…)        | Non    | —                                        | ★★★★★   |
 | POST    | `/challenges`                              | Créer un nouveau challenge                             | Oui    | `{ gameId, name, description, rules, level, time_limit? }` | ★★★★    |
 

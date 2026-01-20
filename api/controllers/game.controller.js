@@ -1,4 +1,4 @@
-import { Game, Challenge } from '../models/index.js';
+import { Game, Challenge, User } from '../models/index.js';
 import BaseController from './base.controller.js';
 
 class GameController extends BaseController {
@@ -6,33 +6,15 @@ class GameController extends BaseController {
         super(Game, 'Game');
     }
 
-    // On surcharge getRequestOptions pour permettre le filtrage (MVP)
-    // Route: GET /games?search=...
+    // Cette méthode permets de customiser ce que l'on veut récupérer(notamment les jointures entre games et challenges)
     getRequestOptions(req) {
-        const options = [];
-        // Tu pourras ajouter ici la logique de filtrage par nom ou catégorie
-        // en utilisant Op.like de Sequelize si besoin.
-        
-        // Inclusion par défaut pour les détails d'un jeu si demandé
-        if (req.query.include === 'challenges') {
-            options.push({ model: Challenge, as: 'challenges' });
-        }
-        return options;
-    }
 
-    // Méthode pour la route : GET /games/:gameId/challenges
-    getChallengesByGameId = async (req, res, next) => {
-        try {
-            const { gameId } = req.params;
-            const challenges = await Challenge.findAll({
-                where: { game_id: gameId },
-                // On peut inclure l'auteur par défaut pour l'affichage
-                include: ['author'] 
-            });
-            res.sendResponse(challenges);
-        } catch (error) {
-            next(error);
+        // Si on demande explicitement l'inclusion des challenges
+        if (req.query.include === 'challenges') {
+            return [{ model: Challenge, as: 'challenges' }];
         }
+        // Cette méthode permets de renvoyer la liste des challenges associés à un jeu. On renvoie null si on ne veut pas de jointure (si pas de challenges associés à un jeux alors les jeux s'affichent quand même)
+        return null;
     }
 }
 

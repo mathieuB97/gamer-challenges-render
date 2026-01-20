@@ -8,10 +8,10 @@ services:
       POSTGRES_USER: gamer
       POSTGRES_PASSWORD: gamer
       POSTGRES_DB: gamer
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   # 2. Backend (API)
   api:

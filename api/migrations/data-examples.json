@@ -53,68 +53,80 @@
       "description": "Finir le Royaume des Cascades le plus rapidement possible.",
       "rules": "Le temps s'arrête à la collecte de la lune principale.",
       "level": "medium",
-      "time limit" : "120 minutes"
+      "time_limit_minutes" : 120,
+      "game_id": 1,
+      "user_id": 1
+    
     },
     {
-      "num_challenge": 2,
       "name": "Pentakill Challenge",
       "description": "Réaliser un Pentakill en partie classée.",
       "rules": "Preuve vidéo obligatoire du tableau des scores.",
       "level": "hard",
-      "time limit" : "60 minutes"
-    },
+      "time_limit_minutes" : 60,
+      "game_id": 2,
+      "user_id": 2
+  
+      },
     {
-      "num_challenge": 3,
       "name": "No Damage Boss",
       "description": "Vaincre le premier boss sans perdre un seul point de vie.",
       "rules": "Toute barre de vie entamée annule le défi.",
       "level": "easy",
-      "time limit" : "90 minutes"
+      "time_limit_minutes" : 90,
+      "game_id": 3,
+      "user_id": 3
     }
   ],
 
   "contributions": [
     {
-      "duration": 450,
-      "video_url": "https://youtube.com/watch?v=mario_run"
+      "duration_minutes": 180,
+      "video_url": "https://youtube.com/watch?v=mario_run",
+      "challenge_id": 1,
+      "user_id": 2
     },
     {
-      "duration": 1200,
-      "video_url": "https://twitch.tv/clip/lol_pentakill"
+      "duration_minutes": 120,
+      "video_url": "https://twitch.tv/clip/lol_pentakill",
+      "challenge_id": 2,
+      "user_id": 3
     },
     {
-      "duration": 300,
-      "video_url": "https://youtube.com/watch?v=elden_perfect"
+      "duration_minutes": 300,
+      "video_url": "https://youtube.com/watch?v=elden_perfect",
+      "challenge_id": 3,  
+      "user_id": 1
     }
   ],
 
   "user_contribution": [
     {
       "user_id": 1,
-      "contribution_id": "1"
+      "contribution_id": 1
     },
     {
       "user_id": 2,
-      "contribution_id": "2"
+      "contribution_id": 2
     },
     {
       "user_id": 3,
-      "contribution_id": "3"
+      "contribution_id": 3
     }
   ],
 
   "user_challenge": [
     {
       "challenge_id": 1,
-      "user_id": "1"
+      "user_id": 1
     },
     {
       "challenge_id": 2,
-      "user_id": "2"
+      "user_id": 2
     },
     {
       "challenge_id": 3,
-      "user_id": "3"
+      "user_id": 3
     }
   ]
 }
