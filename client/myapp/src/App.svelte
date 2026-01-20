@@ -10,7 +10,7 @@
 >
 	<Header />
 
-	<main class="flex-1 pt-[16px] pb-[72px]">
+	<main class="flex-1 pt-[16px] pb-[72px] px-2">
 		<svelte:component this={$currentComponent} {...$params} />
 	</main>
 

@@ -50,22 +50,13 @@ h1 {
 
 
 :root {
-  scrollbar-width: thin;            
-  scrollbar-color: #4a1e78 #0a0e1a;
+	scrollbar-color: #4a1e78 #12172b;
 }
 
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
 ::-webkit-scrollbar-track {
-  background: #0a0e1a;
+	background: #12172b;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #4a1e78, #00d9ff);
-  border-radius: 8px;
-  border: 2px solid #0a0e1a;
-}
-::-webkit-scrollbar-thumb:hover {
-  filter: brightness(1.1);
+	background: linear-gradient(180deg, #4a1e78, #00d9ff);
 }

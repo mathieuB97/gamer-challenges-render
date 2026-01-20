@@ -120,9 +120,8 @@
         },
     ];
     // !!!!Exemple de données, à remplacer!!!!
-    let ongoingChallenges = 
-    [
-         {
+    let ongoingChallenges = [
+        {
             id: 20,
             title: "Nom du jeu",
             challengeName: "Nom du défi",
@@ -151,43 +150,47 @@
 
 <div class="flex flex-col md:flex-row gap-8 w-full">
     <!-- Leaderboard -->
-    <div class="w-full md:w-64 bg-[#12172b] rounded-xl p-4  sticky top-20 h-[498px] overflow-y-scroll" >
-        <h2 class="text-xl mb-4">Leaderboard</h2>
-        <div class="space-y-4 ">
-            {#each leaderboardData as player (player.rank)}
-                <div class="relative group cursor-pointer">
-                    <!-- rank best player-->
-                    <div
-                        class="absolute -top-2 -left-2 w-8 h-8 rounded-lg flex items-center justify-center z-10
-								{player.rank === 1
-                            ? 'bg-gradient-to-br from-yellow-400 to-yellow-600'
-                            : player.rank === 2
-                              ? 'bg-gradient-to-br from-gray-300 to-gray-500'
-                              : player.rank === 3
-                                ? 'bg-gradient-to-br from-amber-600 to-amber-800'
-                                : 'bg-gradient-to-br from-[#1a2139] to-[#12172b]'}"
-                    >
-                        <span class="font-bold">{player.rank}</span>
-                    </div>
-                    <!-- Card -->
-                    <div class="relative overflow-hidden rounded-lg">
-                        <img
-                            src={player.image}
-                            alt={player.name}
-                            class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"
-                        />
+    <div
+        class="w-full md:w-64 bg-[#12172b] rounded-xl sticky top-20 h-[530px] overflow-hidden py-4"
+    >
+        <div class="h-full overflow-y-auto px-4 py-4 scrollbar-thumb-gray-600">
+            <h2 class="text-xl mb-4">Leaderboard</h2>
+            <div class="space-y-4">
+                {#each leaderboardData as player (player.rank)}
+                    <div class="relative group cursor-pointer">
+                        <!-- rank best player-->
                         <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"
-                        ></div>
-                        <div class="absolute bottom-2 left-2 right-2">
-                            <p class="text-sm mb-0.5">{player.name}</p>
-                            <p class="text-xs text-[#00d9ff] italic">
-                                {player.pseudo}
-                            </p>
+                            class="absolute -top-2 -left-2 w-8 h-8 rounded-lg flex items-center justify-center z-10
+								{player.rank === 1
+                                ? 'bg-gradient-to-br from-yellow-400 to-yellow-600'
+                                : player.rank === 2
+                                  ? 'bg-gradient-to-br from-gray-300 to-gray-500'
+                                  : player.rank === 3
+                                    ? 'bg-gradient-to-br from-amber-600 to-amber-800'
+                                    : 'bg-gradient-to-br from-[#1a2139] to-[#12172b]'}"
+                        >
+                            <span class="font-bold">{player.rank}</span>
+                        </div>
+                        <!-- Card -->
+                        <div class="relative overflow-hidden rounded-lg">
+                            <img
+                                src={player.image}
+                                alt={player.name}
+                                class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"
+                            />
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"
+                            ></div>
+                            <div class="absolute bottom-2 left-2 right-2">
+                                <p class="text-sm mb-0.5">{player.name}</p>
+                                <p class="text-xs text-[#00d9ff] italic">
+                                    {player.pseudo}
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {/each}
+                {/each}
+            </div>
         </div>
     </div>
 
