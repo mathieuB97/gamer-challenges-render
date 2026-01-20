@@ -36,14 +36,14 @@
       <!-- Actions -->
       <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
         <a
-          href="/signup"
+          href="/inscription"
           class="hidden sm:block px-4 sm:px-6 py-2 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff] hover:opacity-90 transition-opacity text-sm sm:text-base whitespace-nowrap"
         >
           Inscription
         </a>
 
         <a
-          href="/login"
+          href="/connexion"
           class="px-3 sm:px-4 py-2 rounded-lg border border-[#00d9ff] text-[#00d9ff] hover:bg-[#00d9ff] hover:text-white transition-colors text-sm sm:text-base whitespace-nowrap"
         >
           Connexion
@@ -69,10 +69,17 @@
         </a>
 
         <a
-          href="/signup"
+          href="/inscription"
           class="block w-full px-4 py-2 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff] hover:opacity-90 transition-opacity text-center sm:hidden"
         >
           Inscription
+        </a>
+
+        <a
+          href="/connexion"
+          class="px-3 sm:px-4 py-2 rounded-lg border border-[#00d9ff] text-[#00d9ff] hover:bg-[#00d9ff] hover:text-white transition-colors text-sm sm:text-base whitespace-nowrap"
+        >
+          Connexion
         </a>
       </nav>
     {/if}
