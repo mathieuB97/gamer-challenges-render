@@ -3,6 +3,7 @@
     import ButtonSubmit from "../components/ButtonSubmit.svelte";
     import BrandLogo from "../components/Brand-logo.svelte";
     import { registerUser } from "../lib/services/auth.service";
+    import page from "page";
 
     let formData = {
         pseudo: "",
@@ -11,6 +12,8 @@
     };
 
     async function register(e) {
+        e.preventDefault();
+
         const formData = new FormData(e.target);
         const pseudo = formData.get("pseudo");
         const email = formData.get("email");
@@ -18,6 +21,8 @@
         try {
             // Call your API to register the user
             await registerUser({ pseudo, email, password });
+            // Redirect to login page after successful registration
+            page("/connexion");
         } catch (e) {
             // form.error = "Une erreur est survenue lors de l'inscription.";
             throw new Error("Une erreur est survenue lors de l'inscription.");
