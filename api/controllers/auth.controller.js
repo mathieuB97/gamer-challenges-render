@@ -82,7 +82,7 @@ class AuthController {
       // Générer un token JWT avec l'id de l'utilisateur
       // process.env.JWT_SECRET doit contenir ta clé secrète
       const token = jwt.sign(
-        { user_Id: userFromBDD.id },
+        { user_id: userFromBDD.id },
         process.env.JWT_SECRET,
         { expiresIn: "24h" }, // le token expire dans 24 heures
       );
@@ -107,10 +107,10 @@ class AuthController {
       // Chercher un utilisateur par son ID avec son role
       // WHERE id = <userId>
       const user = await User.findByPk(userId, {
-        // je veux uniquement les colonnes id et username de la table User
+        // je veux uniquement les colonnes id et pseudo de la table User
         // Pas la colonne password
-        // SELECT id, username
-        attributes: ["id", "username"],
+        // SELECT id, pseudo
+        attributes: ["id", "pseudo"],
         // inlude => ajoute les données d'une autre table
         // JOINTURE INNER JOIN
         include: {
