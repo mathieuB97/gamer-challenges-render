@@ -12,7 +12,7 @@ export function validateUser(req, res, next) {
 	const userSchema = Joi.object({
 		pseudo: Joi.string().alphanum().min(3).max(30),
 		email: Joi.string().email(),
-		password: Joi.string().min(10).max(30).required(),
+		password: Joi.string().min(1).max(30).required(),
 	}).xor('pseudo', 'email');
 	// impose que exactement un des deux champs [pseudo, email] soit présent
 
