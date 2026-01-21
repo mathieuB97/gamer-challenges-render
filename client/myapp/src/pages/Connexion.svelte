@@ -1,33 +1,28 @@
 <script>
-    import { onMount } from "svelte";
     import BrandLogo from "../components/Brand-logo.svelte";
     import LabelInput from "../components/LabelInput.svelte";
-
-    onMount(async () => {
-        try {
-            const response = await fetch("http://api:3000/api/auth/login");
-            if (!response.ok) throw new Error("Erreur lors du chargement");
-            return await response.json();
-        } catch (error) {
-            console.error("Erreur:", error);
-        } finally {
-            return false;
-        }
-    });
+    import { loginUser } from "../lib/services/auth.service";
 
     const formData = {
         email: "",
         password: ""
     };
 
-    const isLoading = false;
+    let isLoading = false;
 
-    function login(e) {
-        const formDataObj = new FormData(e.target);
-        const data = Object.fromEntries(formDataObj);
-        alert(JSON.stringify(data));
+    async function login(e) {
+        const formData = new FormData(e.target);
+        const email = formData.get("email");
+        const password = formData.get("password");
+        try {
+            // Call your API to register the user
+            await loginUser({email, password });
+            console.log("Utilisateur connecté :",email, password);
+        } catch (e) {
+            // form.error = "Une erreur est survenue lors de l'inscription.";
+            throw new Error("Une erreur est survenue lors de l'inscription.");
+        }
     }
-
     function handleInput(field, event) {
         formData[field] = event.target.value;
     }

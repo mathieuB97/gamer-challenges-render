@@ -1,7 +1,6 @@
 <script>
     import LabelInput from "../components/LabelInput.svelte";
     import ButtonSubmit from "../components/ButtonSubmit.svelte";
-    import { onMount } from "svelte";
     import BrandLogo from "../components/Brand-logo.svelte";
     import { registerUser } from "../lib/services/auth.service";
 
