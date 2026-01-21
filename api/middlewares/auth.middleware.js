@@ -29,6 +29,18 @@ export function validateUser(req, res, next) {
 	next();
 }
 
+export function validateRegister(req, res, next) {
+	const schema = Joi.object({
+		pseudo: Joi.string().alphanum().min(3).max(30).required(),
+		email: Joi.string().email().required(),
+		password: Joi.string().min(1).max(30).required(),
+	});
+
+	const { error } = schema.validate(req.body);
+	if (error) throw new HttpError("données d'inscription invalides", 400);
+	next();
+}
+
 export async function validateToken(req, res, next) {
 
 	// 1. chercher le token qui est dans l'entête HTTP de la requete
