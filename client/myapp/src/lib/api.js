@@ -1,46 +1,40 @@
-const API_BASE_URL = 'http://api:3000/api';
+import ApiError from "./utils/ApiError";
 
-export async function getGames() {
-    const response = await fetch(`${API_BASE_URL}/games`);
-    if (!response.ok) throw new Error('Erreur lors du chargement des jeux');
-    return response.json();
-}
+export default async function api(endpoint, method = "GET", body = undefined) {
+    const headers = { "Content-Type": "application/json" };
+    const token = localStorage.getItem("token");
+    // N'ajoute pas Authorization pour les endpoints d'auth
+    if (token && !endpoint.startsWith("/auth")) {
+        headers.Authorization = `Bearer ${token}`;
+    }
 
-export async function getGame(id) {
-    const response = await fetch(`${API_BASE_URL}/games/${id}`);
-    if (!response.ok) throw new Error('Jeu non trouvé');
-    return response.json();
-}
+    const options = { method, headers };
+    if (method !== "GET" && body !== undefined) {
+        options.body = JSON.stringify(body);
+    }
 
-export async function getChallenges(gameId = null) {
-    const url = gameId ? `${API_BASE_URL}/challenges?gameId=${gameId}` : `${API_BASE_URL}/challenges`;
-    const response = await fetch(url);
-    if (!response.ok) throw new Error('Erreur lors du chargement des défis');
-    return response.json();
-}
+    const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, options);
 
-export async function getChallenge(id) {
-    const response = await fetch(`${API_BASE_URL}/challenges/${id}`);
-    if (!response.ok) throw new Error('Défi non trouvé');
-    return response.json();
-}
+    // Pour DELETE (204 No Content), pas de body JSON
+    if (response.status === 204) {
+        return null;
+    }
+    // IMPORTANT : Extraire le JSON AVANT de throw
+    const data = await response.json();
 
-export async function login(email, password) {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-    });
-    if (!response.ok) throw new Error('Erreur de connexion');
-    return response.json();
-}
+    if (!response.ok) {
+        const error = new ApiError(data.message || `HTTP error ${response.status}`, data);
 
-export async function register(userData) {
-    const response = await fetch(`${API_BASE_URL}/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData)
-    });
-    if (!response.ok) throw new Error('Erreur lors de l\'inscription');
-    return response.json();
+        // Déconnexion automatique sur 401 (token expiré)
+        if (response.status === 401) {
+            throw new ApiError("Unauthorized");
+            // clearAuth(); // ← authStore.token = null → UI se met à jour instantanément
+        }
+
+        error.status = response.status
+        error.data = data
+        throw error;
+    }
+
+    return data;
 }
