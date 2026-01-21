@@ -3,28 +3,26 @@
     import ButtonSubmit from "../components/ButtonSubmit.svelte";
     import { onMount } from "svelte";
     import BrandLogo from "../components/Brand-logo.svelte";
+    import { registerUser } from "../lib/services/auth.service";
 
-    onMount(async () => {
-        try {
-            const response = await fetch("http://api:3000/api/auth/register");
-            if (!response.ok) throw new Error("Erreur lors du chargement");
-            return await response.json();
-        } catch (error) {
-            console.error("Erreur:", error);
-        } finally {
-            return false;
-        }
-    });
     let formData = {
         pseudo: "",
         email: "",
         password: "",
     };
 
-    function register(e) {
-        const formDataObj = new FormData(e.target);
-        const data = Object.fromEntries(formDataObj);
-        alert(JSON.stringify(data));
+    async function register(e) {
+        const formData = new FormData(e.target);
+        const pseudo = formData.get("pseudo");
+        const email = formData.get("email");
+        const password = formData.get("password");
+        try {
+            // Call your API to register the user
+            await registerUser({ pseudo, email, password });
+        } catch (e) {
+            // form.error = "Une erreur est survenue lors de l'inscription.";
+            throw new Error("Une erreur est survenue lors de l'inscription.");
+        }
     }
 
     function handleInput(field, event) {
