@@ -2,6 +2,7 @@
     import BrandLogo from "../components/Brand-logo.svelte";
     import LabelInput from "../components/LabelInput.svelte";
     import { loginUser } from "../lib/services/auth.service";
+    import page from "page";
 
     const formData = {
         emailOrPseudo: "",
@@ -11,6 +12,7 @@
     let isLoading = false;
 
     async function login(e) {
+        e.preventDefault();
         const formData = new FormData(e.target);
         const emailOrPseudo = formData.get("emailOrPseudo");
         const password = formData.get("password");
@@ -18,6 +20,7 @@
             // Call your API to register the user
             await loginUser({ emailOrPseudo, password });
             console.log("Utilisateur connecté :", emailOrPseudo, password);
+            page("/");
         } catch (e) {
             // form.error = "Une erreur est survenue lors de l'inscription.";
             throw new Error("Une erreur est survenue lors de l'inscription.");
