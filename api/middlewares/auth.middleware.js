@@ -11,7 +11,8 @@ export function validateUser(req, res, next) {
 	// Schema du JSON attendu
 	const userSchema = Joi.object({
 		pseudo: Joi.string().alphanum().min(3).max(30).required(),
-		password: Joi.string().min(10).max(30).required()
+		password: Joi.string().min(10).max(30).required(),
+		email: Joi.string().email().required(),
 	})
 
 	const validation = userSchema.validate(req.body)
