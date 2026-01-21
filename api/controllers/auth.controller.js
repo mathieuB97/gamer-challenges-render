@@ -59,13 +59,14 @@ class AuthController {
 
   login = async (req, res, next) => {
     try {
-      // récupérer le body de la requete
+      // récupérer le body de la requête
       const dataJson = req.body;
 
-      // chercher l'utilisateur dans la BDD via son pseudo
-      const userFromBDD = await User.findOne({
-        where: { pseudo: dataJson.pseudo },
-      });
+      // chercher l'utilisateur dans la BDD via OU son pseudo OU son email
+      const where = dataJson.pseudo
+        ? { pseudo: dataJson.pseudo }
+        : { email: dataJson.email };
+      const userFromBDD = await User.findOne({ where: where });
 
       if (!userFromBDD) {
         // result est null, le pseudo n'existe pas
