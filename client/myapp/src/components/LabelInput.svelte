@@ -15,15 +15,26 @@
         <span class="text-red-500">*</span>
     {/if}
 </label>
-<input
-    {type}
-    {id}
-    {name}
-    {value}
-    {placeholder}
-    {required}
-    class="w-full px-4 py-3 bg-[#0a0e1a] border border-white/20 rounded-xs focus:border-[#00d9ff] focus:outline-none transition-colors"
-/>
+{#if type === "text-area"}
+    <textarea
+        {id}
+        {name}
+        bind:value
+        {placeholder}
+        {required}
+        class="w-full px-4 py-3 bg-[#0a0e1a] border border-white/20 rounded-xs focus:border-[#00d9ff] focus:outline-none transition-colors h-32 resize-none"
+    ></textarea>
+{:else}
+    <input
+        {type}
+        {id}
+        {name}
+        {value}
+        {placeholder}
+        {required}
+        class="w-full px-4 py-3 bg-[#0a0e1a] border border-white/20 rounded-xs focus:border-[#00d9ff] focus:outline-none transition-colors"
+    />
+{/if}
 
 <style>
 </style>
