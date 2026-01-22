@@ -8,6 +8,7 @@ import About from './pages/About.svelte';
 import NotFound from './pages/NotFound.svelte';
 import Connexion from './pages/Connexion.svelte';
 import Register from './pages/Register.svelte';
+import ChallengeLists from './pages/ChallengeLists.svelte';
 import CreateChallenge from './pages/CreateChallenge.svelte';
 
 
@@ -50,6 +51,13 @@ page('/inscription', () => {
     currentComponent.set(Register);
     params.set({});
 });
+
+page('/liste-challenges', () => {
+  console.log("ROUTE /liste-challenges OK");
+  currentComponent.set(ChallengeLists);
+  params.set({});
+});
+
 
 page('/creation-challenge', () => {
     currentComponent.set(CreateChallenge);
