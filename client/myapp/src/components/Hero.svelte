@@ -4,12 +4,15 @@
         highlight: "accrocheur ici",
     };
     export let paragraph = "Ajouter un paragraphe descriptif ici";
+    export let className = "";
 </script>
 
-<div class="hero w-full relative h-64 md:h-80 rounded-2xl overflow-hidden mb-8">
+<div
+    class="hero w-full relative h-64 md:h-80 rounded-2xl overflow-hidden {className}"
+>
     <img
         src="https://images.unsplash.com/photo-1611138290962-2c550ffd4002?w=600"
-        alt="Bandeau illustrant la création d’un défi"
+        alt="Bandeau illustrant la création d'un défi"
         class="w-full h-full object-cover"
     />
     <div
@@ -23,6 +26,3 @@
         <p class="text-white/70">{paragraph}</p>
     </div>
 </div>
-
-<style>
-</style>
