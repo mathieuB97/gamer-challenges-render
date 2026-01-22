@@ -10,6 +10,7 @@ import Connexion from './pages/Connexion.svelte';
 import Register from './pages/Register.svelte';
 import ChallengeLists from './pages/ChallengeLists.svelte';
 import CreateChallenge from './pages/CreateChallenge.svelte';
+import DetailsChallenge from './pages/DetailsChallenge.svelte';
 
 
 // Store pour le composant courant et les paramètres
@@ -53,7 +54,6 @@ page('/inscription', () => {
 });
 
 page('/liste-challenges', () => {
-  console.log("ROUTE /liste-challenges OK");
   currentComponent.set(ChallengeLists);
   params.set({});
 });
@@ -62,6 +62,11 @@ page('/liste-challenges', () => {
 page('/creation-challenge', () => {
     currentComponent.set(CreateChallenge);
     params.set({});
+});
+
+page('/details-challenge/:id', (ctx) => {
+  currentComponent.set(DetailsChallenge);
+  params.set({ challengeId: ctx.params.id });
 });
 // Catch-all pour les routes non trouvées
 page('*', () => {
