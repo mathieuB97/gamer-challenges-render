@@ -3,6 +3,13 @@
 	import { currentComponent, params } from "./router.js";
 	import Header from "./components/Header.svelte";
 	import Footer from "./components/Footer.svelte";
+	import { onMount } from "svelte";
+	import { getAuth } from "./lib/stores/auth.svelte";
+
+	onMount(() => {
+		// Récupère l'auth depuis localStorage au démarrage
+		getAuth();
+	});
 </script>
 
 <div
