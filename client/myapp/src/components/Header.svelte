@@ -1,8 +1,8 @@
 <script>
   import BrandLogo from "./Brand-logo.svelte";
+  import { authStore, clearAuth } from "../lib/stores/auth.svelte";
 
   let mobileMenuOpen = false;
-  function onNavigate(page) {}
 </script>
 
 <header
@@ -34,20 +34,29 @@
       </nav>
 
       <!-- Actions -->
-      <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-        <a
-          href="/inscription"
-          class="hidden sm:block px-4 sm:px-6 py-2 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff] hover:opacity-90 transition-opacity text-sm sm:text-base whitespace-nowrap"
-        >
-          Inscription
-        </a>
-
-        <a
-          href="/connexion"
-          class="px-3 sm:px-4 py-2 rounded-lg border border-[#00d9ff] text-[#00d9ff] hover:bg-[#00d9ff] hover:text-white transition-colors text-sm sm:text-base whitespace-nowrap"
-        >
-          Connexion
-        </a>
+      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+        {#if authStore.token}
+          <a
+            href="/deconnexion"
+            on:click={clearAuth}
+            class="px-3 sm:px-4 py-2 rounded-lg border border-[#00d9ff] text-[#00d9ff] hover:bg-[#00d9ff] hover:text-white transition-colors text-sm sm:text-base whitespace-nowrap"
+          >
+            Déconnexion
+          </a>
+        {:else}
+          <a
+            href="/inscription"
+            class="hidden sm:block px-4 sm:px-6 py-2 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff] hover:opacity-90 transition-opacity text-sm sm:text-base whitespace-nowrap"
+          >
+            Inscription
+          </a>
+          <a
+            href="/connexion"
+            class="px-3 sm:px-4 py-2 rounded-lg border border-[#00d9ff] text-[#00d9ff] hover:bg-[#00d9ff] hover:text-white transition-colors text-sm sm:text-base whitespace-nowrap"
+          >
+            Connexion
+          </a>
+        {/if}
       </div>
     </div>
 
@@ -55,7 +64,7 @@
     {#if mobileMenuOpen}
       <nav class="md:hidden mt-4 pb-4 border-t border-white/10 pt-4 space-y-3">
         <a
-          href="/games"
+          href="/jeux"
           class="block w-full text-left text-foreground hover:text-[#00d9ff] transition-colors py-2"
         >
           Jeux
@@ -68,19 +77,28 @@
           À propos
         </a>
 
-        <a
-          href="/inscription"
-          class="block w-full px-4 py-2 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff] hover:opacity-90 transition-opacity text-center sm:hidden"
-        >
-          Inscription
-        </a>
-
-        <a
-          href="/connexion"
-          class="px-3 sm:px-4 py-2 rounded-lg border border-[#00d9ff] text-[#00d9ff] hover:bg-[#00d9ff] hover:text-white transition-colors text-sm sm:text-base whitespace-nowrap"
-        >
-          Connexion
-        </a>
+        {#if authStore.token}
+          <a
+            href="/deconnexion"
+            on:click|preventDefault={clearAuth}
+            class="block w-full px-3 py-2 rounded-lg border border-[#00d9ff] text-[#00d9ff] hover:bg-[#00d9ff] hover:text-white transition-colors text-center sm:hidden"
+          >
+            Déconnexion
+          </a>
+        {:else}
+          <a
+            href="/inscription"
+            class="block w-full px-4 py-2 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff] hover:opacity-90 transition-opacity text-center sm:hidden"
+          >
+            Inscription
+          </a>
+          <a
+            href="/connexion"
+            class="block w-full px-3 py-2 rounded-lg border border-[#00d9ff] text-[#00d9ff] hover:bg-[#00d9ff] hover:text-white transition-colors text-center sm:hidden"
+          >
+            Connexion
+          </a>
+        {/if}
       </nav>
     {/if}
   </div>
