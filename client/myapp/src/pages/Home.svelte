@@ -1,5 +1,20 @@
 <script>
     import ChallengeCard from "../components/ChallengeCard.svelte";
+    import { Carousel, ControlButton, Alert } from "flowbite-svelte";
+
+    // Fonction pour diviser un tableau en chunks
+    const chunkArray = (array, size) => {
+        const chunks = [];
+        for (let i = 0; i < array.length; i += size) {
+            chunks.push(array.slice(i, i + size));
+        }
+        return chunks;
+    };
+
+    // Variables pour tracker l'index de chaque carrousel
+    let topChallengesIndex = $state(0);
+    let newChallengesIndex = $state(0);
+    let ongoingChallengesIndex = $state(0);
 
     // !!!!Exemple de données, à remplacer!!!!
     let topChallenges = [
@@ -27,6 +42,15 @@
             likes: 234,
             participants: 120,
         },
+        {
+            id: 7,
+            title: "Nom du jeu",
+            challengeName: "Nom du défi",
+            image: "https://images.unsplash.com/photo-1760604359369-45675611f750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+            likes: 234,
+            participants: 120,
+        },
+        
     ];
 
     // !!!!Exemple de données, à remplacer!!!!
@@ -146,6 +170,11 @@
             participants: 120,
         },
     ];
+
+    // Diviser les challenges en groupes de 3
+    let topChallengesChunked = chunkArray(topChallenges, 3);
+    let newChallengesChunked = chunkArray(newChallenges, 3);
+    let ongoingChallengesChunked = chunkArray(ongoingChallenges, 3);
 </script>
 
 <div class="flex flex-col md:flex-row gap-8 w-full">
@@ -196,113 +225,100 @@
 
     <!-- Challenges Section -->
     <div class="flex-1 space-y-8">
-        <!-- Top Challenges -->
+        <!-- Top Challenges Carousel -->
         <section>
-            <div class="flex items-center justify-between mb-6">
+            <div class="mb-6">
                 <h2 class="text-2xl">Top Challenges</h2>
-                <span
-                    ><svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                    >
-                        <path
-                            d="M5 12H19"
-                            stroke="#00D9FF"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        />
-                        <path
-                            d="M12 5L19 12L12 19"
-                            stroke="#00D9FF"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        />
-                    </svg></span
-                >
             </div>
-            <div
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto"
-            >
-                {#each topChallenges as challenge (challenge.id)}
-                    <ChallengeCard {...challenge} />
-                {/each}
+            <div class="max-w-6xl">
+                <Carousel images={topChallengesChunked} duration={0} bind:index={topChallengesIndex}>
+                    {#snippet slide({ index })}
+                        <div class="grid grid-cols-3 gap-4 w-full p-4">
+                            {#each topChallengesChunked[index] as challenge (challenge.id)}
+                                <ChallengeCard {...challenge} />
+                            {/each}
+                        </div>
+                    {/snippet}
+                    {#if topChallengesChunked.length > 1}
+                        <div class="flex gap-4 justify-center mt-4">
+                            {#if topChallengesIndex > 0}
+                                <ControlButton name="Previous" forward={false} onclick={() => topChallengesIndex--} />
+                            {:else}
+                                <div class="w-10"></div>
+                            {/if}
+                            {#if topChallengesIndex < topChallengesChunked.length - 1}
+                                <ControlButton name="Next" forward={true} onclick={() => topChallengesIndex++} />
+                            {:else}
+                                <div class="w-10"></div>
+                            {/if}
+                        </div>
+                    {/if}
+                </Carousel>
             </div>
         </section>
 
-        <!-- New Challenges -->
+        <!-- New Challenges Carousel -->
         <section>
-            <div class="flex items-center justify-between mb-6">
+            <div class="mb-6">
                 <h2 class="text-2xl">Nouveaux challenges</h2>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                >
-                    <path
-                        d="M5 12H19"
-                        stroke="#00D9FF"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                    <path
-                        d="M12 5L19 12L12 19"
-                        stroke="#00D9FF"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                </svg>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {#each newChallenges as challenge (challenge.id)}
-                    <ChallengeCard {...challenge} />
-                {/each}
+            <div class="max-w-6xl">
+                <Carousel images={newChallengesChunked} duration={0} bind:index={newChallengesIndex}>
+                    {#snippet slide({ index })}
+                        <div class="grid grid-cols-3 gap-4 w-full p-4">
+                            {#each newChallengesChunked[index] as challenge (challenge.id)}
+                                <ChallengeCard {...challenge} />
+                            {/each}
+                        </div>
+                    {/snippet}
+                    {#if newChallengesChunked.length > 1}
+                        <div class="flex gap-4 justify-center mt-4">
+                            {#if newChallengesIndex > 0}
+                                <ControlButton name="Previous" forward={false} onclick={() => newChallengesIndex--} />
+                            {:else}
+                                <div class="w-10"></div>
+                            {/if}
+                            {#if newChallengesIndex < newChallengesChunked.length - 1}
+                                <ControlButton name="Next" forward={true} onclick={() => newChallengesIndex++} />
+                            {:else}
+                                <div class="w-10"></div>
+                            {/if}
+                        </div>
+                    {/if}
+                </Carousel>
             </div>
         </section>
 
-        <!-- Ongoing Challenges -->
+        <!-- Ongoing Challenges Carousel -->
         <section>
-            <div class="flex items-center justify-between mb-6">
+            <div class="mb-6">
                 <h2 class="text-2xl">Défis en cours</h2>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                >
-                    <path
-                        d="M5 12H19"
-                        stroke="#00D9FF"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                    <path
-                        d="M12 5L19 12L12 19"
-                        stroke="#00D9FF"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                </svg>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {#each ongoingChallenges as challenge (challenge.id)}
-                    <ChallengeCard {...challenge} />
-                {/each}
+            <div class="max-w-6xl">
+                <Carousel images={ongoingChallengesChunked} duration={0} bind:index={ongoingChallengesIndex}>
+                    {#snippet slide({ index })}
+                        <div class="grid grid-cols-3 gap-4 w-full p-4">
+                            {#each ongoingChallengesChunked[index] as challenge (challenge.id)}
+                                <ChallengeCard {...challenge} />
+                            {/each}
+                        </div>
+                    {/snippet}
+                    {#if ongoingChallengesChunked.length > 1}
+                        <div class="flex gap-4 justify-center mt-4">
+                            {#if ongoingChallengesIndex > 0}
+                                <ControlButton name="Previous" forward={false} onclick={() => ongoingChallengesIndex--} />
+                            {:else}
+                                <div class="w-10"></div>
+                            {/if}
+                            {#if ongoingChallengesIndex < ongoingChallengesChunked.length - 1}
+                                <ControlButton name="Next" forward={true} onclick={() => ongoingChallengesIndex++} />
+                            {:else}
+                                <div class="w-10"></div>
+                            {/if}
+                        </div>
+                    {/if}
+                </Carousel>
             </div>
         </section>
     </div>
 </div>
-
-<style>
-</style>
