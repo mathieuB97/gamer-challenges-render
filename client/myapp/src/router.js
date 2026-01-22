@@ -8,6 +8,7 @@ import About from './pages/About.svelte';
 import NotFound from './pages/NotFound.svelte';
 import Connexion from './pages/Connexion.svelte';
 import Register from './pages/Register.svelte';
+import CreateChallenge from './pages/CreateChallenge.svelte';
 
 
 // Store pour le composant courant et les paramètres
@@ -47,6 +48,11 @@ page('/connexion', () => {
 
 page('/inscription', () => {
     currentComponent.set(Register);
+    params.set({});
+});
+
+page('/creation-challenge', () => {
+    currentComponent.set(CreateChallenge);
     params.set({});
 });
 // Catch-all pour les routes non trouvées
