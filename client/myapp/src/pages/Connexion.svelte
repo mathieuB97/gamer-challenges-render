@@ -3,6 +3,7 @@
     import LabelInput from "../components/LabelInput.svelte";
     import { loginUser } from "../lib/services/auth.service";
     import page from "page";
+    import { setAuth } from "../lib/stores/auth.svelte";
 
     const formData = {
         emailOrPseudo: "",
@@ -19,7 +20,8 @@
         try {
             // Call your API to register the user
             await loginUser({ emailOrPseudo, password });
-            console.log("Utilisateur connecté :", emailOrPseudo, password);
+            const { token } = await loginUser({ emailOrPseudo, password });
+            setAuth(token);
             page("/");
         } catch (e) {
             // form.error = "Une erreur est survenue lors de l'inscription.";
