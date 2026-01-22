@@ -18,6 +18,7 @@
     "vite": "^7.2.4"
   },
   "dependencies": {
+    "flowbite-svelte": "^1.31.0",
     "page": "^1.11.6"
   }
 }
