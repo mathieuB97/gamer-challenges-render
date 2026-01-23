@@ -2,6 +2,16 @@
 
 # GamerChallenges
 
+> toute la documentation liée au projet est située dans le dossier `docs/` à la racine du dépôt.
+```
+docs/
+├─ conception
+├─ endpoint
+├─ gamerChallenge_installation_docker.md
+├─ project_dependencies.md
+└─ tools
+```
+
 ## Présentation Générale
 
 - **Quoi ?** Une plateforme dédiée aux défis de jeux vidéo, permettant aux utilisateurs de proposer et relever des challenges sur différents jeux.
