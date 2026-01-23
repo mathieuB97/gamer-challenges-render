@@ -35,12 +35,19 @@
         <BrandLogo />
       </div>
 
-      <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl text-white">
-        À propos de{" "}
-        <span class="bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff] bg-clip-text text-transparent">
-          GamerChallenges
-        </span>
-      </h1>
+     <h1 class="text-center font-extrabold leading-tight">
+  <span class="block text-white text-2xl">
+    À propos de
+  </span>
+
+  <span
+    class="block bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
+           bg-clip-text text-transparent
+           text-3xl sm:text-4xl md:text-5xl"
+  >
+    GamerChallenges
+  </span>
+</h1> 
 
       <p class="mt-4 max-w-2xl text-sm text-white/70 sm:text-base">
         La plateforme ultime pour défier et repousser vos limites dans vos jeux préférés.
