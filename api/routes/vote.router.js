@@ -1,11 +1,16 @@
 import { Router } from 'express';
 import voteController from '../controllers/vote.controller.js';
+import { validateToken } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
 // Route 1: Récupérer le nombre total de votes sur un challenge
 // GET /votes/challenge/:challengeId
 router.get('/votes/challenge/:challengeId', voteController.getChallengeVoteCount);
+
+// Route POST : Voter pour un challenge (auth obligatoire)
+// POST /votes/challenge/:challengeId
+router.post('/votes/challenge/:challengeId', validateToken, voteController.voteForChallenge);
 
 // Route 2: Récupérer le nombre total de votes sur une contribution (participation)
 // GET /votes/contribution/:contributionId  

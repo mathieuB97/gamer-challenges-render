@@ -3,6 +3,38 @@ import { Sequelize } from 'sequelize';
 
 const voteController = {
 
+    // POST : Ajouter un vote (participation) à un challenge
+    async voteForChallenge(req, res) {
+        try {
+            const { challengeId } = req.params;
+            const userId = req.user_id; // récupéré via le middleware d'auth
+
+            if (!userId) {
+                return res.status(401).json({ error: 'Utilisateur non authentifié' });
+            }
+
+            const user = await User.findByPk(userId);
+            const challenge = await Challenge.findByPk(challengeId);
+
+            if (!user || !challenge) {
+                return res.status(404).json({ error: 'User ou Challenge non trouvé' });
+            }
+
+            // Vérifier si le vote existe déjà
+            const alreadyVoted = await user.hasParticipated_challenge(challenge);
+            if (alreadyVoted) {
+                return res.status(409).json({ error: 'Vote déjà enregistré pour ce challenge' });
+            }
+
+            await user.addParticipated_challenge(challenge);
+
+            res.json({ success: true, message: 'Vote enregistré !' });
+        } catch (error) {
+            console.error('Erreur lors de l’ajout du vote challenge:', error);
+            res.status(500).json({ error: 'Erreur serveur' });
+        }
+    },
+
     // 1. Récupérer le nombre total de votes sur un challenge
     // Les votes = participants dans user_challenge
     async getChallengeVoteCount(req, res) {
