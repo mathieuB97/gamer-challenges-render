@@ -126,22 +126,16 @@
             </button>
 
             <!-- Bouton + Créer un défi -->
-            <a
+           <a
   href={`/jeux/${game.id}/creation-challenge`}
-  class="
-    w-full
-    h-11               /* hauteur fixe mobile */
-    sm:h-12            /* un peu plus grand desktop */
-    rounded-lg
-    bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
-    text-white font-semibold
-    hover:opacity-90 transition-opacity
-    flex items-center justify-center gap-2
-    text-sm sm:text-base
-  "
+  class="w-full py-3 rounded-lg
+         bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
+         text-white font-semibold
+         hover:opacity-90 transition-opacity
+         inline-flex items-center justify-center gap-2"
 >
-  <IconAdd class="w-4 h-4 sm:w-5 sm:h-5" />
-  <span>Créer un défi</span>
+  <IconAdd size={16} className="flex-shrink-0" />
+  <span class="leading-none">Créer un défi</span>
 </a>
           </div>
         </div>
