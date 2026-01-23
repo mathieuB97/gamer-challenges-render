@@ -1,7 +1,13 @@
 <script>
     import ChallengeCard from "../components/ChallengeCard.svelte";
-    import { Carousel, ControlButton, Alert } from "flowbite-svelte";
-    import {topChallenges, newChallenges, ongoingChallenges, leaderboardData} from "../mock/data.js";
+    import IconArrowLeft from "../components/icon-arrow-left.svelte";
+    import IconArrowRight from "../components/icon-arrow-right.svelte";
+    import {
+        topChallenges,
+        newChallenges,
+        ongoingChallenges,
+        leaderboardData,
+    } from "../mock/data.js";
 
     // Fonction pour diviser un tableau en chunks
     const chunkArray = (array, size) => {
@@ -17,17 +23,29 @@
     let newChallengesIndex = $state(0);
     let ongoingChallengesIndex = $state(0);
 
-
     // Diviser les challenges en groupes de 3
     let topChallengesChunked = chunkArray(topChallenges, 3);
     let newChallengesChunked = chunkArray(newChallenges, 3);
     let ongoingChallengesChunked = chunkArray(ongoingChallenges, 3);
+
+    // Fonctions de navigation
+    const nextSlide = (currentIndex, maxIndex, setIndex) => {
+        if (currentIndex < maxIndex - 1) {
+            setIndex(currentIndex + 1);
+        }
+    };
+
+    const prevSlide = (currentIndex, setIndex) => {
+        if (currentIndex > 0) {
+            setIndex(currentIndex - 1);
+        }
+    };
 </script>
 
-<div class="flex flex-col md:flex-row gap-8 w-full">
+<div class="flex flex-col md:flex-row gap-6 w-full">
     <!-- Leaderboard -->
     <div
-        class="w-full md:w-64 bg-[#12172b] rounded-xl sticky top-20 h-[530px] overflow-hidden py-4"
+        class="w-full md:w-64 bg-[#12172b] rounded-xl sticky top-20 h-132.5 overflow-hidden py-4"
     >
         <div class="h-full overflow-y-auto px-4 py-4 scrollbar-thumb-gray-600">
             <h2 class="text-xl mb-4">Leaderboard</h2>
@@ -74,97 +92,165 @@
     <div class="flex-1 space-y-8">
         <!-- Top Challenges Carousel -->
         <section>
-            <div class="mb-6">
+            <div class="mb-6 flex items-center justify-between">
                 <h2 class="text-2xl">Top Challenges</h2>
+
+                {#if topChallengesIndex > 0}
+                    <button
+                        onclick={() =>
+                            prevSlide(
+                                topChallengesIndex,
+                                (index) => (topChallengesIndex = index),
+                            )}
+                        class="flex items-center justify-center"
+                        title="Précédent"
+                    >
+                        <IconArrowLeft />
+                    </button>
+                {/if}
+
+                {#if topChallengesIndex < topChallengesChunked.length - 1}
+                    <button
+                        onclick={() =>
+                            nextSlide(
+                                topChallengesIndex,
+                                topChallengesChunked.length,
+                                (index) => (topChallengesIndex = index),
+                            )}
+                        class="flex items-center justify-center"
+                        title="Suivant"
+                    >
+                        <IconArrowRight />
+                    </button>
+                {/if}
             </div>
-            <div class="max-w-6xl">
-                <Carousel images={topChallengesChunked} duration={0} bind:index={topChallengesIndex}>
-                    {#snippet slide({ index })}
-                        <div class="grid grid-cols-3 gap-4 w-full p-4">
-                            {#each topChallengesChunked[index] as challenge (challenge.id)}
-                                <ChallengeCard {...challenge} />
-                            {/each}
-                        </div>
-                    {/snippet}
-                    {#if topChallengesChunked.length > 1}
-                        <div class="flex gap-4 justify-center mt-4">
-                            {#if topChallengesIndex > 0}
-                                <ControlButton name="Previous" forward={false} onclick={() => topChallengesIndex--} />
-                            {:else}
-                                <div class="w-10"></div>
-                            {/if}
-                            {#if topChallengesIndex < topChallengesChunked.length - 1}
-                                <ControlButton name="Next" forward={true} onclick={() => topChallengesIndex++} />
-                            {:else}
-                                <div class="w-10"></div>
-                            {/if}
-                        </div>
-                    {/if}
-                </Carousel>
+            <div class="relative">
+                <!-- Carousel Container -->
+                <div class="overflow-hidden">
+                    <div
+                        class="flex transition-transform duration-300 ease-in-out"
+                        style="transform: translateX(-{topChallengesIndex *
+                            100}%)"
+                    >
+                        {#each topChallengesChunked as chunk, i}
+                            <div class="w-full shrink-0 grid grid-cols-3 gap-4">
+                                {#each chunk as challenge (challenge.id)}
+                                    <ChallengeCard {...challenge} />
+                                {/each}
+                            </div>
+                        {/each}
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- New Challenges Carousel -->
         <section>
-            <div class="mb-6">
+            <div class="mb-6 flex items-center justify-between">
                 <h2 class="text-2xl">Nouveaux challenges</h2>
-            </div>
-            <div class="max-w-6xl">
-                <Carousel images={newChallengesChunked} duration={0} bind:index={newChallengesIndex}>
-                    {#snippet slide({ index })}
-                        <div class="grid grid-cols-3 gap-4 w-full p-4">
-                            {#each newChallengesChunked[index] as challenge (challenge.id)}
-                                <ChallengeCard {...challenge} />
-                            {/each}
-                        </div>
-                    {/snippet}
-                    {#if newChallengesChunked.length > 1}
-                        <div class="flex gap-4 justify-center mt-4">
-                            {#if newChallengesIndex > 0}
-                                <ControlButton name="Previous" forward={false} onclick={() => newChallengesIndex--} />
-                            {:else}
-                                <div class="w-10"></div>
-                            {/if}
-                            {#if newChallengesIndex < newChallengesChunked.length - 1}
-                                <ControlButton name="Next" forward={true} onclick={() => newChallengesIndex++} />
-                            {:else}
-                                <div class="w-10"></div>
-                            {/if}
-                        </div>
+                <div class="flex gap-2">
+                    {#if newChallengesIndex > 0}
+                        <button
+                            onclick={() =>
+                                prevSlide(
+                                    newChallengesIndex,
+                                    (index) => (newChallengesIndex = index),
+                                )}
+                            class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center"
+                            title="Précédent"
+                        >
+                            ←
+                        </button>
                     {/if}
-                </Carousel>
+
+                    {#if newChallengesIndex < newChallengesChunked.length - 1}
+                        <button
+                            onclick={() =>
+                                nextSlide(
+                                    newChallengesIndex,
+                                    newChallengesChunked.length,
+                                    (index) => (newChallengesIndex = index),
+                                )}
+                            class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center"
+                            title="Suivant"
+                        >
+                            →
+                        </button>
+                    {/if}
+                </div>
+            </div>
+            <div class="relative">
+                <!-- Carousel Container -->
+                <div class="overflow-hidden">
+                    <div
+                        class="flex transition-transform duration-300 ease-in-out"
+                        style="transform: translateX(-{newChallengesIndex *
+                            100}%)"
+                    >
+                        {#each newChallengesChunked as chunk, i}
+                            <div class="w-full shrink-0 grid grid-cols-3 gap-4">
+                                {#each chunk as challenge (challenge.id)}
+                                    <ChallengeCard {...challenge} />
+                                {/each}
+                            </div>
+                        {/each}
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Ongoing Challenges Carousel -->
         <section>
-            <div class="mb-6">
+            <div class="mb-6 flex items-center justify-between">
                 <h2 class="text-2xl">Défis en cours</h2>
-            </div>
-            <div class="max-w-6xl">
-                <Carousel images={ongoingChallengesChunked} duration={0} bind:index={ongoingChallengesIndex}>
-                    {#snippet slide({ index })}
-                        <div class="grid grid-cols-3 gap-4 w-full p-4">
-                            {#each ongoingChallengesChunked[index] as challenge (challenge.id)}
-                                <ChallengeCard {...challenge} />
-                            {/each}
-                        </div>
-                    {/snippet}
-                    {#if ongoingChallengesChunked.length > 1}
-                        <div class="flex gap-4 justify-center mt-4">
-                            {#if ongoingChallengesIndex > 0}
-                                <ControlButton name="Previous" forward={false} onclick={() => ongoingChallengesIndex--} />
-                            {:else}
-                                <div class="w-10"></div>
-                            {/if}
-                            {#if ongoingChallengesIndex < ongoingChallengesChunked.length - 1}
-                                <ControlButton name="Next" forward={true} onclick={() => ongoingChallengesIndex++} />
-                            {:else}
-                                <div class="w-10"></div>
-                            {/if}
-                        </div>
+                <div class="flex gap-2">
+                    {#if ongoingChallengesIndex > 0}
+                        <button
+                            onclick={() =>
+                                prevSlide(
+                                    ongoingChallengesIndex,
+                                    (index) => (ongoingChallengesIndex = index),
+                                )}
+                            class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center"
+                            title="Précédent"
+                        >
+                            ←
+                        </button>
                     {/if}
-                </Carousel>
+
+                    {#if ongoingChallengesIndex < ongoingChallengesChunked.length - 1}
+                        <button
+                            onclick={() =>
+                                nextSlide(
+                                    ongoingChallengesIndex,
+                                    ongoingChallengesChunked.length,
+                                    (index) => (ongoingChallengesIndex = index),
+                                )}
+                            class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center"
+                            title="Suivant"
+                        >
+                            →
+                        </button>
+                    {/if}
+                </div>
+            </div>
+            <div class="relative">
+                <!-- Carousel Container -->
+                <div class="overflow-hidden">
+                    <div
+                        class="flex transition-transform duration-300 ease-in-out"
+                        style="transform: translateX(-{ongoingChallengesIndex *
+                            100}%)"
+                    >
+                        {#each ongoingChallengesChunked as chunk, i}
+                            <div class="w-full shrink-0 grid grid-cols-3 gap-4">
+                                {#each chunk as challenge (challenge.id)}
+                                    <ChallengeCard {...challenge} />
+                                {/each}
+                            </div>
+                        {/each}
+                    </div>
+                </div>
             </div>
         </section>
     </div>
