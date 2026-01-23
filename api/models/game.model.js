@@ -20,6 +20,11 @@ Game.init(
       type: DataTypes.TEXT,
       allowNull: true,
     },
+
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    }
   },
   {
     sequelize,modelName: 'Game',

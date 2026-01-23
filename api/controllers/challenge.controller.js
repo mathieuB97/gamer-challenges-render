@@ -53,7 +53,7 @@ class ChallengeController extends BaseController {
                 id: challenge.id,
                 title: challenge.game?.name || "Nom du jeu",
                 challengeName: challenge.name,
-                image: challenge.image || "https://via.placeholder.com/600x400",
+                image: game.image || "https://via.placeholder.com/600x400",
                 likes: challenge.likes || 0,
                 participants: challenge.participants || 0,
             }));
