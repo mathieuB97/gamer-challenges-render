@@ -2,12 +2,20 @@
     import ChallengeCard from "../components/ChallengeCard.svelte";
     import IconArrowLeft from "../components/icon-arrow-left.svelte";
     import IconArrowRight from "../components/icon-arrow-right.svelte";
+    import { getChallenges, getLeaderboard } from "../lib/services/challengeService.js";
     import {
-        topChallenges,
-        newChallenges,
-        ongoingChallenges,
-        leaderboardData,
+        topChallenges as mockTopChallenges,
+        newChallenges as mockNewChallenges,
+        ongoingChallenges as mockOngoingChallenges,
+        leaderboardData as mockLeaderboardData,
     } from "../mock/data.js";
+
+    // États initialisés avec les données mock, seront mises à jour avec les vraies données
+    let topChallenges = $state(mockTopChallenges);
+    let newChallenges = $state(mockNewChallenges);
+    let ongoingChallenges = $state(mockOngoingChallenges);
+    let leaderboardData = $state(mockLeaderboardData);
+    let isLoading = $state(true);
 
     // Fonction pour diviser un tableau en chunks
     const chunkArray = (array, size) => {
@@ -24,9 +32,33 @@
     let ongoingChallengesIndex = $state(0);
 
     // Diviser les challenges en groupes de 3
-    let topChallengesChunked = chunkArray(topChallenges, 3);
-    let newChallengesChunked = chunkArray(newChallenges, 3);
-    let ongoingChallengesChunked = chunkArray(ongoingChallenges, 3);
+    let topChallengesChunked = $derived(chunkArray(topChallenges, 3));
+    let newChallengesChunked = $derived(chunkArray(newChallenges, 3));
+    let ongoingChallengesChunked = $derived(chunkArray(ongoingChallenges, 3));
+
+    // Charger les données depuis le fichier JSON au montage du composant
+    async function loadChallengesData() {
+        try {
+            isLoading = true;
+            const [challenges, leaderboard] = await Promise.all([
+                getChallenges(),
+                getLeaderboard()
+            ]);
+
+            topChallenges = challenges.topChallenges || mockTopChallenges;
+            newChallenges = challenges.newChallenges || mockNewChallenges;
+            ongoingChallenges = challenges.ongoingChallenges || mockOngoingChallenges;
+            leaderboardData = leaderboard || mockLeaderboardData;
+        } catch (error) {
+            console.error("Erreur lors du chargement des données:", error);
+            // Les données mock sont déjà initialisées comme fallback
+        } finally {
+            isLoading = false;
+        }
+    }
+
+    // Charger les données au montage
+    loadChallengesData();
 
     // Fonctions de navigation
     const nextSlide = (currentIndex, maxIndex, setIndex) => {
