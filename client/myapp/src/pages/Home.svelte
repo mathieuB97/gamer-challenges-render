@@ -1,157 +1,83 @@
 <script>
     import ChallengeCard from "../components/ChallengeCard.svelte";
+    import IconArrowLeft from "../components/icon-arrow-left.svelte";
+    import IconArrowRight from "../components/icon-arrow-right.svelte";
+    import { getChallenges, getLeaderboard } from "../lib/services/challengeService.js";
+    import {
+        topChallenges as mockTopChallenges,
+        newChallenges as mockNewChallenges,
+        ongoingChallenges as mockOngoingChallenges,
+        leaderboardData as mockLeaderboardData,
+    } from "../mock/data.js";
 
-    // !!!!Exemple de données, à remplacer!!!!
-    let topChallenges = [
-        {
-            id: 1,
-            title: "Nom du jeu",
-            challengeName: "Nom du défi",
-            image: "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-            likes: 234,
-            participants: 120,
-        },
-        {
-            id: 2,
-            title: "Nom du jeu",
-            challengeName: "Nom du défi",
-            image: "https://images.unsplash.com/photo-1765430847336-596f709e8b3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-            likes: 234,
-            participants: 120,
-        },
-        {
-            id: 3,
-            title: "Nom du jeu",
-            challengeName: "Nom du défi",
-            image: "https://images.unsplash.com/photo-1635372730136-06b29022281c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-            likes: 234,
-            participants: 120,
-        },
-    ];
+    // États initialisés avec les données mock, seront mises à jour avec les vraies données
+    let topChallenges = $state(mockTopChallenges);
+    let newChallenges = $state(mockNewChallenges);
+    let ongoingChallenges = $state(mockOngoingChallenges);
+    let leaderboardData = $state(mockLeaderboardData);
+    let isLoading = $state(true);
 
-    // !!!!Exemple de données, à remplacer!!!!
-    let newChallenges = [
-        {
-            id: 7,
-            title: "Nom du jeu",
-            challengeName: "Nom du défi",
-            image: "https://images.unsplash.com/photo-1760604359369-45675611f750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-            likes: 234,
-            participants: 120,
-        },
-        {
-            id: 8,
-            title: "Nom du jeu",
-            challengeName: "Nom du défi",
-            image: "https://images.unsplash.com/photo-1698300113381-6c5df7400fbf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-            likes: 234,
-            participants: 120,
-        },
-        {
-            id: 9,
-            title: "Nom du jeu",
-            challengeName: "Nom du défi",
-            image: "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-            likes: 234,
-            participants: 120,
-        },
-    ];
-    // !!!!Exemple de données, à remplacer!!!!
-    let leaderboardData = [
-        {
-            rank: 1,
-            name: "Nom du jeu",
-            pseudo: "Pseudo meilleur joueur",
-            image: "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
-        },
-        {
-            rank: 2,
-            name: "Nom du jeu",
-            pseudo: "Pseudo meilleur joueur",
-            image: "https://images.unsplash.com/photo-1765430847336-596f709e8b3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
-        },
-        {
-            rank: 3,
-            name: "Nom du jeu",
-            pseudo: "Pseudo meilleur joueur",
-            image: "https://images.unsplash.com/photo-1635372730136-06b29022281c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
-        },
-        {
-            rank: 4,
-            name: "Nom du jeu",
-            pseudo: "Pseudo meilleur joueur",
-            image: "https://images.unsplash.com/photo-1759167625075-ee6173d53f8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
-        },
-        {
-            rank: 5,
-            name: "Nom du jeu",
-            pseudo: "Pseudo meilleur joueur",
-            image: "https://images.unsplash.com/photo-1765430847336-596f709e8b3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
-        },
-        {
-            rank: 6,
-            name: "Nom du jeu",
-            pseudo: "Pseudo meilleur joueur",
-            image: "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
-        },
-        {
-            rank: 7,
-            name: "Nom du jeu",
-            pseudo: "Pseudo meilleur joueur",
-            image: "https://images.unsplash.com/photo-1765430847336-596f709e8b3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
-        },
-        {
-            rank: 8,
-            name: "Nom du jeu",
-            pseudo: "Pseudo meilleur joueur",
-            image: "https://images.unsplash.com/photo-1635372730136-06b29022281c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
-        },
-        {
-            rank: 9,
-            name: "Nom du jeu",
-            pseudo: "Pseudo meilleur joueur",
-            image: "https://images.unsplash.com/photo-1759167625075-ee6173d53f8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
-        },
-        {
-            rank: 10,
-            name: "Nom du jeu",
-            pseudo: "Pseudo meilleur joueur",
-            image: "https://images.unsplash.com/photo-1765430847336-596f709e8b3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
-        },
-    ];
-    // !!!!Exemple de données, à remplacer!!!!
-    let ongoingChallenges = [
-        {
-            id: 20,
-            title: "Nom du jeu",
-            challengeName: "Nom du défi",
-            image: "https://images.unsplash.com/photo-1759167625075-ee6173d53f8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
-            likes: 234,
-            participants: 120,
-        },
-        {
-            id: 2,
-            title: "Nom du jeu",
-            challengeName: "Nom du défi",
-            image: "https://images.unsplash.com/photo-1765430847336-596f709e8b3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-            likes: 234,
-            participants: 120,
-        },
-        {
-            id: 9,
-            title: "Nom du jeu",
-            challengeName: "Nom du défi",
-            image: "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-            likes: 234,
-            participants: 120,
-        },
-    ];
+    // Fonction pour diviser un tableau en chunks
+    const chunkArray = (array, size) => {
+        const chunks = [];
+        for (let i = 0; i < array.length; i += size) {
+            chunks.push(array.slice(i, i + size));
+        }
+        return chunks;
+    };
+
+    // Variables pour tracker l'index de chaque carrousel
+    let topChallengesIndex = $state(0);
+    let newChallengesIndex = $state(0);
+    let ongoingChallengesIndex = $state(0);
+
+    // Diviser les challenges en groupes de 3
+    let topChallengesChunked = $derived(chunkArray(topChallenges, 3));
+    let newChallengesChunked = $derived(chunkArray(newChallenges, 3));
+    let ongoingChallengesChunked = $derived(chunkArray(ongoingChallenges, 3));
+
+    // Charger les données depuis le fichier JSON au montage du composant
+    async function loadChallengesData() {
+        try {
+            isLoading = true;
+            const [challenges, leaderboard] = await Promise.all([
+                getChallenges(),
+                getLeaderboard()
+            ]);
+
+            topChallenges = challenges.topChallenges || mockTopChallenges;
+            newChallenges = challenges.newChallenges || mockNewChallenges;
+            ongoingChallenges = challenges.ongoingChallenges || mockOngoingChallenges;
+            leaderboardData = leaderboard || mockLeaderboardData;
+        } catch (error) {
+            console.error("Erreur lors du chargement des données:", error);
+            // Les données mock sont déjà initialisées comme fallback
+        } finally {
+            isLoading = false;
+        }
+    }
+
+    // Charger les données au montage
+    loadChallengesData();
+
+    // Fonctions de navigation
+    const nextSlide = (currentIndex, maxIndex, setIndex) => {
+        if (currentIndex < maxIndex - 1) {
+            setIndex(currentIndex + 1);
+        }
+    };
+
+    const prevSlide = (currentIndex, setIndex) => {
+        if (currentIndex > 0) {
+            setIndex(currentIndex - 1);
+        }
+    };
 </script>
 
-<div class="flex flex-col md:flex-row gap-8 w-full">
+<div class="flex flex-col md:flex-row gap-6 w-full">
     <!-- Leaderboard -->
     <div
-        class="w-full md:w-64 bg-[#12172b] rounded-xl sticky top-20 h-[530px] overflow-hidden py-4"
+        class="w-full md:w-64 bg-[#12172b] rounded-xl sticky top-20 h-132.5 overflow-hidden py-4"
     >
         <div class="h-full overflow-y-auto px-4 py-4 scrollbar-thumb-gray-600">
             <h2 class="text-xl mb-4">Leaderboard</h2>
@@ -196,113 +122,168 @@
 
     <!-- Challenges Section -->
     <div class="flex-1 space-y-8">
-        <!-- Top Challenges -->
+        <!-- Top Challenges Carousel -->
         <section>
-            <div class="flex items-center justify-between mb-6">
+            <div class="mb-6 flex items-center justify-between">
                 <h2 class="text-2xl">Top Challenges</h2>
-                <span
-                    ><svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
+
+                {#if topChallengesIndex > 0}
+                    <button
+                        onclick={() =>
+                            prevSlide(
+                                topChallengesIndex,
+                                (index) => (topChallengesIndex = index),
+                            )}
+                        class="flex items-center justify-center"
+                        title="Précédent"
                     >
-                        <path
-                            d="M5 12H19"
-                            stroke="#00D9FF"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        />
-                        <path
-                            d="M12 5L19 12L12 19"
-                            stroke="#00D9FF"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        />
-                    </svg></span
-                >
+                        <IconArrowLeft />
+                    </button>
+                {/if}
+
+                {#if topChallengesIndex < topChallengesChunked.length - 1}
+                    <button
+                        onclick={() =>
+                            nextSlide(
+                                topChallengesIndex,
+                                topChallengesChunked.length,
+                                (index) => (topChallengesIndex = index),
+                            )}
+                        class="flex items-center justify-center"
+                        title="Suivant"
+                    >
+                        <IconArrowRight />
+                    </button>
+                {/if}
             </div>
-            <div
-                class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-x-auto"
-            >
-                {#each topChallenges as challenge (challenge.id)}
-                    <ChallengeCard {...challenge} />
-                {/each}
+            <div class="relative">
+                <!-- Carousel Container -->
+                <div class="overflow-hidden">
+                    <div
+                        class="flex transition-transform duration-300 ease-in-out"
+                        style="transform: translateX(-{topChallengesIndex *
+                            100}%)"
+                    >
+                        {#each topChallengesChunked as chunk, i}
+                            <div class="w-full shrink-0 grid grid-cols-3 gap-4">
+                                {#each chunk as challenge (challenge.id)}
+                                    <ChallengeCard {...challenge} />
+                                {/each}
+                            </div>
+                        {/each}
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- New Challenges -->
+        <!-- New Challenges Carousel -->
         <section>
-            <div class="flex items-center justify-between mb-6">
+            <div class="mb-6 flex items-center justify-between">
                 <h2 class="text-2xl">Nouveaux challenges</h2>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                >
-                    <path
-                        d="M5 12H19"
-                        stroke="#00D9FF"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                    <path
-                        d="M12 5L19 12L12 19"
-                        stroke="#00D9FF"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                </svg>
+                <div class="flex gap-2">
+                    {#if newChallengesIndex > 0}
+                        <button
+                            onclick={() =>
+                                prevSlide(
+                                    newChallengesIndex,
+                                    (index) => (newChallengesIndex = index),
+                                )}
+                            class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center"
+                            title="Précédent"
+                        >
+                            ←
+                        </button>
+                    {/if}
+
+                    {#if newChallengesIndex < newChallengesChunked.length - 1}
+                        <button
+                            onclick={() =>
+                                nextSlide(
+                                    newChallengesIndex,
+                                    newChallengesChunked.length,
+                                    (index) => (newChallengesIndex = index),
+                                )}
+                            class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center"
+                            title="Suivant"
+                        >
+                            →
+                        </button>
+                    {/if}
+                </div>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {#each newChallenges as challenge (challenge.id)}
-                    <ChallengeCard {...challenge} />
-                {/each}
+            <div class="relative">
+                <!-- Carousel Container -->
+                <div class="overflow-hidden">
+                    <div
+                        class="flex transition-transform duration-300 ease-in-out"
+                        style="transform: translateX(-{newChallengesIndex *
+                            100}%)"
+                    >
+                        {#each newChallengesChunked as chunk, i}
+                            <div class="w-full shrink-0 grid grid-cols-3 gap-4">
+                                {#each chunk as challenge (challenge.id)}
+                                    <ChallengeCard {...challenge} />
+                                {/each}
+                            </div>
+                        {/each}
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- Ongoing Challenges -->
+        <!-- Ongoing Challenges Carousel -->
         <section>
-            <div class="flex items-center justify-between mb-6">
+            <div class="mb-6 flex items-center justify-between">
                 <h2 class="text-2xl">Défis en cours</h2>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                >
-                    <path
-                        d="M5 12H19"
-                        stroke="#00D9FF"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                    <path
-                        d="M12 5L19 12L12 19"
-                        stroke="#00D9FF"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                </svg>
+                <div class="flex gap-2">
+                    {#if ongoingChallengesIndex > 0}
+                        <button
+                            onclick={() =>
+                                prevSlide(
+                                    ongoingChallengesIndex,
+                                    (index) => (ongoingChallengesIndex = index),
+                                )}
+                            class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center"
+                            title="Précédent"
+                        >
+                            ←
+                        </button>
+                    {/if}
+
+                    {#if ongoingChallengesIndex < ongoingChallengesChunked.length - 1}
+                        <button
+                            onclick={() =>
+                                nextSlide(
+                                    ongoingChallengesIndex,
+                                    ongoingChallengesChunked.length,
+                                    (index) => (ongoingChallengesIndex = index),
+                                )}
+                            class="w-10 h-10 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center"
+                            title="Suivant"
+                        >
+                            →
+                        </button>
+                    {/if}
+                </div>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {#each ongoingChallenges as challenge (challenge.id)}
-                    <ChallengeCard {...challenge} />
-                {/each}
+            <div class="relative">
+                <!-- Carousel Container -->
+                <div class="overflow-hidden">
+                    <div
+                        class="flex transition-transform duration-300 ease-in-out"
+                        style="transform: translateX(-{ongoingChallengesIndex *
+                            100}%)"
+                    >
+                        {#each ongoingChallengesChunked as chunk, i}
+                            <div class="w-full shrink-0 grid grid-cols-3 gap-4">
+                                {#each chunk as challenge (challenge.id)}
+                                    <ChallengeCard {...challenge} />
+                                {/each}
+                            </div>
+                        {/each}
+                    </div>
+                </div>
             </div>
         </section>
     </div>
 </div>
-
-<style>
-</style>

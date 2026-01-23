@@ -6,6 +6,7 @@
   // Icônes menu burger (dans le même dossier components)
   import IconMenuBurger from "./icon-Menu-burger.svelte";
   import IconCloseMenuBurger from "./icon-close-Menu-burger.svelte";
+  import { authStore, clearAuth } from "../lib/stores/auth.svelte";
 
   let mobileMenuOpen = false;
   let mobileMenuEl; // référence du conteneur du menu mobile
