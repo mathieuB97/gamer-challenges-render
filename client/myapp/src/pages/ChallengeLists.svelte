@@ -1,69 +1,68 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import IconAdd from "../components/icon-add.svelte";
 
+  // Etat page (liste challenges)
   let challenges = [];
   let loading = true;
   let errorMsg = "";
 
-  // Carte jeu (colonne gauche)
+  // Modal description du jeu
+  let isGameModalOpen = false;
+
+  // Infos jeu (popup)
   const game = {
     id: 1,
     title: "Apex Legends",
-    subtitle: "Battle Royale - 3 joueurs",
+    subtitle: "Battle Royale - 1-3 joueurs",
+    genre: "Battle Royale",
+    players: "1-3 joueurs",
+    description:
+      "Apex Legends est un jeu de tir à la première personne battle royale gratuit développé par Respawn Entertainment et édité par Electronic Arts. Le jeu combine un gameplay rapide avec des capacités de légendes uniques, offrant une expérience compétitive intense.",
     imageUrl:
-      "https://images.unsplash.com/photo-1611138290962-2c550ffd4002?w=600&auto=format&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1611138290962-2c550ffd4002?w=600&auto=format&fit=crop&q=80"
   };
+
+  function openGameModal() {
+    isGameModalOpen = true;
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeGameModal() {
+    isGameModalOpen = false;
+    document.body.style.overflow = "";
+  }
+
+  function handleKeydown(e) {
+    if (e.key === "Escape" && isGameModalOpen) closeGameModal();
+  }
 
   // MOCK (pour intégrer la maquette même si l’API ne répond pas encore)
   const mockChallenges = [
-    {
-      id: 1,
-      title: "Victoire sans bouclier",
-      author: "ProGamer42",
-      level: "Expert",
-      difficulty: "Difficile",
-      rating: 4.5,
-    },
-    {
-      id: 2,
-      title: "Top 1 au pistolet",
-      author: "Maka",
-      level: "Intermédiaire",
-      difficulty: "Moyen",
-      rating: 4.0,
-    },
-    {
-      id: 3,
-      title: "0 dégâts subis",
-      author: "NoHit",
-      level: "Expert",
-      difficulty: "Difficile",
-      rating: 4.8,
-    },
-    {
-      id: 4,
-      title: "Win en solo",
-      author: "SoloKing",
-      level: "Avancé",
-      difficulty: "Difficile",
-      rating: 4.2,
-    },
+    { id: 1, title: "Victoire sans bouclier", author: "ProGamer42", level: "Expert", difficulty: "Difficile", rating: 4.5 },
+    { id: 2, title: "Top 1 au pistolet", author: "Maka", level: "Intermédiaire", difficulty: "Moyen", rating: 4.0 },
+    { id: 3, title: "0 dégâts subis", author: "NoHit", level: "Expert", difficulty: "Difficile", rating: 4.8 },
+    { id: 4, title: "Win en solo", author: "SoloKing", level: "Avancé", difficulty: "Difficile", rating: 4.2 }
   ];
 
   onMount(async () => {
+    window.addEventListener("keydown", handleKeydown);
+
     try {
       const response = await fetch("http://localhost:3000/api/challenges");
       if (!response.ok) throw new Error("API route not found");
       challenges = await response.json();
     } catch (error) {
-      console.error("Erreur API:", error);
-      challenges = mockChallenges;
-      errorMsg =
-        "API indisponible : affichage en démo pour la team : manu micka et brahim ;) .";
-    } finally {
-      loading = false;
-    }
+  console.error("Erreur API:", error);
+  challenges = mockChallenges;
+} finally {
+  loading = false;
+}
+  });
+
+  onDestroy(() => {
+    window.removeEventListener("keydown", handleKeydown);
+    document.body.style.overflow = "";
   });
 
   function openDetail(challenge) {
@@ -80,9 +79,7 @@
     <!-- Titre -->
     <div class="mb-6 text-center">
       <h1 class="text-2xl sm:text-3xl font-extrabold text-white">
-        <span
-          class="bg-linear-to-r from-[#7b2cbf] to-[#00d9ff] bg-clip-text text-transparent"
-        >
+        <span class="bg-linear-to-r from-[#7b2cbf] to-[#00d9ff] bg-clip-text text-transparent">
           Challenges
         </span>
         <span class="text-white/90"> disponibles</span>
@@ -92,9 +89,7 @@
     <!-- Layout 2 colonnes -->
     <div class="grid gap-4 lg:grid-cols-[360px_1fr]">
       <!-- Colonne gauche : carte jeu -->
-      <aside
-        class="bg-[#141824] border border-white/10 rounded-2xl overflow-hidden flex flex-col"
-      >
+      <aside class="bg-[#141824] border border-white/10 rounded-2xl overflow-hidden flex flex-col">
         <!-- Image + masque -->
         <div class="relative h-56 w-full">
           <img
@@ -124,32 +119,31 @@
               type="button"
               class="w-full py-3 rounded-lg border border-[#00d9ff] text-[#00d9ff]
                      hover:bg-[#00d9ff]/10 transition-colors font-medium"
+              on:click={openGameModal}
             >
               Description
             </button>
 
             <!-- Bouton + Créer un défi -->
-            <a
-              href={`/jeux/${game.id}/creation-challenge`}
-              class="w-full py-3 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
-                     text-white font-semibold hover:opacity-90 transition-opacity
-                     inline-flex items-center justify-center gap-2"
-            >
-              <IconAdd className="w-5 h-5" />
-              <span>Créer un défi</span>
-            </a>
+           <a
+  href={`/jeux/${game.id}/creation-challenge`}
+  class="w-full py-3 rounded-lg
+         bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
+         text-white font-semibold
+         hover:opacity-90 transition-opacity
+         inline-flex items-center justify-center gap-2"
+>
+  <IconAdd size={16} className="flex-shrink-0" />
+  <span class="leading-none">Créer un défi</span>
+</a>
           </div>
         </div>
       </aside>
 
       <!-- Colonne droite : liste -->
-      <section
-        class="bg-[#141824] border border-white/10 rounded-2xl p-5 lg:p-6"
-      >
+      <section class="bg-[#141824] border border-white/10 rounded-2xl p-5 lg:p-6">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-semibold text-white">
-            Challenges disponibles
-          </h2>
+          <h2 class="text-lg font-semibold text-white">Challenges disponibles</h2>
 
           <div class="text-sm text-white/60">
             {#if loading}
@@ -194,9 +188,7 @@
 
                     <!-- Texte -->
                     <div class="min-w-0">
-                      <h3
-                        class="text-white font-semibold leading-tight truncate"
-                      >
+                      <h3 class="text-white font-semibold leading-tight truncate">
                         {c.title}
                       </h3>
 
@@ -204,9 +196,7 @@
                         Par <span class="text-white/80">{c.author}</span>
                       </p>
 
-                      <div
-                        class="flex items-center gap-3 mt-2 text-xs flex-wrap"
-                      >
+                      <div class="flex items-center gap-3 mt-2 text-xs flex-wrap">
                         <span class="text-white/70">🏆 {c.level}</span>
                         <span class="text-white/70">⚡ {c.difficulty}</span>
                       </div>
@@ -214,9 +204,7 @@
                   </div>
 
                   <!-- Note -->
-                  <div
-                    class="flex items-center gap-2 text-sm text-white/80 flex-shrink-0"
-                  >
+                  <div class="flex items-center gap-2 text-sm text-white/80 flex-shrink-0">
                     <span class="text-yellow-300">★</span>
                     <span>{c.rating}</span>
                   </div>
@@ -226,7 +214,8 @@
                 <div class="mt-4 grid grid-cols-2 gap-3">
                   <button
                     type="button"
-                    class="w-full py-2.5 rounded-lg border border-white/15 text-white/80 hover:bg-white/5 transition"
+                    class="w-full py-2.5 rounded-lg border border-white/15 text-white/80
+                           hover:bg-white/5 transition"
                     on:click={() => openDetail(c)}
                   >
                     Détail
@@ -248,6 +237,61 @@
       </section>
     </div>
   </section>
+
+  <!-- MODAL DESCRIPTION JEU -->
+  {#if isGameModalOpen}
+    <!-- Overlay -->
+    <div
+      class="fixed inset-0 z-40 bg-black/60"
+      on:click={closeGameModal}
+    ></div>
+
+    <!-- Modal -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center px-4">
+      <div
+        class="w-full max-w-3xl rounded-2xl border border-white/10 bg-[#141824]
+               shadow-xl overflow-hidden"
+        on:click|stopPropagation
+      >
+        <!-- Header modal -->
+        <div class="flex items-start justify-between gap-4 p-6">
+          <div>
+            <h2 class="text-2xl font-extrabold text-white">{game.title}</h2>
+            <p class="mt-1 text-sm text-white/70">{game.subtitle}</p>
+          </div>
+
+          <button
+            type="button"
+            class="h-10 w-10 rounded-lg border border-white/15 text-white/80
+                   hover:bg-white/5 transition flex items-center justify-center"
+            on:click={closeGameModal}
+            aria-label="Fermer"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Body -->
+        <div class="px-6 pb-6">
+          <p class="text-sm leading-relaxed text-white/80">
+            {game.description}
+          </p>
+
+          <div class="mt-5 border-t border-white/10 pt-4 grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <p class="text-white/60 text-xs">Genre</p>
+              <p class="text-white font-semibold">{game.genre}</p>
+            </div>
+
+            <div>
+              <p class="text-white/60 text-xs">Joueurs</p>
+              <p class="text-white font-semibold">{game.players}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {/if}
 </main>
 
 <style>
