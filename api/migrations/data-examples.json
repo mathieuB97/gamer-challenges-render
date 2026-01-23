@@ -47,37 +47,181 @@
     }
   ],
 
-  "challenges": [
-    {
-      "name": "Speedrun Cascade",
-      "description": "Finir le Royaume des Cascades le plus rapidement possible.",
-      "rules": "Le temps s'arrête à la collecte de la lune principale.",
-      "level": "medium",
-      "time_limit_minutes" : 120,
-      "game_id": 1,
-      "user_id": 1
-    
-    },
-    {
-      "name": "Pentakill Challenge",
-      "description": "Réaliser un Pentakill en partie classée.",
-      "rules": "Preuve vidéo obligatoire du tableau des scores.",
-      "level": "hard",
-      "time_limit_minutes" : 60,
-      "game_id": 2,
-      "user_id": 2
-  
+  "challenges": {
+    "topChallenges": [
+      {
+        "id": 1,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
       },
-    {
-      "name": "No Damage Boss",
-      "description": "Vaincre le premier boss sans perdre un seul point de vie.",
-      "rules": "Toute barre de vie entamée annule le défi.",
-      "level": "easy",
-      "time_limit_minutes" : 90,
-      "game_id": 3,
-      "user_id": 3
-    }
-  ],
+      {
+        "id": 2,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1765430847336-596f709e8b3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      },
+      {
+        "id": 3,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1635372730136-06b29022281c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      },
+      {
+        "id": 7,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1760604359369-45675611f750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      },{
+        "id": 20,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1759167625075-ee6173d53f8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
+        "likes": 234,
+        "participants": 120
+      }, 
+      {
+        "id": 9,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      },
+      {
+        "id": 8,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1698300113381-6c5df7400fbf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      }
+    ],
+    "newChallenges": [
+      {
+        "id": 7,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1760604359369-45675611f750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      },
+      {
+        "id": 8,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1698300113381-6c5df7400fbf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      },
+      {
+        "id": 9,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      },
+      {
+        "id": 2,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1765430847336-596f709e8b3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      },
+      {
+        "id": 1,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      },
+      {
+        "id": 20,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1759167625075-ee6173d53f8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
+        "likes": 234,
+        "participants": 120
+      },
+      {
+        "id": 3,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1635372730136-06b29022281c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      }
+    ],
+    "ongoingChallenges": [
+      {
+        "id": 20,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1759167625075-ee6173d53f8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
+        "likes": 234,
+        "participants": 120
+      },
+      {
+        "id": 2,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1765430847336-596f709e8b3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      },
+      {
+        "id": 9,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      },
+      {
+        "id": 7,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1760604359369-45675611f750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      },
+      {
+        "id": 3,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1635372730136-06b29022281c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      },
+      {
+        "id": 1,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      },
+      {
+        "id": 8,
+        "title": "Nom du jeu",
+        "challengeName": "Nom du défi",
+        "image": "https://images.unsplash.com/photo-1698300113381-6c5df7400fbf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
+        "likes": 234,
+        "participants": 120
+      }
+    ]
+  },
 
   "contributions": [
     {
