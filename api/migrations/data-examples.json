@@ -33,244 +33,88 @@
     {
       "name": "Super Mario Odyssey",
       "category": "Plateforme",
-      "description": "Une aventure épique à travers de nombreux royaumes pour sauver la princesse Peach."
+      "description": "Une aventure épique à travers de nombreux royaumes pour sauver la princesse Peach.",
+      "image": "https://example.com/mario.jpg"
     },
     {
       "name": "League of Legends",
       "category": "MOBA",
-      "description": "Un jeu de stratégie en équipe où deux équipes de cinq champions s'affrontent."
+      "description": "Un jeu de stratégie en équipe où deux équipes de cinq champions s'affrontent.",
+      "image": "https://example.com/lol.jpg"
     },
     {
       "name": "Elden Ring",
       "category": "Action RPG",
-      "description": "Levez-vous, Sans-éclat, et laissez la grâce guider vos pas."
+      "description": "Levez-vous, Sans-éclat, et laissez la grâce guider vos pas.",
+      "image": "https://example.com/eldenring.jpg"
     }
   ],
 
-  "challenges": {
-    "topChallenges": [
-      {
-        "id": 1,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      },
-      {
-        "id": 2,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1765430847336-596f709e8b3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      },
-      {
-        "id": 3,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1635372730136-06b29022281c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      },
-      {
-        "id": 7,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1760604359369-45675611f750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      },{
-        "id": 20,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1759167625075-ee6173d53f8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
-        "likes": 234,
-        "participants": 120
-      }, 
-      {
-        "id": 9,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      },
-      {
-        "id": 8,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1698300113381-6c5df7400fbf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      }
-    ],
-    "newChallenges": [
-      {
-        "id": 7,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1760604359369-45675611f750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      },
-      {
-        "id": 8,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1698300113381-6c5df7400fbf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      },
-      {
-        "id": 9,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      },
-      {
-        "id": 2,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1765430847336-596f709e8b3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      },
-      {
-        "id": 1,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      },
-      {
-        "id": 20,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1759167625075-ee6173d53f8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
-        "likes": 234,
-        "participants": 120
-      },
-      {
-        "id": 3,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1635372730136-06b29022281c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      }
-    ],
-    "ongoingChallenges": [
-      {
-        "id": 20,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1759167625075-ee6173d53f8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=400",
-        "likes": 234,
-        "participants": 120
-      },
-      {
-        "id": 2,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1765430847336-596f709e8b3e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      },
-      {
-        "id": 9,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      },
-      {
-        "id": 7,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1760604359369-45675611f750?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      },
-      {
-        "id": 3,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1635372730136-06b29022281c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      },
-      {
-        "id": 1,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1757774636742-0a5dc7e5c07a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      },
-      {
-        "id": 8,
-        "title": "Nom du jeu",
-        "challengeName": "Nom du défi",
-        "image": "https://images.unsplash.com/photo-1698300113381-6c5df7400fbf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600",
-        "likes": 234,
-        "participants": 120
-      }
-    ]
-  },
+  "challenges": [
+    {
+      "name": "Speedrun Mario",
+      "description": "Finir le jeu en moins de 2h.",
+      "rules": "Pas de glitchs.",
+      "level": "hard",
+      "time_limit_minutes": "120",
+      "user_id": 1,
+      "game_id": 1
+    },
+    {
+      "name": "Pentakill Challenge",
+      "description": "Faire un pentakill en ranked.",
+      "rules": "SoloQ uniquement.",
+      "level": "medium",
+      "time_limit_minutes": "60",
+      "user_id": 2,
+      "game_id": 2
+    },
+    {
+      "name": "No Death Elden Ring",
+      "description": "Terminer Elden Ring sans mourir.",
+      "rules": "Pas de triche, pas d'aide.",
+      "level": "hard",
+      "time_limit_minutes": "999",
+      "user_id": 3,
+      "game_id": 3
+    }
+  ],
 
   "contributions": [
     {
-      "duration_minutes": 180,
+      "duration": 180,
       "video_url": "https://youtube.com/watch?v=mario_run",
       "challenge_id": 1,
       "user_id": 2
     },
     {
-      "duration_minutes": 120,
+      "duration": 120,
       "video_url": "https://twitch.tv/clip/lol_pentakill",
       "challenge_id": 2,
       "user_id": 3
     },
     {
-      "duration_minutes": 300,
+      "duration": 300,
       "video_url": "https://youtube.com/watch?v=elden_perfect",
-      "challenge_id": 3,  
+      "challenge_id": 3,
       "user_id": 1
     }
   ],
 
   "user_contribution": [
-    {
-      "user_id": 1,
-      "contribution_id": 1
-    },
-    {
-      "user_id": 2,
-      "contribution_id": 2
-    },
-    {
-      "user_id": 3,
-      "contribution_id": 3
-    }
+    { "user_id": 1, "contribution_id": 1 },
+    { "user_id": 2, "contribution_id": 2 },
+    { "user_id": 3, "contribution_id": 3 },
+    { "user_id": 1, "contribution_id": 2 },
+    { "user_id": 2, "contribution_id": 3 }
   ],
 
   "user_challenge": [
-    {
-      "challenge_id": 1,
-      "user_id": 1
-    },
-    {
-      "challenge_id": 2,
-      "user_id": 2
-    },
-    {
-      "challenge_id": 3,
-      "user_id": 3
-    }
+    { "challenge_id": 1, "user_id": 1 },
+    { "challenge_id": 2, "user_id": 2 },
+    { "challenge_id": 3, "user_id": 3 },
+    { "challenge_id": 1, "user_id": 2 },
+    { "challenge_id": 2, "user_id": 3 },
+    { "challenge_id": 3, "user_id": 1 }
   ]
 }
