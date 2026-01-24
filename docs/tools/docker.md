@@ -17,6 +17,17 @@ Installez Docker et Docker Compose.
 
 ### mode développement
 
+#### Maintenant
+> prise en compte des nouveaux modules npm installés, prise en compte des modifications de code backend et frontend, affichage des logs en temps réel.
+
+```bash
+docker compose up # lance les conteneurs en mode développement
+```
+ pour la prod il faudra faire un docker compose -f docker-compose.prod.yml up et gérer ça avec PM2 pour le backend et une build statique pour le frontend.
+
+#### Avant
+> pas moyen de suivre les logs en temps réel, pas de prise en compte de l'ajout de modules npm, pas de prise en compte des modifs de code sans rebuild de l'image.
+
 Pour lancer les conteneurs en mode développement, depuis la racine du projet, exécutez :
 
 ```bash
