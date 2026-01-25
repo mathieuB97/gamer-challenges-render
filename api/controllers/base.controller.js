@@ -123,6 +123,10 @@ class BaseController {
 			// 1. Récupérer le JSON qui est dans le body de la request
 			const dataJson = req.body;
 
+			if (req.user_id) {
+				dataJson.user_id = req.user_id;
+				console.log("🚀🚀🚀🚀🚀 Test pour BaseController.create called", dataJson.user_id);}
+
 			// 2. Insérer les données dans la BDD
 			const newElement = await this.#model.create(dataJson);
 
@@ -136,7 +140,7 @@ class BaseController {
 				// toutes les instruction après le throw ne seront pas exécutées
 				throw errorNotFound;
 			}
-
+			
 			// 3. Répondre à la requete HTTP du client
 			res.status(201).json(newElement);
 
