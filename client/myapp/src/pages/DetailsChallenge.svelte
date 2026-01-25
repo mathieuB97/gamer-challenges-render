@@ -11,6 +11,19 @@
     postOneVoteForOneChallenge,
   } from "../lib/services/challenge.service.js";
   /* Icônes */
+  import { Confetti } from "svelte-confetti";
+  import { tick } from "svelte";
+  // Affichage confettis à la demande
+  let displayConfetti = false;
+  function triggerConfetti() {
+    displayConfetti = false;
+    tick().then(() => {
+      displayConfetti = true;
+      setTimeout(() => {
+        displayConfetti = false;
+      }, 2000);
+    });
+  }
   import IconChallenge from "../components/icon-challenge.svelte";
   import IconParticipant from "../components/icon-participant.svelte";
   import IconOeil from "../components/icon-oeil.svelte";
@@ -90,7 +103,7 @@
     try {
       const result = await postOneVoteForOneChallenge(challengeId);
       hasVoted = true;
-      // Succès : log ou traitement UI ici si besoin
+      triggerConfetti();
       console.info(
         "Vote enregistré avec succès pour le challenge",
         challengeId,
@@ -194,6 +207,9 @@
             >
               {userLoading ? "Vérification..." : "Voter pour ce challenge"}
             </button>
+            {#if displayConfetti}
+              <Confetti amount={200} rounded={true} />
+            {/if}
           </div>
         </div>
       </div>
