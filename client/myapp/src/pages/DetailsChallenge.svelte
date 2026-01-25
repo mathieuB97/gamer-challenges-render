@@ -1,5 +1,7 @@
 <script>
   import { onMount } from "svelte";
+  import IconLike from "../components/icon-like.svelte";
+  import IconPlay from "../components/icon-play.svelte";
 
   // Reçu depuis le router (params.set({ challengeId: ctx.params.id }))
   export let challengeId = null;
@@ -7,7 +9,6 @@
   let loading = true;
   let errorMsg = "";
 
-  
   let challenge = null;
   let bestChallenges = [];
 
@@ -15,7 +16,7 @@
   let activity = {
     challengesCount: 248,
     participants: 1234,
-    views: "45.2K"
+    views: "45.2K",
   };
 
   // Vote utilisateur (1..5)
@@ -37,23 +38,63 @@
       "Aucun bouclier ne doit être équipé durant toute la partie",
       "Vous devez faire partie de l'équipe gagnante",
       "Les objets de soin sont autorisés",
-      "Minimum 5 éliminations requises"
+      "Minimum 5 éliminations requises",
     ],
     objectives: [
       { label: "Éliminations minimum", value: "5 kills" },
       { label: "Temps maximum", value: "25 minutes" },
       { label: "Position finale", value: "#1" },
-      { label: "Dégâts minimum", value: "1000" }
-    ]
+      { label: "Dégâts minimum", value: "1000" },
+    ],
   };
 
   // Mock bloc central (leaderboard)
   const mockBestChallenges = [
-    { id: 101, user: "ShadowGamer", level: "7K", points: "1523D", time: "18:32", rating: 4.8, votes: "156v" },
-    { id: 102, user: "ProElite99", level: "6K", points: "1445D", time: "19:45", rating: 4.6, votes: "142v" },
-    { id: 103, user: "NightHawk", level: "5K", points: "1389D", time: "20:12", rating: 4.5, votes: "128v" },
-    { id: 104, user: "ThunderStrike", level: "5K", points: "1256D", time: "21:03", rating: 4.3, votes: "98v" },
-    { id: 105, user: "MysticWarrior", level: "6K", points: "1198D", time: "22:18", rating: 4.2, votes: "87v" }
+    {
+      id: 101,
+      user: "ShadowGamer",
+      level: "7K",
+      points: "1523D",
+      time: "18:32",
+      rating: 4.8,
+      votes: "156v",
+    },
+    {
+      id: 102,
+      user: "ProElite99",
+      level: "6K",
+      points: "1445D",
+      time: "19:45",
+      rating: 4.6,
+      votes: "142v",
+    },
+    {
+      id: 103,
+      user: "NightHawk",
+      level: "5K",
+      points: "1389D",
+      time: "20:12",
+      rating: 4.5,
+      votes: "128v",
+    },
+    {
+      id: 104,
+      user: "ThunderStrike",
+      level: "5K",
+      points: "1256D",
+      time: "21:03",
+      rating: 4.3,
+      votes: "98v",
+    },
+    {
+      id: 105,
+      user: "MysticWarrior",
+      level: "6K",
+      points: "1198D",
+      time: "22:18",
+      rating: 4.2,
+      votes: "87v",
+    },
   ];
 
   // Load data (API -> sinon mock)
@@ -67,7 +108,9 @@
       }
 
       // Adapter selon votre infra (docker vs local)
-      const response = await fetch(`http://localhost:3000/api/challenges/${challengeId}`);
+      const response = await fetch(
+        `http://localhost:3000/api/challenges/${challengeId}`,
+      );
       if (!response.ok) throw new Error("API route not found");
 
       challenge = await response.json();
@@ -100,11 +143,10 @@
     alert(`Merci ! Vote envoyé: ${voteValue}/5`);
   }
 
-   /* Icônes */
+  /* Icônes */
   import IconChallenge from "../components/icon-challenge.svelte";
   import IconParticipant from "../components/icon-participant.svelte";
   import IconOeil from "../components/icon-oeil.svelte";
-
 </script>
 
 <main class="min-h-[calc(100vh-200px)]">
@@ -122,11 +164,15 @@
           class="h-full w-full object-cover"
           loading="lazy"
         />
-        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0e1a]/95 via-[#0a0e1a]/55 to-[#0a0e1a]/10"></div>
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-[#0a0e1a]/95 via-[#0a0e1a]/55 to-[#0a0e1a]/10"
+        ></div>
       </div>
 
       <div class="absolute inset-0">
-        <div class="mx-auto w-full max-w-6xl px-4 h-full flex flex-col justify-end pb-10">
+        <div
+          class="mx-auto w-full max-w-6xl px-4 h-full flex flex-col justify-end pb-10"
+        >
           <button
             type="button"
             on:click={goBack}
@@ -136,15 +182,26 @@
             <span class="text-sm">Retour aux challenges</span>
           </button>
 
-          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#00d9ff] drop-shadow">
+          <h1
+            class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#00d9ff] drop-shadow"
+          >
             {challenge?.title}
           </h1>
 
-          <div class="mt-3 flex flex-wrap items-center gap-4 text-sm text-white/80">
+          <div
+            class="mt-3 flex flex-wrap items-center gap-4 text-sm text-white/80"
+          >
             <span>Par <span class="text-white">{challenge?.author}</span></span>
-            <span class="inline-flex items-center gap-2"><span class="text-yellow-300">🏆</span>{challenge?.level}</span>
-            <span class="inline-flex items-center gap-2"><span class="text-orange-300">⚡</span>{challenge?.difficulty}</span>
-            <span class="inline-flex items-center gap-2"><span class="text-yellow-300">★</span>{challenge?.rating}</span>
+            <span class="inline-flex items-center gap-2"
+              ><span class="text-yellow-300">🏆</span>{challenge?.level}</span
+            >
+            <span class="inline-flex items-center gap-2"
+              ><span class="text-orange-300">⚡</span
+              >{challenge?.difficulty}</span
+            >
+            <span class="inline-flex items-center gap-2"
+              ><span class="text-yellow-300">★</span>{challenge?.rating}</span
+            >
           </div>
 
           {#if errorMsg}
@@ -191,7 +248,9 @@
 
           <div class="mt-5 grid gap-3 sm:grid-cols-2">
             {#each challenge?.objectives ?? [] as obj}
-              <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-xl p-4">
+              <div
+                class="bg-[#0a0e1a]/40 border border-white/10 rounded-xl p-4"
+              >
                 <p class="text-xs text-white/60">{obj.label}</p>
                 <p class="mt-2 text-[#00d9ff] font-semibold">{obj.value}</p>
               </div>
@@ -215,10 +274,14 @@
             <span class="text-yellow-300">Meilleurs</span>
             <span class="text-white"> challenges</span>
           </h2>
-          <span class="text-xs text-white/60">{bestChallenges?.length ?? 0} entrées</span>
+          <span class="text-xs text-white/60"
+            >{bestChallenges?.length ?? 0} entrées</span
+          >
         </div>
 
-        <div class="mt-5 max-h-[520px] overflow-auto pr-2 space-y-3 custom-scroll">
+        <div
+          class="mt-5 max-h-[520px] overflow-auto pr-2 space-y-3 custom-scroll"
+        >
           {#each bestChallenges as row (row.id)}
             <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4">
               <div class="flex items-center justify-between gap-3">
@@ -232,8 +295,12 @@
 
                   <div class="min-w-0">
                     <p class="text-white font-semibold truncate">{row.user}</p>
-                    <p class="text-xs text-white/60">{row.level} • {row.points}</p>
-                    <div class="mt-2 flex flex-wrap items-center gap-3 text-xs text-white/70">
+                    <p class="text-xs text-white/60">
+                      {row.level} • {row.points}
+                    </p>
+                    <div
+                      class="mt-2 flex flex-wrap items-center gap-3 text-xs text-white/70"
+                    >
                       <span>🕒 {row.time}</span>
                       <span class="text-yellow-300">★ {row.rating}</span>
                       <span>{row.votes}</span>
@@ -241,7 +308,9 @@
                   </div>
                 </div>
 
-                <div class="h-8 w-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-xs text-white/80">
+                <div
+                  class="h-8 w-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-xs text-white/80"
+                >
                   #{String(bestChallenges.indexOf(row) + 1)}
                 </div>
               </div>
@@ -249,17 +318,19 @@
               <div class="mt-4 flex items-center justify-end gap-2">
                 <button
                   type="button"
-                  class="px-3 py-2 rounded-lg border border-white/15 text-white/80 hover:bg-white/5 transition text-xs"
+                  class="flex flex-row items-end gap-1 px-3 py-2 rounded-lg border border-white/15 text-white/80 hover:bg-white/5 transition text-xs cursor-pointer"
                   on:click={() => openRowDetail(row)}
                 >
-                  ▶ Détail
+                  <IconPlay />
+                  <span class="leading-3"> Détail </span>
                 </button>
                 <button
                   type="button"
-                  class="px-3 py-2 rounded-lg bg-pink-500/90 hover:bg-pink-500 transition text-white text-xs font-semibold"
+                  class="flex flex-row items-end gap-1 px-3 py-2 rounded-lg bg-pink-500/90 hover:bg-pink-500 transition text-white text-xs font-semibold cursor-pointer"
                   on:click={() => voteForRow(row)}
                 >
-                  ❤ Vote
+                  <IconLike size={16} class="inline-block color-white" />
+                  <span class="leading-3"> Vote </span>
                 </button>
               </div>
             </div>
@@ -276,25 +347,35 @@
           </h2>
 
           <div class="mt-5 space-y-3">
-            <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between">
+            <div
+              class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between"
+            >
               <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-400
-            flex items-center justify-center">
-  <IconChallenge class="w-5 h-5 text-white" />
-</div>
+                <div
+                  class="h-10 w-10 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-400
+            flex items-center justify-center"
+                >
+                  <IconChallenge class="w-5 h-5 text-white" />
+                </div>
                 <div>
                   <p class="text-xs text-white/60">Challenges</p>
-                  <p class="text-[#00d9ff] font-bold">{activity.challengesCount}</p>
+                  <p class="text-[#00d9ff] font-bold">
+                    {activity.challengesCount}
+                  </p>
                 </div>
               </div>
             </div>
 
-            <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between">
+            <div
+              class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between"
+            >
               <div class="flex items-center gap-3">
-              <div class="h-10 w-10 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500
-            flex items-center justify-center">
-  <IconParticipant class="w-5 h-5 text-white" />
-</div>
+                <div
+                  class="h-10 w-10 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500
+            flex items-center justify-center"
+                >
+                  <IconParticipant class="w-5 h-5 text-white" />
+                </div>
                 <div>
                   <p class="text-xs text-white/60">Participants</p>
                   <p class="text-pink-300 font-bold">{activity.participants}</p>
@@ -302,12 +383,16 @@
               </div>
             </div>
 
-            <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between">
+            <div
+              class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between"
+            >
               <div class="flex items-center gap-3">
-              <div class="h-10 w-10 rounded-xl bg-gradient-to-r from-orange-400 to-pink-500
-            flex items-center justify-center">
-  <IconOeil class="w-5 h-5 text-white" />
-</div> 
+                <div
+                  class="h-10 w-10 rounded-xl bg-gradient-to-r from-orange-400 to-pink-500
+            flex items-center justify-center"
+                >
+                  <IconOeil class="w-5 h-5 text-white" />
+                </div>
                 <div>
                   <p class="text-xs text-white/60">Vues</p>
                   <p class="text-orange-200 font-bold">{activity.views}</p>
@@ -318,15 +403,21 @@
         </article>
 
         <article class="bg-[#141824] border border-white/10 rounded-2xl p-6">
-          <h2 class="text-xl font-bold text-yellow-200">Votez pour ce challenge</h2>
-          <p class="mt-2 text-sm text-white/70">Donnez votre avis sur ce challenge</p>
+          <h2 class="text-xl font-bold text-yellow-200">
+            Votez pour ce challenge
+          </h2>
+          <p class="mt-2 text-sm text-white/70">
+            Donnez votre avis sur ce challenge
+          </p>
 
           <div class="mt-4 flex items-center justify-between gap-2">
-            {#each [1,2,3,4,5] as n}
+            {#each [1, 2, 3, 4, 5] as n}
               <button
                 type="button"
                 class="h-10 w-10 rounded-full border border-white/15 text-white/80 hover:bg-white/5 transition
-                       {voteValue === n ? 'bg-white/10 border-white/30 text-white' : ''}"
+                       {voteValue === n
+                  ? 'bg-white/10 border-white/30 text-white'
+                  : ''}"
                 on:click={() => (voteValue = n)}
               >
                 {n}
@@ -347,17 +438,3 @@
     </div>
   </section>
 </main>
-
-<style>
-  /* Scrollbar custom */
-  .custom-scroll::-webkit-scrollbar {
-    width: 8px;
-  }
-  .custom-scroll::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.12);
-    border-radius: 999px;
-  }
-  .custom-scroll::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.18);
-  }
-</style>

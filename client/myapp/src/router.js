@@ -42,6 +42,10 @@ page('/challenges', () => {
     currentComponent.set(Challenges);
     routeParams.set({});
 });
+page('/detail-challenge', () => {
+    currentComponent.set(DetailsChallenge);
+    routeParams.set({});
+});
 
 page('/a-propos', () => {
     currentComponent.set(About);
