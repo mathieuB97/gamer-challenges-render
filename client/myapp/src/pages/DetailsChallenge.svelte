@@ -6,6 +6,11 @@
   import IconPlay from "../components/icon-play.svelte";
   import { mockChallenge, mockBestChallenges } from "../mock/challenge.mock.js";
   import { mockChallenges } from "../mock/challenges.mock.js";
+  import { getChallengeDetail } from "../lib/services/challenge.service.js";
+  /* Icônes */
+  import IconChallenge from "../components/icon-challenge.svelte";
+  import IconParticipant from "../components/icon-participant.svelte";
+  import IconOeil from "../components/icon-oeil.svelte";
   // Si besoin d'une liste, utiliser import { mockChallenges } from "../mock/challenges.mock.js";
 
   let currentUser = null;
@@ -32,81 +37,7 @@
 
   // Vote utilisateur (1..5)
   let voteValue = 0;
-
-  // Fallback mock si l'API ne répond pas
-  // const mockChallenge = {
-  //   id: 1,
-  //   title: "Victoire sans bouclier",
-  //   author: "ProGamer42",
-  //   level: "Expert",
-  //   difficulty: "Difficile",
-  //   rating: 4.5,
-  //   heroImage:
-  //     "https://images.unsplash.com/photo-1611138290962-2c550ffd4002?w=1600&auto=format&fit=crop&q=80",
-  //   description:
-  //     "Remportez une partie complète sans jamais équiper de bouclier corporel. Vous devez compter uniquement sur vos compétences de tir et votre positionnement stratégique.",
-  //   rules: [
-  //     "Aucun bouclier ne doit être équipé durant toute la partie",
-  //     "Vous devez faire partie de l'équipe gagnante",
-  //     "Les objets de soin sont autorisés",
-  //     "Minimum 5 éliminations requises",
-  //   ],
-  //   objectives: [
-  //     { label: "Éliminations minimum", value: "5 kills" },
-  //     { label: "Temps maximum", value: "25 minutes" },
-  //     { label: "Position finale", value: "#1" },
-  //     { label: "Dégâts minimum", value: "1000" },
-  //   ],
-  // };
-
-  // Mock bloc central (leaderboard)
-  // const mockBestChallenges = [
-  //   {
-  //     id: 101,
-  //     user: "ShadowGamer",
-  //     level: "7K",
-  //     points: "1523D",
-  //     time: "18:32",
-  //     rating: 4.8,
-  //     votes: "156v",
-  //   },
-  //   {
-  //     id: 102,
-  //     user: "ProElite99",
-  //     level: "6K",
-  //     points: "1445D",
-  //     time: "19:45",
-  //     rating: 4.6,
-  //     votes: "142v",
-  //   },
-  //   {
-  //     id: 103,
-  //     user: "NightHawk",
-  //     level: "5K",
-  //     points: "1389D",
-  //     time: "20:12",
-  //     rating: 4.5,
-  //     votes: "128v",
-  //   },
-  //   {
-  //     id: 104,
-  //     user: "ThunderStrike",
-  //     level: "5K",
-  //     points: "1256D",
-  //     time: "21:03",
-  //     rating: 4.3,
-  //     votes: "98v",
-  //   },
-  //   {
-  //     id: 105,
-  //     user: "MysticWarrior",
-  //     level: "6K",
-  //     points: "1198D",
-  //     time: "22:18",
-  //     rating: 4.2,
-  //     votes: "87v",
-  //   },
-  // ];
+  0;
 
   // Load data (API -> sinon mock)
   onMount(async () => {
@@ -123,13 +54,8 @@
         return;
       }
 
-      // Adapter selon votre infra (docker vs local)
-      const response = await fetch(
-        `http://localhost:3000/api/challenges/${challengeId}`,
-      );
-      if (!response.ok) throw new Error("API route not found");
-
-      challenge = await response.json();
+      // Utilise le service getChallengeDetail
+      challenge = await getChallengeDetail(challengeId);
       bestChallenges = mockBestChallenges; // à remplacer quand API leaderboard dispo
     } catch (error) {
       console.error("Erreur API challenge detail:", error);
@@ -141,7 +67,7 @@
     }
   });
 
-  // Actions
+  // TODO remplacer par le router SPA page module
   function goBack() {
     window.location.href = "/liste-challenges";
   }
@@ -161,11 +87,6 @@
     if (!voteValue) return alert("Choisis une note (1 à 5) avant de voter.");
     alert(`Merci ! Vote envoyé: ${voteValue}/5`);
   }
-
-  /* Icônes */
-  import IconChallenge from "../components/icon-challenge.svelte";
-  import IconParticipant from "../components/icon-participant.svelte";
-  import IconOeil from "../components/icon-oeil.svelte";
 </script>
 
 <main class="min-h-[calc(100vh-200px)]">
@@ -178,8 +99,8 @@
     {:else}
       <div class="relative h-[420px] w-full overflow-hidden">
         <img
-          src={challenge?.heroImage}
-          alt={challenge?.title}
+          src={challenge?.game.image}
+          alt={challenge?.name}
           class="h-full w-full object-cover"
           loading="lazy"
         />
@@ -203,7 +124,7 @@
             <h1
               class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#00d9ff] drop-shadow"
             >
-              {challenge?.title}
+              {challenge?.name}
             </h1>
 
             <div
@@ -294,14 +215,9 @@
 
           <div class="mt-6">
             <h3 class="text-lg font-semibold text-pink-300">Règles</h3>
-            <ul class="mt-3 space-y-2 text-sm text-white/80">
-              {#each challenge?.rules ?? [] as rule}
-                <li class="flex items-start gap-3">
-                  <span class="mt-0.5 text-[#00d9ff]">✔</span>
-                  <span>{rule}</span>
-                </li>
-              {/each}
-            </ul>
+            <p class="mt-3 space-y-2 text-sm text-white/80">
+              {challenge?.rules}
+            </p>
           </div>
         </article>
 

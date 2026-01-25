@@ -1,5 +1,39 @@
-// Service pour récupérer les données des challenges depuis l'API
 import api from "../api.js";
+/**
+ * Récupère les challenges d'un jeu par son id
+ * @param {string|number} gameId
+ * @returns {Promise<Array>} liste des challenges pour ce jeu
+ */
+export async function getChallengesByGameId(gameId) {
+    if (!gameId) throw new Error("gameId requis pour getChallengesByGameId");
+    const data = await api(`/games/${gameId}/challenges`);
+    if (Array.isArray(data.challenges)) {
+        return data.challenges;
+    }
+    throw new Error("Structure de données invalide : challenges doit être un tableau");
+}
+/**
+ * Récupère le détail d'un challenge par son id
+ * @param {string|number} id
+ * @returns {Promise<Object>} le challenge ou une erreur
+ */
+export async function getChallengeDetail(id) {
+    if (!id) throw new Error("id requis pour getChallengeDetail");
+    try {
+        const data = await api(`/challenges/${id}`);
+        if (data && typeof data === 'object') {
+            return data;
+        }
+        throw new Error("Challenge introuvable ou réponse invalide");
+    } catch (error) {
+        // Affiche l'erreur HTTP réelle pour debug
+        if (error && error.message) {
+            throw new Error(`Erreur API getChallengeDetail: ${error.message}`);
+        }
+        throw new Error("Erreur inconnue dans getChallengeDetail");
+    }
+}
+// Service pour récupérer les données des challenges depuis l'API
 
 /**
  * Récupère les challenges depuis l'API avec fallback sur les données mock
