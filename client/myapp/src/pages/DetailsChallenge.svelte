@@ -4,6 +4,9 @@
   import { userStore } from "../lib/stores/user.store.js";
   import IconLike from "../components/icon-like.svelte";
   import IconPlay from "../components/icon-play.svelte";
+  import { mockChallenge, mockBestChallenges } from "../mock/challenge.mock.js";
+  import { mockChallenges } from "../mock/challenges.mock.js";
+  // Si besoin d'une liste, utiliser import { mockChallenges } from "../mock/challenges.mock.js";
 
   let currentUser = null;
   let userLoading = true;
@@ -31,79 +34,79 @@
   let voteValue = 0;
 
   // Fallback mock si l'API ne répond pas
-  const mockChallenge = {
-    id: 1,
-    title: "Victoire sans bouclier",
-    author: "ProGamer42",
-    level: "Expert",
-    difficulty: "Difficile",
-    rating: 4.5,
-    heroImage:
-      "https://images.unsplash.com/photo-1611138290962-2c550ffd4002?w=1600&auto=format&fit=crop&q=80",
-    description:
-      "Remportez une partie complète sans jamais équiper de bouclier corporel. Vous devez compter uniquement sur vos compétences de tir et votre positionnement stratégique.",
-    rules: [
-      "Aucun bouclier ne doit être équipé durant toute la partie",
-      "Vous devez faire partie de l'équipe gagnante",
-      "Les objets de soin sont autorisés",
-      "Minimum 5 éliminations requises",
-    ],
-    objectives: [
-      { label: "Éliminations minimum", value: "5 kills" },
-      { label: "Temps maximum", value: "25 minutes" },
-      { label: "Position finale", value: "#1" },
-      { label: "Dégâts minimum", value: "1000" },
-    ],
-  };
+  // const mockChallenge = {
+  //   id: 1,
+  //   title: "Victoire sans bouclier",
+  //   author: "ProGamer42",
+  //   level: "Expert",
+  //   difficulty: "Difficile",
+  //   rating: 4.5,
+  //   heroImage:
+  //     "https://images.unsplash.com/photo-1611138290962-2c550ffd4002?w=1600&auto=format&fit=crop&q=80",
+  //   description:
+  //     "Remportez une partie complète sans jamais équiper de bouclier corporel. Vous devez compter uniquement sur vos compétences de tir et votre positionnement stratégique.",
+  //   rules: [
+  //     "Aucun bouclier ne doit être équipé durant toute la partie",
+  //     "Vous devez faire partie de l'équipe gagnante",
+  //     "Les objets de soin sont autorisés",
+  //     "Minimum 5 éliminations requises",
+  //   ],
+  //   objectives: [
+  //     { label: "Éliminations minimum", value: "5 kills" },
+  //     { label: "Temps maximum", value: "25 minutes" },
+  //     { label: "Position finale", value: "#1" },
+  //     { label: "Dégâts minimum", value: "1000" },
+  //   ],
+  // };
 
   // Mock bloc central (leaderboard)
-  const mockBestChallenges = [
-    {
-      id: 101,
-      user: "ShadowGamer",
-      level: "7K",
-      points: "1523D",
-      time: "18:32",
-      rating: 4.8,
-      votes: "156v",
-    },
-    {
-      id: 102,
-      user: "ProElite99",
-      level: "6K",
-      points: "1445D",
-      time: "19:45",
-      rating: 4.6,
-      votes: "142v",
-    },
-    {
-      id: 103,
-      user: "NightHawk",
-      level: "5K",
-      points: "1389D",
-      time: "20:12",
-      rating: 4.5,
-      votes: "128v",
-    },
-    {
-      id: 104,
-      user: "ThunderStrike",
-      level: "5K",
-      points: "1256D",
-      time: "21:03",
-      rating: 4.3,
-      votes: "98v",
-    },
-    {
-      id: 105,
-      user: "MysticWarrior",
-      level: "6K",
-      points: "1198D",
-      time: "22:18",
-      rating: 4.2,
-      votes: "87v",
-    },
-  ];
+  // const mockBestChallenges = [
+  //   {
+  //     id: 101,
+  //     user: "ShadowGamer",
+  //     level: "7K",
+  //     points: "1523D",
+  //     time: "18:32",
+  //     rating: 4.8,
+  //     votes: "156v",
+  //   },
+  //   {
+  //     id: 102,
+  //     user: "ProElite99",
+  //     level: "6K",
+  //     points: "1445D",
+  //     time: "19:45",
+  //     rating: 4.6,
+  //     votes: "142v",
+  //   },
+  //   {
+  //     id: 103,
+  //     user: "NightHawk",
+  //     level: "5K",
+  //     points: "1389D",
+  //     time: "20:12",
+  //     rating: 4.5,
+  //     votes: "128v",
+  //   },
+  //   {
+  //     id: 104,
+  //     user: "ThunderStrike",
+  //     level: "5K",
+  //     points: "1256D",
+  //     time: "21:03",
+  //     rating: 4.3,
+  //     votes: "98v",
+  //   },
+  //   {
+  //     id: 105,
+  //     user: "MysticWarrior",
+  //     level: "6K",
+  //     points: "1198D",
+  //     time: "22:18",
+  //     rating: 4.2,
+  //     votes: "87v",
+  //   },
+  // ];
 
   // Load data (API -> sinon mock)
   onMount(async () => {
@@ -244,6 +247,38 @@
 
   <!-- CONTENT -->
   <section class="mx-auto w-full max-w-6xl px-4 py-8">
+    <!-- SECTION : Challenges disponibles (mock) -->
+    <article class="bg-[#141824] border border-white/10 rounded-2xl p-6 mb-8">
+      <h2 class="text-xl font-bold text-[#00d9ff] mb-4">
+        Challenges disponibles (mock)
+      </h2>
+      {#if mockChallenges && mockChallenges.length > 0}
+        <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {#each mockChallenges as ch}
+            <div
+              class="bg-[#0a0e1a]/40 border border-white/10 rounded-xl p-4 flex flex-col gap-2"
+            >
+              <h3 class="text-lg font-semibold text-white truncate">
+                {ch.name}
+              </h3>
+              <p class="text-xs text-white/60 mb-2">{ch.description}</p>
+              <div class="flex flex-wrap gap-2 text-xs text-white/70">
+                <span class="inline-flex items-center gap-1"
+                  ><span class="text-yellow-300">🏆</span>{ch.level}</span
+                >
+                <span class="inline-flex items-center gap-1"
+                  ><span class="text-pink-300">⏱️</span
+                  >{ch.time_limit_minutes ?? "—"} min</span
+                >
+              </div>
+              <div class="mt-2 text-xs text-white/50 italic">{ch.id}</div>
+            </div>
+          {/each}
+        </div>
+      {:else}
+        <div class="text-white/70">Chargement des challenges...</div>
+      {/if}
+    </article>
     <div class="grid gap-4 lg:grid-cols-[1.15fr_0.95fr_0.75fr]">
       <!-- LEFT -->
       <div class="space-y-4">

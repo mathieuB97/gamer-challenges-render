@@ -37,41 +37,8 @@
     if (e.key === "Escape" && isGameModalOpen) closeGameModal();
   }
 
-  // MOCK (pour intégrer la maquette même si l’API ne répond pas encore)
-  const mockChallenges = [
-    {
-      id: 1,
-      title: "Victoire sans bouclier",
-      author: "ProGamer42",
-      level: "Expert",
-      difficulty: "Difficile",
-      rating: 4.5,
-    },
-    {
-      id: 2,
-      title: "Top 1 au pistolet",
-      author: "Maka",
-      level: "Intermédiaire",
-      difficulty: "Moyen",
-      rating: 4.0,
-    },
-    {
-      id: 3,
-      title: "0 dégâts subis",
-      author: "NoHit",
-      level: "Expert",
-      difficulty: "Difficile",
-      rating: 4.8,
-    },
-    {
-      id: 4,
-      title: "Win en solo",
-      author: "SoloKing",
-      level: "Avancé",
-      difficulty: "Difficile",
-      rating: 4.2,
-    },
-  ];
+  // MOCK strict conforme au modèle Sequelize Challenge
+  import { mockChallenges } from "../mock/challenges.mock.js";
 
   onMount(async () => {
     window.addEventListener("keydown", handleKeydown);
@@ -223,18 +190,22 @@
                       <h3
                         class="text-white font-semibold leading-tight truncate"
                       >
-                        {c.title}
+                        {c.title ?? c.name}
                       </h3>
 
                       <p class="text-xs text-white/60 mt-1">
-                        Par <span class="text-white/80">{c.author}</span>
+                        Par <span class="text-white/80"
+                          >{c.author ?? "Auteur inconnu"}</span
+                        >
                       </p>
 
                       <div
                         class="flex items-center gap-3 mt-2 text-xs flex-wrap"
                       >
                         <span class="text-white/70">🏆 {c.level}</span>
-                        <span class="text-white/70">⚡ {c.difficulty}</span>
+                        <span class="text-white/70"
+                          >⚡ {c.difficulty ?? "N/A"}</span
+                        >
                       </div>
                     </div>
                   </div>
@@ -244,7 +215,7 @@
                     class="flex items-center gap-2 text-sm text-white/80 flex-shrink-0"
                   >
                     <span class="text-yellow-300">★</span>
-                    <span>{c.rating}</span>
+                    <span>{c.rating ?? "N/A"}</span>
                   </div>
                 </div>
 
