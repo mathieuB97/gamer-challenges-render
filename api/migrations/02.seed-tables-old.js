@@ -13,7 +13,9 @@ async function seed() {
 
 	try {
 		// force: true va DROP les tables avant de les recréer. Pour le dev uniquement !
-		// await sequelize.sync({ force: true }); 
+		await sequelize.sync({ force: true }); 
+
+		console.log('✅ Tables créées/recréées avec succès!'); 
 
 		// ==============
 		// ** éléments du JSON
@@ -25,18 +27,14 @@ async function seed() {
 		const user_challenge = data.user_challenge;
 		const user_contribution = data.user_contribution;
 
-		// =================
-		// ** import des roles
-		// =================
-
-		// tableau des rôles
-		const roles = data.roles;
-
-		for (let role of roles) {
-			// INSERT
-			await Role.create(role);
-		}
-
+		console.log('📊 Données à importer:');
+		console.log(`- ${roles.length} rôles`);
+		console.log(`- ${users.length} utilisateurs`);
+		console.log(`- ${games.length} jeux`);
+		console.log(`- ${challenges.length} challenges`);
+		console.log(`- ${contributions.length} contributions`);
+		console.log(`- ${user_challenge.length} participations aux challenges`);
+		console.log(`- ${user_contribution.length} votes sur contributions`);
 		// =================
 		// ** import des utilisateurs
 		// =================
@@ -99,40 +97,85 @@ async function seed() {
 				video_url: contribution.video_url,
 				challenge_id: contribution.challenge_id,
 				user_id: contribution.user_id,
-				duration: contribution.duration
+				// On mappe "duration_minutes" du JSON vers "duration" de la BDD
+				duration: contribution.duration_minutes
 			});
 		}
 
 		// =================
+		// ** Liens entre user et contribution
+		// =================
 
-		// =================
-		// ** Liens entre user et contribution (user_contribution)
-		// =================
+		// Objet User initialisé à null
 		let myUser = null;
+
+		// Objet Contribution initialisé à null
 		let myContribution = null;
+
 		for (let element of user_contribution) {
+
+			// Pour chaque "element" : {user_id, contribution_id}
+			// Faire une recherche dans la BDD pour récupérer un objet User grace à user_id
+			// Faire une recherche dans la BDD pour récupérer un objet Contribution grace a contribution_id
+			// Faire le lien entre l'objet User et l'objet Contribution 
+
+			// Recherche dans la BDD de la User à modifier
+			// SELECT
 			myUser = await User.findByPk(element.user_id);
-			myContribution = await Contribution.findByPk(element.contribution_id);
-			if (myUser && myContribution) {
-				// L'alias généré par Sequelize est addCollab_contribution (voir as: 'collab_contributions')
-				await myUser.addCollab_contribution(myContribution);
+
+			if (myUser) {
+				// recherche dans la BDD de la Contribution 
+				// SELECT
+				myContribution = await Contribution.findByPk(element.contribution_id);
+
+				if (myContribution) {
+					// Le User et la Contribution existent.
+					// Je peux ajouter la Contribution dans la liste des contributions pour l'User 
+
+					// Méthode magique fournie par Sequelize (correspond à l'alias 'collab_contributions')
+					await myUser.addCollab_contribution(myContribution);
+				} else {
+					throw Error('myContribution is null')
+				}
 			} else {
-				throw Error('user_contribution: user or contribution not found');
+				throw Error('myUser is null')
 			}
 		}
 
 		// =================
-		// ** Liens entre user et challenge (user_challenge)
+		// ** Liens entre user et challenge (participants/votes)
 		// =================
+
+		// Objet Challenge initialisé à null
 		let myChallenge = null;
+
 		for (let element of user_challenge) {
+
+			// Pour chaque "element" : {user_id, challenge_id}
+			// Faire une recherche dans la BDD pour récupérer un objet User grace à user_id
+			// Faire une recherche dans la BDD pour récupérer un objet Challenge grace a challenge_id
+			// Faire le lien entre l'objet User et l'objet Challenge 
+
+			// Recherche dans la BDD de la User à modifier
+			// SELECT
 			myUser = await User.findByPk(element.user_id);
-			myChallenge = await Challenge.findByPk(element.challenge_id);
-			if (myUser && myChallenge) {
-				// L'alias généré par Sequelize est addParticipated_challenge (voir as: 'participated_challenges')
-				await myUser.addParticipated_challenge(myChallenge);
+
+			if (myUser) {
+				// recherche dans la BDD du Challenge 
+				// SELECT
+				myChallenge = await Challenge.findByPk(element.challenge_id);
+
+				if (myChallenge) {
+					// Le User et le Challenge existent.
+					// Je peux ajouter le Challenge dans la liste des challenges participés pour l'User 
+
+					// Méthode magique fournie par Sequelize (correspond à l'alias 'participated_challenges')
+					await myUser.addParticipated_challenge(myChallenge);
+				} else {
+					throw Error('myChallenge is null')
+				}
 			} else {
-				throw Error('user_challenge: user or challenge not found');
+				throw Error('myUser is null for challenge participation')
 			}
 		}
 
