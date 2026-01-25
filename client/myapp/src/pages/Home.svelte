@@ -108,7 +108,7 @@
                 class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"
               />
               <div
-                class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"
+                class="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-transparent"
               ></div>
               <div class="absolute bottom-2 left-2 right-2">
                 <p class="text-sm mb-0.5">{player.name}</p>

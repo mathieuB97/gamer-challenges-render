@@ -184,7 +184,7 @@
           loading="lazy"
         />
         <div
-          class="absolute inset-0 bg-gradient-to-t from-[#0a0e1a]/95 via-[#0a0e1a]/55 to-[#0a0e1a]/10"
+          class="absolute inset-0 bg-linear-to-t from-[#0a0e1a]/95 via-[#0a0e1a]/55 to-[#0a0e1a]/10"
         ></div>
       </div>
 
