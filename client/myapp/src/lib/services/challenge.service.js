@@ -1,4 +1,19 @@
 import api from "../api.js";
+
+/**
+ * Utiliser le endpoint {{base_url}}/votes/challenge/:id pour enregistrer le vote de l'utilisateur en base pour un challenge donné. L'id de l'utilisateur sera récupéré depuis le token d'authentification.
+    * @param {string|number} challengeId
+ */
+export async function postOneVoteForOneChallenge(challengeId) {
+    if (!challengeId) throw new Error("challengeId requis pour postOneVoteForOneChallenge");
+    try {
+        const data = await api(`/votes/challenge/${challengeId}`, 'POST');
+        return data;
+    } catch (error) {
+        console.error("Erreur dans postOneVoteForOneChallenge:", error);
+        throw error;
+    }
+}
 /**
  * Récupère les challenges d'un jeu par son id
  * @param {string|number} gameId

@@ -6,7 +6,10 @@
   import IconPlay from "../components/icon-play.svelte";
   import { mockChallenge, mockBestChallenges } from "../mock/challenge.mock.js";
   import { mockChallenges } from "../mock/challenges.mock.js";
-  import { getChallengeDetail } from "../lib/services/challenge.service.js";
+  import {
+    getChallengeDetail,
+    postOneVoteForOneChallenge,
+  } from "../lib/services/challenge.service.js";
   /* Icônes */
   import IconChallenge from "../components/icon-challenge.svelte";
   import IconParticipant from "../components/icon-participant.svelte";
@@ -27,6 +30,11 @@
 
   let challenge = null;
   let bestChallenges = [];
+
+  // Message d'erreur spécifique au vote
+  let voteErrorMsg = "";
+  // Pour désactiver le bouton après vote
+  let hasVoted = false;
 
   // Bloc "activité" (mock en attendant API)
   let activity = {
@@ -73,10 +81,31 @@
   }
 
   // Pour voter sur le challenge principal
-  function voteForAChallenge(challengeId) {
-    alert(
-      `Vote pour: ${JSON.stringify(challengeId)} user ${currentUser?.id ?? null}`,
-    );
+  async function voteForAChallenge(challengeId) {
+    voteErrorMsg = "";
+    if (!challengeId) {
+      voteErrorMsg = "Impossible de voter : challenge introuvable";
+      return;
+    }
+    try {
+      const result = await postOneVoteForOneChallenge(challengeId);
+      hasVoted = true;
+      // Succès : log ou traitement UI ici si besoin
+      console.info(
+        "Vote enregistré avec succès pour le challenge",
+        challengeId,
+      );
+      return result;
+    } catch (error) {
+      // Si code 409, afficher uniquement le message du backend
+      if (error && error.data && error.data.statusCode === 409) {
+        voteErrorMsg = error.data.error;
+        hasVoted = true;
+      } else {
+        voteErrorMsg = "Erreur lors de l'envoi du vote. Veuillez réessayer.";
+      }
+      console.error("Erreur lors de l'envoi du vote:", error, error.data);
+    }
   }
 
   // Fonctions vides pour les boutons Détail et Vote sur les participations (meilleurs challenges)
@@ -150,13 +179,18 @@
             {/if}
           </div>
 
-          <div class="col-right ml-auto">
+          <div class="col-right w-[376px] ml-auto">
+            {#if voteErrorMsg}
+              <p class="mt-2 text-xl font-bold text-amber-300">
+                {voteErrorMsg}
+              </p>
+            {/if}
             <button
               type="button"
               on:click={() => voteForAChallenge(challenge?.id)}
-              class="mt-3 w-full py-3 px-6 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
+              class="mt-3 w-full py-3 px-6 text-xl rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
                      text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50"
-              disabled={userLoading || !currentUser}
+              disabled={userLoading || !currentUser || hasVoted}
             >
               {userLoading ? "Vérification..." : "Voter pour ce challenge"}
             </button>
@@ -209,13 +243,13 @@
             <span class="text-white"> du challenge</span>
           </h2>
 
-          <p class="mt-4 text-sm leading-relaxed text-white/80">
+          <p class="mt-4 leading-relaxed text-white/80">
             {challenge?.description}
           </p>
 
           <div class="mt-6">
             <h3 class="text-lg font-semibold text-pink-300">Règles</h3>
-            <p class="mt-3 space-y-2 text-sm text-white/80">
+            <p class="mt-3 space-y-2 text-white/80">
               {challenge?.rules}
             </p>
           </div>
