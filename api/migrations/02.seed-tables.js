@@ -13,7 +13,7 @@ async function seed() {
 
 	try {
 		// force: true va DROP les tables avant de les recréer. Pour le dev uniquement !
-		// await sequelize.sync({ force: true }); 
+		await sequelize.sync({ force: true }); 
 
 		// ==============
 		// ** éléments du JSON
@@ -112,28 +112,41 @@ async function seed() {
 		let myContribution = null;
 		for (let element of user_contribution) {
 			myUser = await User.findByPk(element.user_id);
-			myContribution = await Contribution.findByPk(element.contribution_id);
-			if (myUser && myContribution) {
-				// L'alias généré par Sequelize est addCollab_contribution (voir as: 'collab_contributions')
-				await myUser.addCollab_contribution(myContribution);
-			} else {
-				throw Error('user_contribution: user or contribution not found');
-			}
-		}
 
-		// =================
-		// ** Liens entre user et challenge (user_challenge)
-		// =================
-		let myChallenge = null;
-		for (let element of user_challenge) {
-			myUser = await User.findByPk(element.user_id);
-			myChallenge = await Challenge.findByPk(element.challenge_id);
-			if (myUser && myChallenge) {
-				// L'alias généré par Sequelize est addParticipated_challenge (voir as: 'participated_challenges')
-				await myUser.addParticipated_challenge(myChallenge);
+			if (myUser) {
+				// recherche dans la BDD de la Contribution 
+				// SELECT
+				myContribution = await Contribution.findByPk(element.contribution_id);
+
+				if (myContribution) {
+					// Le User et la Contribution existent.
+					// Je peux ajouter la Contribution dans la liste des contributions pour l'User 
+
+					// Méthode magique fournie par Sequelize au moment où on a déclaré User Belongs To Many Contribution
+					await myUser.addCollab_contribution(myContribution);
+				} else {
+					throw Error('myContribution is null')
+				}
 			} else {
 				throw Error('user_challenge: user or challenge not found');
 			}
+
+		// =================
+		// ** Liens entre user et challenge
+		// =================
+
+		let myChallenge = null; 
+		
+		for (let element of user_challenge) { 
+			myUser = await User.findByPk(element.user_id); 
+			myChallenge = await Challenge.findByPk(element.challenge_id); 
+			
+			if (!myUser) throw Error('myUser is null'); 
+			if (!myChallenge) throw Error('myChallenge is null'); 
+			
+		// Méthode magique fournie par Sequelize 
+		await myUser.addParticipated_challenge(myChallenge); }
+
 		}
 
 		console.log('✅ Seeding complete!');
