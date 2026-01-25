@@ -2,9 +2,15 @@ import ApiError from "./utils/ApiError";
 
 export default async function api(endpoint, method = "GET", body = undefined) {
     const headers = { "Content-Type": "application/json" };
+
     const token = localStorage.getItem("token");
-    // N'ajoute pas Authorization pour les endpoints d'auth
-    if (token && !endpoint.startsWith("/auth")) {
+    // On n'ajoute PAS le token pour /auth/login ou /auth/register,
+    // mais on DOIT l'ajouter pour /auth/me (qui vérifie la connexion)
+    if (
+        token &&
+        !endpoint.startsWith("/auth/login") &&
+        !endpoint.startsWith("/auth/register")
+    ) {
         headers.Authorization = `Bearer ${token}`;
     }
 
