@@ -5,7 +5,7 @@
   import {
     getChallenges,
     getLeaderboard,
-  } from "../lib/services/challengeService.js";
+  } from "../lib/services/challenge.service.js";
   import {
     topChallenges as mockTopChallenges,
     newChallenges as mockNewChallenges,
