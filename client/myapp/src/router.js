@@ -3,7 +3,7 @@ import page from 'page';
 import Home from './pages/Home.svelte';
 import Games from './pages/Games.svelte';
 // import GameDetail from './pages/GameDetail.svelte';
-import Challenges from './pages/Challenges.svelte';
+// import Challenges from './pages/Challenges.svelte';
 import About from './pages/About.svelte';
 import NotFound from './pages/NotFound.svelte';
 import Connexion from './pages/Connexion.svelte';
@@ -38,10 +38,6 @@ je pense que cette route n'est pas nécessaire elle serait le détail d'un jeux.
 //    routeParams.set({ gameId: ctx.params.id });
 // });
 
-page('/detail-challenge', () => {
-    currentComponent.set(DetailsChallenge);
-    routeParams.set({});
-});
 /**
  * La route des challenges est commentée car nous avons déjà une route plus spécifique pour les challenges d’un jeu cf. /jeux/:id/challenges
  */
@@ -72,6 +68,11 @@ page('/jeux/:id/challenges', (ctx) => {
 });
 // Option: rediriger l’ancienne route
 page('/liste-challenges/:id', (ctx) => page.redirect(`/jeux/${ctx.params.id}/challenges`));
+// Détail d’un challenge spécifique
+page('/detail-challenge/:id', (ctx) => {
+    currentComponent.set(DetailsChallenge);
+    routeParams.set({ challengeId: ctx.params.id });
+});
 
 
 page('/jeux/:id/creation-challenge', (ctx) => {
