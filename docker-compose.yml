@@ -26,8 +26,6 @@ services:
       - /usr/src/app/node_modules
     depends_on:
       - db
-    # On utilise node directement car nodemon n'est pas trouvé dans tes logs
-    command: node app.js
 
   # 3. Frontend (Client)
   client:
