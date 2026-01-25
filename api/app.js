@@ -1,6 +1,8 @@
+
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
+import errorMiddleware from './middlewares/error.middleware.js';
 
 // Import des routeurs
 import authRouteur from './routes/auth.router.js';
@@ -34,7 +36,12 @@ app.use(authRouteur);
 app.use(gameRouter);
 app.use(challengeRouter);
 app.use(contributionRouter);
+
 app.use(voteRouter);
+
+// 6. MIDDLEWARE GLOBAL DE GESTION DES ERREURS
+// Doit être APRES les routes pour attraper les erreurs lancées dans les contrôleurs via next(error)
+app.use(errorMiddleware);
 
 // 5. DÉMARRAGE
 const PORT = process.env.PORT || 3000;
