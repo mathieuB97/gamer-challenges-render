@@ -1,7 +1,15 @@
 <script>
   import { onMount } from "svelte";
+  import { getCurrentUser } from "../lib/services/auth.service.js";
+  import { userStore } from "../lib/stores/user.store.js";
   import IconLike from "../components/icon-like.svelte";
   import IconPlay from "../components/icon-play.svelte";
+
+  let currentUser = null;
+  let userLoading = true;
+
+  // Abonnement au store utilisateur pour la réactivité
+  $: $userStore, (currentUser = $userStore);
 
   // Reçu depuis le router (params.set({ challengeId: ctx.params.id }))
   export let challengeId = null;
@@ -99,6 +107,11 @@
 
   // Load data (API -> sinon mock)
   onMount(async () => {
+    // Vérifie l'utilisateur connecté et met à jour le store
+    userLoading = true;
+    await getCurrentUser();
+    userLoading = false;
+
     try {
       if (!challengeId) {
         challenge = mockChallenge;
@@ -130,13 +143,16 @@
     window.location.href = "/liste-challenges";
   }
 
-  function openRowDetail(row) {
-    alert(`Détail: ${row.user}`);
+  // Pour voter sur le challenge principal
+  function voteForAChallenge(challengeId) {
+    alert(
+      `Vote pour: ${JSON.stringify(challengeId)} user ${currentUser?.id ?? null}`,
+    );
   }
 
-  function voteForRow(row) {
-    alert(`Vote pour: ${row.user}`);
-  }
+  // Fonctions vides pour les boutons Détail et Vote sur les participations (meilleurs challenges)
+  function openParticipationDetail(row) {}
+  function voteForParticipation(row) {}
 
   function submitVote() {
     if (!voteValue) return alert("Choisis une note (1 à 5) avant de voter.");
@@ -170,43 +186,57 @@
       </div>
 
       <div class="absolute inset-0">
-        <div
-          class="mx-auto w-full max-w-6xl px-4 h-full flex flex-col justify-end pb-10"
-        >
-          <button
-            type="button"
-            on:click={goBack}
-            class="mb-4 inline-flex items-center gap-2 text-white/80 hover:text-white transition"
-          >
-            <span class="text-lg">←</span>
-            <span class="text-sm">Retour aux challenges</span>
-          </button>
+        <div class="flex items-end h-full w-full mx-auto max-w-6xl px-4 pb-10">
+          <div class="col-left">
+            <button
+              type="button"
+              on:click={goBack}
+              class="mb-4 inline-flex items-center gap-2 text-white/80 hover:text-white transition"
+            >
+              <span class="text-lg">←</span>
+              <span class="text-sm">Retour aux challenges</span>
+            </button>
 
-          <h1
-            class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#00d9ff] drop-shadow"
-          >
-            {challenge?.title}
-          </h1>
+            <h1
+              class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#00d9ff] drop-shadow"
+            >
+              {challenge?.title}
+            </h1>
 
-          <div
-            class="mt-3 flex flex-wrap items-center gap-4 text-sm text-white/80"
-          >
-            <span>Par <span class="text-white">{challenge?.author}</span></span>
-            <span class="inline-flex items-center gap-2"
-              ><span class="text-yellow-300">🏆</span>{challenge?.level}</span
+            <div
+              class="mt-3 flex flex-wrap items-center gap-4 text-sm text-white/80"
             >
-            <span class="inline-flex items-center gap-2"
-              ><span class="text-orange-300">⚡</span
-              >{challenge?.difficulty}</span
-            >
-            <span class="inline-flex items-center gap-2"
-              ><span class="text-yellow-300">★</span>{challenge?.rating}</span
-            >
+              <span
+                >Par <span class="text-white">{challenge?.author}</span></span
+              >
+              <span class="inline-flex items-center gap-2"
+                ><span class="text-yellow-300">🏆</span>{challenge?.level}</span
+              >
+              <span class="inline-flex items-center gap-2"
+                ><span class="text-orange-300">⚡</span
+                >{challenge?.difficulty}</span
+              >
+              <span class="inline-flex items-center gap-2"
+                ><span class="text-yellow-300">★</span>{challenge?.rating}</span
+              >
+            </div>
+
+            {#if errorMsg}
+              <p class="mt-3 text-xs text-amber-300">{errorMsg}</p>
+            {/if}
           </div>
 
-          {#if errorMsg}
-            <p class="mt-3 text-xs text-amber-300">{errorMsg}</p>
-          {/if}
+          <div class="col-right ml-auto">
+            <button
+              type="button"
+              on:click={() => voteForAChallenge(challenge?.id)}
+              class="mt-3 w-full py-3 px-6 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
+                     text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50"
+              disabled={userLoading || !currentUser}
+            >
+              {userLoading ? "Vérification..." : "Voter pour ce challenge"}
+            </button>
+          </div>
         </div>
       </div>
     {/if}
@@ -269,10 +299,10 @@
 
       <!-- MIDDLE -->
       <article class="bg-[#141824] border border-white/10 rounded-2xl p-6">
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between text-white">
           <h2 class="text-xl font-bold">
             <span class="text-yellow-300">Meilleurs</span>
-            <span class="text-white"> challenges</span>
+            challenges
           </h2>
           <span class="text-xs text-white/60"
             >{bestChallenges?.length ?? 0} entrées</span
@@ -319,7 +349,7 @@
                 <button
                   type="button"
                   class="flex flex-row items-end gap-1 px-3 py-2 rounded-lg border border-white/15 text-white/80 hover:bg-white/5 transition text-xs cursor-pointer"
-                  on:click={() => openRowDetail(row)}
+                  on:click={() => openParticipationDetail(row)}
                 >
                   <IconPlay />
                   <span class="leading-3"> Détail </span>
@@ -327,7 +357,7 @@
                 <button
                   type="button"
                   class="flex flex-row items-end gap-1 px-3 py-2 rounded-lg bg-pink-500/90 hover:bg-pink-500 transition text-white text-xs font-semibold cursor-pointer"
-                  on:click={() => voteForRow(row)}
+                  on:click={() => voteForParticipation(row)}
                 >
                   <IconLike size={16} class="inline-block color-white" />
                   <span class="leading-3"> Vote </span>
