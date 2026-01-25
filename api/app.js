@@ -10,6 +10,7 @@ import gameRouter from './routes/game.router.js';
 import challengeRouter from './routes/challenge.router.js';
 import contributionRouter from './routes/contribution.router.js';
 import voteRouter from './routes/vote.router.js';
+import userRouter from './routes/user.router.js';
 
 // Charger les variables d'environnement dès le début
 dotenv.config();
@@ -36,8 +37,8 @@ app.use(authRouteur);
 app.use(gameRouter);
 app.use(challengeRouter);
 app.use(contributionRouter);
-
 app.use(voteRouter);
+app.use(userRouter);
 
 // 6. MIDDLEWARE GLOBAL DE GESTION DES ERREURS
 // Doit être APRES les routes pour attraper les erreurs lancées dans les contrôleurs via next(error)
