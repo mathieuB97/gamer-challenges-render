@@ -20,4 +20,9 @@ router.get('/votes/contribution/:contributionId', voteController.getContribution
 // GET /votes/top-contributors?limit=10
 router.get('/votes/top-contributors', voteController.getTopContributors);
 
+// Route POST : Voter pour une contribution (auth obligatoire)
+// POST /votes/contribution/:contributionId
+router.post('/votes/contribution/:contributionId', validateToken, voteController.voteForContribution);
+
+
 export default router;
