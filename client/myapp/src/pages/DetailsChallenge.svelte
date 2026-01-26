@@ -12,6 +12,7 @@
   } from "../lib/services/challenge.service.js";
   import {
     postOneVoteForOneContribution,
+    getVotesForCurrentUserContributions,
   } from "../lib/services/contribution.service.js";
   /* Icônes */
   import { Confetti } from "svelte-confetti";
@@ -54,6 +55,9 @@
   // Pour désactiver le bouton après vote (participation)
   let hasVotedParticipation = false;
 
+  // Liste des IDs de contributions déjà votées par l'utilisateur
+  let votedContributionIds = [];
+
   // Bloc "activité" (mock en attendant API)
   let activity = {
     challengesCount: 248,
@@ -83,7 +87,16 @@
       // Utilise le service getChallengeDetail
       challenge = await getChallengeDetail(challengeId);
       participations = challenge.contributions; // à remplacer quand API leaderboard dispo
-      console.log("Détail participation reçu :", participations, "challenge", challenge);
+      console.log(
+        "Détail participation reçu :",
+        participations,
+        "challenge",
+        challenge,
+      );
+
+      // Récupère les contributions déjà votées par l'utilisateur
+      const votedContributions = await getVotesForCurrentUserContributions();
+      votedContributionIds = votedContributions.map((c) => c.id);
     } catch (error) {
       console.error("Erreur API challenge detail:", error);
       challenge = { ...mockChallenge, id: Number(challengeId ?? 1) };
@@ -139,6 +152,10 @@
     try {
       const result = await postOneVoteForOneContribution(participationId);
       hasVotedParticipation = true;
+      // Met à jour l'UI immédiatement : ajoute l'id à votedContributionIds
+      if (!votedContributionIds.includes(participationId)) {
+        votedContributionIds = [...votedContributionIds, participationId];
+      }
       triggerConfetti();
       console.info(
         "Vote enregistré avec succès pour la contribution",
@@ -155,9 +172,7 @@
       }
       console.error("Erreur lors de l'envoi du vote:", error, error.data);
     }
-
   }
-
   function submitVote() {
     if (!voteValue) return alert("Choisis une note (1 à 5) avant de voter.");
     alert(`Merci ! Vote envoyé: ${voteValue}/5`);
@@ -358,11 +373,13 @@
                   </div>
 
                   <div class="min-w-0">
-                    <p class="text-white font-semibold truncate">{participation.challenge.name} </p>
+                    <p class="text-white font-semibold truncate">
+                      {participation.challenge.name}
+                    </p>
                     <p>
                       {participation.creator.pseudo}
                     </p>
-                    
+
                     <!-- <p class="text-xs text-white/60">
                       {row.level} • {row.points}
                     </p> -->
@@ -395,10 +412,10 @@
                 <button
                   type="button"
                   class="flex flex-row items-end gap-1 px-3 py-2 rounded-lg bg-pink-500/90 hover:bg-pink-500 transition text-white text-xs font-semibold cursor-pointer disabled:opacity-50"
-                  on:click={() => voteForParticipation(Number
-                  (participation.id))}
+                  on:click={() =>
+                    voteForParticipation(Number(participation.id))}
+                  disabled={votedContributionIds.includes(participation.id)}
                 >
-                <!-- disabled={hasVotedParticipation} -->
                   <IconLike size={16} class="inline-block color-white" />
                   <span class="leading-3"> Vote </span>
                 </button>
