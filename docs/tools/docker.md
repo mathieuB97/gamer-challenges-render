@@ -26,6 +26,29 @@ docker compose --profile dev up # lance les conteneurs en mode développement
 docker compose --profile prod up -d # lance les conteneurs en mode production !important utiliser pm2 pour le backend et une build statique pour le frontend
 ```
 
+```bash
+# pour stopper les conteneurs
+docker stop gamerChallenges_api # backend
+docker stop gamerChallenges_client # frontend
+docker stop gamerChallenges_db # base de données
+# pour supprimer les conteneurs
+docker rm gamerChallenges_api
+docker rm gamerChallenges_client
+docker rm gamerChallenges_db
+# pour accéder au conteneur client
+docker compose exec client sh
+# pour accéder au conteneur api
+docker compose exec api sh
+# pour accéder au conteneur db
+docker compose exec db sh
+# lister les images
+docker compose images
+# recréer les tables dans la base de données
+docker exec -it gamerChallenges_api npm run db:create
+# re seed les tables dans la base de données
+docker exec -it gamerChallenges_api npm run db:seed
+```
+
 #### Avant
 > pas moyen de suivre les logs en temps réel, pas de prise en compte de l'ajout de modules npm, pas de prise en compte des modifs de code sans rebuild de l'image.
 
