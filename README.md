@@ -1,5 +1,12 @@
 # README
 
+# Livrable (TP) - GamerChallenges
+
+- test unitaires (au moins 1)
+- déploiement sur la VM O'Clock (mise en ligne du projet)
+- terminer ce qui a était lister dans le MVP (cf docs/conception/cahier-des-charges.md section Fonctionnalités principales (MVP))
+- vérifier le référentiel sur Kourou (présentation du projet lors du TP)
+
 # GamerChallenges
 
 > toute la documentation liée au projet est située dans le dossier `docs/` à la racine du dépôt.
