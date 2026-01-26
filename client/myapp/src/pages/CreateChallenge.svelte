@@ -90,7 +90,7 @@
                     name="time-limit-minutes"
                     label="Temps limite (en minutes)"
                     type="number"
-                    value={formData.time_limit_minutes}
+                    bind:value={formData.time_limit_minutes}
                     placeholder="le temps a éffectué (en minutes)"
                     required={true}
                     mandatory={true}
