@@ -275,7 +275,7 @@
                 <!-- Ligne 2 : boutons -->
                 <div class="mt-4 grid grid-cols-2 gap-3">
                   <a
-                    href={`/detail-challenge/${c.id}`}
+                    href={`/detail-challenge/${c.id}?gameId=${gameId}`}
                     class="w-full text-center font-bold py-2.5 rounded-lg border border-white/15 text-white/80
                            hover:bg-white/5 transition"
                   >

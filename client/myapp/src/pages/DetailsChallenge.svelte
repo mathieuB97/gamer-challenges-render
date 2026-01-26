@@ -17,6 +17,10 @@
   /* Icônes */
   import { Confetti } from "svelte-confetti";
   import { tick } from "svelte";
+  import IconChallenge from "../components/icon-challenge.svelte";
+  import IconParticipant from "../components/icon-participant.svelte";
+  import IconOeil from "../components/icon-oeil.svelte";
+
   // Affichage confettis à la demande
   let displayConfetti = false;
   function triggerConfetti() {
@@ -28,19 +32,24 @@
       }, 2000);
     });
   }
-  import IconChallenge from "../components/icon-challenge.svelte";
-  import IconParticipant from "../components/icon-participant.svelte";
-  import IconOeil from "../components/icon-oeil.svelte";
-  // Si besoin d'une liste, utiliser import { mockChallenges } from "../mock/challenges.mock.js";
 
   let currentUser = null;
   let userLoading = true;
-
-  // Abonnement au store utilisateur pour la réactivité
   $: $userStore, (currentUser = $userStore);
 
-  // Reçu depuis le router (params.set({ challengeId: ctx.params.id }))
-  export let challengeId = null;
+  // --- Paramètres d'URL ---
+  let challengeId = null;
+  let gameId = null;
+  function extractParams() {
+    // Query param
+    const urlParams = new URLSearchParams(window.location.search);
+    gameId = urlParams.get("gameId");
+    // Path param (ex: /challenge/123)
+    const pathParts = window.location.pathname.split("/");
+    // Cherche un nombre dans le path (id du challenge)
+    challengeId = pathParts.find((part) => /^\d+$/.test(part));
+  }
+  extractParams();
 
   let loading = true;
   let errorMsg = "";
@@ -202,14 +211,13 @@
       <div class="absolute inset-0">
         <div class="flex items-end h-full w-full mx-auto max-w-6xl px-4 pb-10">
           <div class="col-left">
-            <button
-              type="button"
-              on:click={goBack}
+            <a
+              href={gameId ? `/jeux/${gameId}/challenges` : "/liste-challenges"}
               class="mb-4 inline-flex items-center gap-2 text-white/80 hover:text-white transition"
             >
               <span class="text-lg">←</span>
               <span class="text-sm">Retour aux challenges</span>
-            </button>
+            </a>
 
             <h1
               class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#00d9ff] drop-shadow"
@@ -246,15 +254,6 @@
                 {voteErrorMsg}
               </p>
             {/if}
-            <button
-              type="button"
-              on:click={() => voteForAChallenge(challenge?.id)}
-              class="mt-3 w-full py-3 px-6 text-xl rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
-                     text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50"
-              disabled={userLoading || !currentUser || hasVoted}
-            >
-              {userLoading ? "Vérification..." : "Voter pour ce challenge"}
-            </button>
             {#if displayConfetti}
               <Confetti amount={200} rounded={true} />
             {/if}
