@@ -10,6 +10,9 @@
     getChallengeDetail,
     postOneVoteForOneChallenge,
   } from "../lib/services/challenge.service.js";
+  import {
+    postOneVoteForOneContribution,
+  } from "../lib/services/contribution.service.js";
   /* Icônes */
   import { Confetti } from "svelte-confetti";
   import { tick } from "svelte";
@@ -42,12 +45,14 @@
   let errorMsg = "";
 
   let challenge = null;
-  let bestChallenges = [];
+  let participations = [];
 
   // Message d'erreur spécifique au vote
   let voteErrorMsg = "";
   // Pour désactiver le bouton après vote
   let hasVoted = false;
+  // Pour désactiver le bouton après vote (participation)
+  let hasVotedParticipation = false;
 
   // Bloc "activité" (mock en attendant API)
   let activity = {
@@ -70,18 +75,19 @@
     try {
       if (!challengeId) {
         challenge = mockChallenge;
-        bestChallenges = mockBestChallenges;
+        participations = mockBestChallenges;
         errorMsg = "challengeId absent : affichage mock.";
         return;
       }
 
       // Utilise le service getChallengeDetail
       challenge = await getChallengeDetail(challengeId);
-      bestChallenges = mockBestChallenges; // à remplacer quand API leaderboard dispo
+      participations = challenge.contributions; // à remplacer quand API leaderboard dispo
+      console.log("Détail participation reçu :", participations, "challenge", challenge);
     } catch (error) {
       console.error("Erreur API challenge detail:", error);
       challenge = { ...mockChallenge, id: Number(challengeId ?? 1) };
-      bestChallenges = mockBestChallenges;
+      participations = mockBestChallenges;
       errorMsg = "API indisponible : affichage mock.";
     } finally {
       loading = false;
@@ -121,9 +127,36 @@
     }
   }
 
-  // Fonctions vides pour les boutons Détail et Vote sur les participations (meilleurs challenges)
+  // Fonctions vides pour les boutons Détail et Vote sur les participations (meilleures participations)
   function openParticipationDetail(row) {}
-  function voteForParticipation(row) {}
+
+  async function voteForParticipation(participationId) {
+    voteErrorMsg = "";
+    if (!participationId) {
+      voteErrorMsg = "Impossible de voter : participation introuvable";
+      return;
+    }
+    try {
+      const result = await postOneVoteForOneContribution(participationId);
+      hasVotedParticipation = true;
+      triggerConfetti();
+      console.info(
+        "Vote enregistré avec succès pour la contribution",
+        participationId,
+      );
+      return result;
+    } catch (error) {
+      // Si code 409, afficher uniquement le message du backend
+      if (error && error.data && error.data.statusCode === 409) {
+        voteErrorMsg = error.data.error;
+        hasVoted = true;
+      } else {
+        voteErrorMsg = "Erreur lors de l'envoi du vote. Veuillez réessayer.";
+      }
+      console.error("Erreur lors de l'envoi du vote:", error, error.data);
+    }
+
+  }
 
   function submitVote() {
     if (!voteValue) return alert("Choisis une note (1 à 5) avant de voter.");
@@ -303,17 +336,17 @@
         <div class="flex items-center justify-between text-white">
           <h2 class="text-xl font-bold">
             <span class="text-yellow-300">Meilleurs</span>
-            challenges
+            participation
           </h2>
           <span class="text-xs text-white/60"
-            >{bestChallenges?.length ?? 0} entrées</span
+            >{participations?.length ?? 0} entrées</span
           >
         </div>
 
         <div
           class="mt-5 max-h-[520px] overflow-auto pr-2 space-y-3 custom-scroll"
         >
-          {#each bestChallenges as row (row.id)}
+          {#each participations as participation (participation.id)}
             <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4">
               <div class="flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3 min-w-0">
@@ -321,45 +354,51 @@
                     class="h-10 w-10 rounded-full bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
                            flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
                   >
-                    {row.user.slice(0, 2).toUpperCase()}
+                    {participation.creator.pseudo.slice(0, 2).toUpperCase()}
                   </div>
 
                   <div class="min-w-0">
-                    <p class="text-white font-semibold truncate">{row.user}</p>
-                    <p class="text-xs text-white/60">
-                      {row.level} • {row.points}
+                    <p class="text-white font-semibold truncate">{participation.challenge.name} </p>
+                    <p>
+                      {participation.creator.pseudo}
                     </p>
+                    
+                    <!-- <p class="text-xs text-white/60">
+                      {row.level} • {row.points}
+                    </p> -->
                     <div
                       class="mt-2 flex flex-wrap items-center gap-3 text-xs text-white/70"
                     >
-                      <span>🕒 {row.time}</span>
-                      <span class="text-yellow-300">★ {row.rating}</span>
-                      <span>{row.votes}</span>
+                      <span>🕒 {participation.duration} minutes </span>
+                      <!-- <span class="text-yellow-300">★ {participation.rating}</span>
+                      <span>{participation.votes}</span> -->
                     </div>
                   </div>
                 </div>
 
-                <div
+                <!-- <div
                   class="h-8 w-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-xs text-white/80"
                 >
-                  #{String(bestChallenges.indexOf(row) + 1)}
-                </div>
+                  #{String(participations.indexOf(row) + 1)}
+                </div> -->
               </div>
 
               <div class="mt-4 flex items-center justify-end gap-2">
                 <button
                   type="button"
                   class="flex flex-row items-end gap-1 px-3 py-2 rounded-lg border border-white/15 text-white/80 hover:bg-white/5 transition text-xs cursor-pointer"
-                  on:click={() => openParticipationDetail(row)}
+                  on:click={() => openParticipationDetail(participation)}
                 >
                   <IconPlay />
                   <span class="leading-3"> Détail </span>
                 </button>
                 <button
                   type="button"
-                  class="flex flex-row items-end gap-1 px-3 py-2 rounded-lg bg-pink-500/90 hover:bg-pink-500 transition text-white text-xs font-semibold cursor-pointer"
-                  on:click={() => voteForParticipation(row)}
+                  class="flex flex-row items-end gap-1 px-3 py-2 rounded-lg bg-pink-500/90 hover:bg-pink-500 transition text-white text-xs font-semibold cursor-pointer disabled:opacity-50"
+                  on:click={() => voteForParticipation(Number
+                  (participation.id))}
                 >
+                <!-- disabled={hasVotedParticipation} -->
                   <IconLike size={16} class="inline-block color-white" />
                   <span class="leading-3"> Vote </span>
                 </button>
