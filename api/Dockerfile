@@ -2,9 +2,10 @@ FROM node:lts-alpine
 
 WORKDIR /usr/src/app
 
+
 COPY package*.json ./
-# En mode dev, on installe toutes les dépendances
-RUN npm install
+# On force l'installation des dépendances y compris dev
+RUN npm install --include=dev
 
 COPY . .
 

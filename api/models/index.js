@@ -33,7 +33,7 @@ User.hasMany(Challenge, {
 /* User — Contribution (L'auteur de la vidéo) */
 Contribution.belongsTo(User, {
   foreignKey: 'user_id',
-  as: 'author',
+  as: 'creator',
 });
 
 User.hasMany(Contribution, {

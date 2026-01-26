@@ -131,7 +131,7 @@ class BaseController {
 
 				// Error est une classe de Javascript pour gérer les erreur
 				// Le constructeur de la classe Error permet de passer en argument un message d'erreur
-				const errorNotFound = new HttpError(`Auncun ${this.#modelName} crée`, 500);
+				const errorNotFound = new HttpError(`Aucun ${this.#modelName} crée`, 500);
 				// J'ai créé une nouvelle erreur, je vais la lancer pour qu'elle soit attrapée par le catch
 				// toutes les instruction après le throw ne seront pas exécutées
 				throw errorNotFound;

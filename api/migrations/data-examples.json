@@ -31,90 +31,500 @@
 
   "games": [
     {
-      "name": "Super Mario Odyssey",
-      "category": "Plateforme",
-      "description": "Une aventure épique à travers de nombreux royaumes pour sauver la princesse Peach."
+      "name": "Valorant",
+      "category": "FPS",
+      "description": "Un FPS tactique en 5v5 avec des agents et des pouvoirs.",
+      "image": "https://images.unsplash.com/photo-1761164034378-573f87613427?w=600"
+    },
+    {
+      "name": "Apex Legends",
+      "category": "Battle Royale",
+      "description": "Un battle royale nerveux avec des héros et des compétences uniques.",
+      "image": "https://images.unsplash.com/photo-1611138290962-2c550ffd4002?w=600"
     },
     {
       "name": "League of Legends",
       "category": "MOBA",
-      "description": "Un jeu de stratégie en équipe où deux équipes de cinq champions s'affrontent."
+      "description": "Un jeu de stratégie en équipe où deux équipes de cinq champions s'affrontent.",
+      "image": "https://images.unsplash.com/photo-1635372730136-06b29022281c?w=600"
     },
     {
-      "name": "Elden Ring",
-      "category": "Action RPG",
-      "description": "Levez-vous, Sans-éclat, et laissez la grâce guider vos pas."
+      "name": "Fortnite",
+      "category": "Battle Royale",
+      "description": "Soyez le dernier survivant sur une île pleine de dangers.",
+      "image": "https://images.unsplash.com/photo-1568816684224-f752669b15b7?w=600"
+    },
+    {
+      "name": "Call of Duty",
+      "category": "FPS",
+      "description": "La célèbre franchise de tir à la première personne.",
+      "image": "https://images.unsplash.com/photo-1572289758057-3e0f4327833b?w=600"
+    },
+    {
+      "name": "Rocket League",
+      "category": "Sport/Voiture",
+      "description": "Du football avec des voitures survoltées.",
+      "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600"
     }
   ],
 
   "challenges": [
     {
-      "name": "Speedrun Cascade",
-      "description": "Finir le Royaume des Cascades le plus rapidement possible.",
-      "rules": "Le temps s'arrête à la collecte de la lune principale.",
-      "level": "medium",
-      "time limit" : "120 minutes"
-    },
-    {
-      "num_challenge": 2,
-      "name": "Pentakill Challenge",
-      "description": "Réaliser un Pentakill en partie classée.",
-      "rules": "Preuve vidéo obligatoire du tableau des scores.",
+      "name": "Speedrun Mario",
+      "description": "Finir le jeu en moins de 2h.",
+      "rules": "Pas de glitchs.",
       "level": "hard",
-      "time limit" : "60 minutes"
+      "time_limit_minutes": "120",
+      "user_id": 1,
+      "game_id": 1
     },
     {
-      "num_challenge": 3,
-      "name": "No Damage Boss",
-      "description": "Vaincre le premier boss sans perdre un seul point de vie.",
-      "rules": "Toute barre de vie entamée annule le défi.",
-      "level": "easy",
-      "time limit" : "90 minutes"
+      "name": "Collecte de lunes",
+      "description": "Récupérer 50 lunes en moins de 1h.",
+      "rules": "Pas d'aide extérieure.",
+      "level": "medium",
+      "time_limit_minutes": "60",
+      "user_id": 2,
+      "game_id": 1
+    },
+    {
+      "name": "No Damage Run",
+      "description": "Terminer un royaume sans subir de dégâts.",
+      "rules": "Aucun dégât autorisé.",
+      "level": "hard",
+      "time_limit_minutes": "30",
+      "user_id": 3,
+      "game_id": 1
+    },
+    {
+      "name": "Boss Rush",
+      "description": "Battre tous les boss sans mourir.",
+      "rules": "Pas de sauvegarde rapide.",
+      "level": "hard",
+      "time_limit_minutes": "90",
+      "user_id": 1,
+      "game_id": 1
+    },
+    {
+      "name": "Apex Legends - Top 3 Squad",
+      "description": "Atteindre le top 3 en escouade.",
+      "rules": "Pas de rage quit.",
+      "level": "medium",
+      "time_limit_minutes": "25",
+      "user_id": 2,
+      "game_id": 1
+    },
+
+    {
+      "name": "Pentakill Challenge",
+      "description": "Faire un pentakill en ranked.",
+      "rules": "SoloQ uniquement.",
+      "level": "medium",
+      "time_limit_minutes": "60",
+      "user_id": 2,
+      "game_id": 2
+    },
+    {
+      "name": "Farm Master",
+      "description": "Atteindre 300 cs en 20 minutes.",
+      "rules": "Partie classée.",
+      "level": "medium",
+      "time_limit_minutes": "20",
+      "user_id": 3,
+      "game_id": 2
+    },
+    {
+      "name": "No Death Support",
+      "description": "Finir une partie support sans mourir.",
+      "rules": "Aucune mort autorisée.",
+      "level": "hard",
+      "time_limit_minutes": "40",
+      "user_id": 1,
+      "game_id": 2
+    },
+    {
+      "name": "Solo Baron",
+      "description": "Tuer le Baron Nashor en solo.",
+      "rules": "Pas d'aide alliée.",
+      "level": "hard",
+      "time_limit_minutes": "35",
+      "user_id": 2,
+      "game_id": 2
+    },
+    {
+      "name": "Valorant - Ace Round",
+      "description": "Faire un ace dans une manche classée.",
+      "rules": "Pas de smurf.",
+      "level": "hard",
+      "time_limit_minutes": "10",
+      "user_id": 3,
+      "game_id": 2
+    },
+    {
+      "name": "Valorant - Clutch 1v3",
+      "description": "Gagner un round seul contre 3.",
+      "rules": "Pas d'aide vocale.",
+      "level": "hard",
+      "time_limit_minutes": "8",
+      "user_id": 1,
+      "game_id": 2
+    },
+
+    {
+      "name": "No Death Elden Ring",
+      "description": "Terminer Elden Ring sans mourir.",
+      "rules": "Pas de triche, pas d'aide.",
+      "level": "hard",
+      "time_limit_minutes": "999",
+      "user_id": 3,
+      "game_id": 3
+    },
+    {
+      "name": "Speedrun Boss",
+      "description": "Battre 5 boss en moins de 1h.",
+      "rules": "Pas de glitchs.",
+      "level": "medium",
+      "time_limit_minutes": "60",
+      "user_id": 1,
+      "game_id": 3
+    },
+    {
+      "name": "Full Magic Run",
+      "description": "Terminer le jeu en utilisant uniquement la magie.",
+      "rules": "Aucune arme physique.",
+      "level": "hard",
+      "time_limit_minutes": "999",
+      "user_id": 2,
+      "game_id": 3
+    },
+    {
+      "name": "No Armor",
+      "description": "Finir le jeu sans armure équipée.",
+      "rules": "Aucune pièce d'armure.",
+      "level": "hard",
+      "time_limit_minutes": "999",
+      "user_id": 3,
+      "game_id": 3
+    },
+    {
+      "name": "League - Jungle Only",
+      "description": "Jouer toute la partie uniquement dans la jungle.",
+      "rules": "Pas de lane.",
+      "level": "medium",
+      "time_limit_minutes": "30",
+      "user_id": 1,
+      "game_id": 3
+    },
+    {
+      "name": "League - Support Carry",
+      "description": "Finir MVP en jouant support.",
+      "rules": "Aucune mort.",
+      "level": "hard",
+      "time_limit_minutes": "40",
+      "user_id": 2,
+      "game_id": 3
+    },
+    {
+      "name": "League - 0 CS Win",
+      "description": "Gagner sans prendre un seul sbire.",
+      "rules": "Pas de farm.",
+      "level": "hard",
+      "time_limit_minutes": "35",
+      "user_id": 3,
+      "game_id": 3
+    },
+
+    {
+      "name": "Speedrun Zelda",
+      "description": "Finir le jeu en moins de 3h.",
+      "rules": "Pas de glitchs.",
+      "level": "hard",
+      "time_limit_minutes": "180",
+      "user_id": 1,
+      "game_id": 4
+    },
+    {
+      "name": "Korok Hunter",
+      "description": "Trouver 50 noix Korogu.",
+      "rules": "Pas d'aide en ligne.",
+      "level": "medium",
+      "time_limit_minutes": "120",
+      "user_id": 2,
+      "game_id": 4
+    },
+    {
+      "name": "No Shield Run",
+      "description": "Terminer un donjon sans bouclier.",
+      "rules": "Aucun bouclier équipé.",
+      "level": "medium",
+      "time_limit_minutes": "60",
+      "user_id": 3,
+      "game_id": 4
+    },
+    {
+      "name": "Master Sword Only",
+      "description": "Battre Ganon avec uniquement l'épée de légende.",
+      "rules": "Aucune autre arme.",
+      "level": "hard",
+      "time_limit_minutes": "60",
+      "user_id": 1,
+      "game_id": 4
+    },
+    {
+      "name": "Fortnite - Skybase",
+      "description": "Gagner une partie en construisant une skybase.",
+      "rules": "Skybase obligatoire.",
+      "level": "medium",
+      "time_limit_minutes": "30",
+      "user_id": 2,
+      "game_id": 4
+    },
+    {
+      "name": "Fortnite - No Weapon",
+      "description": "Survivre dans le top 10 sans arme.",
+      "rules": "Aucune arme ramassée.",
+      "level": "hard",
+      "time_limit_minutes": "20",
+      "user_id": 3,
+      "game_id": 4
+    },
+    {
+      "name": "Fortnite - Only Pistols",
+      "description": "Faire top 5 avec uniquement des pistolets.",
+      "rules": "Aucune autre arme.",
+      "level": "medium",
+      "time_limit_minutes": "25",
+      "user_id": 1,
+      "game_id": 4
+    },
+    {
+      "name": "Fortnite - Heal Master",
+      "description": "Finir la partie avec tous les soins utilisés.",
+      "rules": "Utiliser tous les soins trouvés.",
+      "level": "medium",
+      "time_limit_minutes": "30",
+      "user_id": 2,
+      "game_id": 4
+    },
+
+    {
+      "name": "Top 1 Solo",
+      "description": "Gagner une partie en solo.",
+      "rules": "Aucune aide extérieure.",
+      "level": "medium",
+      "time_limit_minutes": "30",
+      "user_id": 2,
+      "game_id": 5
+    },
+    {
+      "name": "Call of Duty - Grenade Master",
+      "description": "Faire 5 kills à la grenade en une partie.",
+      "rules": "Aucune autre arme pour ces kills.",
+      "level": "medium",
+      "time_limit_minutes": "25",
+      "user_id": 2,
+      "game_id": 5
+    },
+    {
+      "name": "Call of Duty - No Scope",
+      "description": "Faire 3 kills sans viser avec un sniper.",
+      "rules": "Pas de visée, pas d'aide.",
+      "level": "hard",
+      "time_limit_minutes": "15",
+      "user_id": 1,
+      "game_id": 5
+    },
+    {
+      "name": "No Build Win",
+      "description": "Gagner sans construire.",
+      "rules": "Aucune construction autorisée.",
+      "level": "hard",
+      "time_limit_minutes": "30",
+      "user_id": 3,
+      "game_id": 5
+    },
+    {
+      "name": "Full Heal",
+      "description": "Finir la partie avec 100 HP.",
+      "rules": "Utiliser uniquement des soins trouvés.",
+      "level": "medium",
+      "time_limit_minutes": "30",
+      "user_id": 1,
+      "game_id": 5
+    },
+    {
+      "name": "Pickaxe Only",
+      "description": "Faire un kill à la pioche.",
+      "rules": "Aucune arme à feu.",
+      "level": "medium",
+      "time_limit_minutes": "20",
+      "user_id": 2,
+      "game_id": 5
+    },
+    {
+      "name": "Call of Duty - Sniper Only",
+      "description": "Faire 10 kills avec un sniper.",
+      "rules": "Aucune autre arme.",
+      "level": "hard",
+      "time_limit_minutes": "40",
+      "user_id": 3,
+      "game_id": 5
+    },
+    {
+      "name": "Call of Duty - Knife Win",
+      "description": "Gagner une manche avec uniquement le couteau.",
+      "rules": "Aucune arme à feu.",
+      "level": "medium",
+      "time_limit_minutes": "15",
+      "user_id": 1,
+      "game_id": 5
+    },
+    {
+      "name": "Call of Duty - No Reload",
+      "description": "Finir une partie sans recharger.",
+      "rules": "Pas de rechargement.",
+      "level": "hard",
+      "time_limit_minutes": "20",
+      "user_id": 2,
+      "game_id": 5
+    },
+    {
+      "name": "Call of Duty - Headshot King",
+      "description": "Faire 15 headshots en une partie.",
+      "rules": "Aucune aide à la visée.",
+      "level": "hard",
+      "time_limit_minutes": "30",
+      "user_id": 3,
+      "game_id": 5
+    },
+
+    {
+      "name": "Ender Dragon Rush",
+      "description": "Tuer l'Ender Dragon en moins de 2h.",
+      "rules": "Pas de cheat.",
+      "level": "hard",
+      "time_limit_minutes": "120",
+      "user_id": 3,
+      "game_id": 6
+    },
+    {
+      "name": "Full Diamond",
+      "description": "Obtenir un stuff full diamant.",
+      "rules": "Survie uniquement.",
+      "level": "medium",
+      "time_limit_minutes": "180",
+      "user_id": 1,
+      "game_id": 6
+    },
+    {
+      "name": "No Crafting",
+      "description": "Survivre 1h sans crafter.",
+      "rules": "Aucun craft autorisé.",
+      "level": "medium",
+      "time_limit_minutes": "60",
+      "user_id": 2,
+      "game_id": 6
+    },
+    {
+      "name": "Village Defense",
+      "description": "Protéger un village d'un raid.",
+      "rules": "Aucun villageois ne doit mourir.",
+      "level": "hard",
+      "time_limit_minutes": "60",
+      "user_id": 3,
+      "game_id": 6
+    },
+    {
+      "name": "Rocket League - Aerial Goal",
+      "description": "Marquer un but en aérien.",
+      "rules": "Pas de triche.",
+      "level": "medium",
+      "time_limit_minutes": "10",
+      "user_id": 1,
+      "game_id": 6
+    },
+    {
+      "name": "Rocket League - Clean Sheet",
+      "description": "Gagner un match sans encaisser de but.",
+      "rules": "Match classé.",
+      "level": "hard",
+      "time_limit_minutes": "8",
+      "user_id": 2,
+      "game_id": 6
+    },
+    {
+      "name": "Rocket League - Demo King",
+      "description": "Détruire 5 voitures adverses en un match.",
+      "rules": "Match classé.",
+      "level": "medium",
+      "time_limit_minutes": "12",
+      "user_id": 3,
+      "game_id": 6
+    },
+    {
+      "name": "Rocket League - Backwards Goal",
+      "description": "Marquer un but en marche arrière.",
+      "rules": "Pas d'aide.",
+      "level": "hard",
+      "time_limit_minutes": "15",
+      "user_id": 1,
+      "game_id": 6
+    },
+    {
+      "name": "Rocket League - Fastest Goal",
+      "description": "Marquer un but en moins de 10 secondes.",
+      "rules": "Match classé.",
+      "level": "medium",
+      "time_limit_minutes": "1",
+      "user_id": 2,
+      "game_id": 6
+    },
+    {
+      "name": "Rocket League - MVP",
+      "description": "Être MVP du match.",
+      "rules": "Match classé.",
+      "level": "medium",
+      "time_limit_minutes": "5",
+      "user_id": 3,
+      "game_id": 6
     }
   ],
 
   "contributions": [
     {
-      "duration": 450,
-      "video_url": "https://youtube.com/watch?v=mario_run"
+      "duration": 180,
+      "video_url": "https://youtube.com/watch?v=mario_run",
+      "challenge_id": 1,
+      "user_id": 2
     },
     {
-      "duration": 1200,
-      "video_url": "https://twitch.tv/clip/lol_pentakill"
+      "duration": 120,
+      "video_url": "https://twitch.tv/clip/lol_pentakill",
+      "challenge_id": 2,
+      "user_id": 3
     },
     {
       "duration": 300,
-      "video_url": "https://youtube.com/watch?v=elden_perfect"
+      "video_url": "https://youtube.com/watch?v=elden_perfect",
+      "challenge_id": 3,
+      "user_id": 1
     }
   ],
 
   "user_contribution": [
-    {
-      "user_id": 1,
-      "contribution_id": "1"
-    },
-    {
-      "user_id": 2,
-      "contribution_id": "2"
-    },
-    {
-      "user_id": 3,
-      "contribution_id": "3"
-    }
+    { "user_id": 1, "contribution_id": 1 },
+    { "user_id": 2, "contribution_id": 2 },
+    { "user_id": 3, "contribution_id": 3 },
+    { "user_id": 1, "contribution_id": 2 },
+    { "user_id": 2, "contribution_id": 3 }
   ],
 
   "user_challenge": [
-    {
-      "challenge_id": 1,
-      "user_id": "1"
-    },
-    {
-      "challenge_id": 2,
-      "user_id": "2"
-    },
-    {
-      "challenge_id": 3,
-      "user_id": "3"
-    }
+    { "challenge_id": 1, "user_id": 1 },
+    { "challenge_id": 2, "user_id": 2 },
+    { "challenge_id": 3, "user_id": 3 },
+    { "challenge_id": 1, "user_id": 2 },
+    { "challenge_id": 2, "user_id": 3 },
+    { "challenge_id": 3, "user_id": 1 }
   ]
 }

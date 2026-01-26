@@ -22,8 +22,8 @@ async function seed() {
 		const challenges = data.challenges;
 		const games = data.games;
 		const contributions = data.contributions;
-        const user_challenge = data.user_challenge;
-        const user_contribution = data.user_contribution;
+		const user_challenge = data.user_challenge;
+		const user_contribution = data.user_contribution;
 
 		// =================
 		// ** import des roles
@@ -50,9 +50,9 @@ async function seed() {
 
 			// roleName déclaré dans le JSON (on récupère dans le data-examples.json, le roleName de chaque) 
 			const roleName = user.roleName;
-			
+
 			// Chercher dans la BDD le role qui s'appelle "roleName"
-			role = await Role.findOne( { where: {name: roleName} })
+			role = await Role.findOne({ where: { name: roleName } })
 
 			// TODO vérifier que role n'est pas null
 
@@ -63,22 +63,12 @@ async function seed() {
 			// INSERT
 			await User.create(
 				{
-				email: user.email,      // Vient du JSON
-                pseudo: user.pseudo,    // Vient du JSON (et pas "username")
-                password: hash,
-                role_id: role.id        // L'ID qu'on a récupéré juste au-dessus
+					email: user.email,      // Vient du JSON
+					pseudo: user.pseudo,    // Vient du JSON (et pas "username")
+					password: hash,
+					role_id: role.id        // L'ID qu'on a récupéré juste au-dessus
 				}
 			);
-		}
-
-
-		// =================
-		// ** import des challenges
-		// =================
-
-		for (let challenge of challenges) {
-			// INSERT
-			await Challenge.create(challenge);
 		}
 
 		// =================
@@ -91,51 +81,58 @@ async function seed() {
 		}
 
 		// =================
+		// ** import des challenges
+		// =================
+
+		for (let challenge of challenges) {
+			// INSERT
+			await Challenge.create(challenge);
+		}
+
+		// =================
 		// ** import des contributions
 		// =================
 
 		for (let contribution of contributions) {
-			// INSERT
-			await Contribution.create(contribution)
+			// On crée un objet propre pour correspondre au modèle Sequelize
+			await Contribution.create({
+				video_url: contribution.video_url,
+				challenge_id: contribution.challenge_id,
+				user_id: contribution.user_id,
+				duration: contribution.duration
+			});
 		}
 
 		// =================
-		// ** Liens entre user et contribution
+
 		// =================
-
-		// Objet User initialisé à null
+		// ** Liens entre user et contribution (user_contribution)
+		// =================
 		let myUser = null;
-
-		// Objet Contribution initialisé à null
 		let myContribution = null;
-
 		for (let element of user_contribution) {
-
-			// Pour chaque "element" : {user_id, contribution_id}
-			// Faire une recherche dans la BDD pour récupérer un objet User grace à user_id
-			// Faire une recherche dans la BDD pour récupérer un objet Contribution grace a contribution_id
-			// Faire le lien entre l'objet User et l'objet Contribution 
-
-			// Recherche dans la BDD de la User à modifier
-			// SELECT
 			myUser = await User.findByPk(element.user_id);
-
-			if (myUser) {
-				// recherche dans la BDD de la Contribution 
-				// SELECT
-				myContribution = await Contribution.findByPk(element.contribution_id);
-
-				if (myContribution) {
-					// Le User et la Contribution existent.
-					// Je peux ajouter la Contribution dans la liste des contributions pour l'User 
-
-					// Méthode magique fournie par Sequelize au moment où on a déclaré User Belongs To Many Contribution
-					await myUser.addContribution(myContribution);
-				} else {
-					throw Error('myContribution is null')
-				}
+			myContribution = await Contribution.findByPk(element.contribution_id);
+			if (myUser && myContribution) {
+				// L'alias généré par Sequelize est addCollab_contribution (voir as: 'collab_contributions')
+				await myUser.addCollab_contribution(myContribution);
 			} else {
-				throw Error('myUser is null')
+				throw Error('user_contribution: user or contribution not found');
+			}
+		}
+
+		// =================
+		// ** Liens entre user et challenge (user_challenge)
+		// =================
+		let myChallenge = null;
+		for (let element of user_challenge) {
+			myUser = await User.findByPk(element.user_id);
+			myChallenge = await Challenge.findByPk(element.challenge_id);
+			if (myUser && myChallenge) {
+				// L'alias généré par Sequelize est addParticipated_challenge (voir as: 'participated_challenges')
+				await myUser.addParticipated_challenge(myChallenge);
+			} else {
+				throw Error('user_challenge: user or challenge not found');
 			}
 		}
 

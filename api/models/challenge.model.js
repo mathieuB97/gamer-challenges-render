@@ -25,7 +25,7 @@ Challenge.init(
       allowNull: false,
     },
 
-    time_limit: {
+    time_limit_minutes: {
       type: DataTypes.TEXT,
       allowNull: true,
     },

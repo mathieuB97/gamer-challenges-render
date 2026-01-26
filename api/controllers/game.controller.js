@@ -1,35 +1,34 @@
-import { Game, Challenge } from '../models/index.js';
+import { Game, Challenge, User } from '../models/index.js';
 import BaseController from './base.controller.js';
+
 
 class GameController extends BaseController {
     constructor() {
         super(Game, 'Game');
     }
 
-    // On surcharge getRequestOptions pour permettre le filtrage (MVP)
-    // Route: GET /games?search=...
+    // Cette méthode permets de customiser ce que l'on veut récupérer(notamment les jointures entre games et challenges)
     getRequestOptions(req) {
-        const options = [];
-        // Tu pourras ajouter ici la logique de filtrage par nom ou catégorie
-        // en utilisant Op.like de Sequelize si besoin.
-        
-        // Inclusion par défaut pour les détails d'un jeu si demandé
         if (req.query.include === 'challenges') {
-            options.push({ model: Challenge, as: 'challenges' });
+            return [{ model: Challenge, as: 'challenges' }];
         }
-        return options;
+        return null;
     }
 
-    // Méthode pour la route : GET /games/:gameId/challenges
-    getChallengesByGameId = async (req, res, next) => {
+    /**
+     * GET /games/:id/challenges
+     * Retourne tous les challenges d'un jeu donné
+     */
+    async getChallengesByGameId(req, res, next) {
         try {
-            const { gameId } = req.params;
-            const challenges = await Challenge.findAll({
-                where: { game_id: gameId },
-                // On peut inclure l'auteur par défaut pour l'affichage
-                include: ['author'] 
+            const gameId = req.params.id;
+            const game = await Game.findByPk(gameId, {
+                include: [{ model: Challenge, as: 'challenges' }],
             });
-            res.sendResponse(challenges);
+            if (!game) {
+                return res.status(404).json({ message: "Jeu non trouvé" });
+            }
+            return res.json({ challenges: game.challenges });
         } catch (error) {
             next(error);
         }
