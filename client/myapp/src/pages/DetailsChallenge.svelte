@@ -266,38 +266,6 @@
 
   <!-- CONTENT -->
   <section class="mx-auto w-full max-w-6xl px-4 py-8">
-    <!-- SECTION : Challenges disponibles (mock) -->
-    <article class="bg-[#141824] border border-white/10 rounded-2xl p-6 mb-8">
-      <h2 class="text-xl font-bold text-[#00d9ff] mb-4">
-        Challenges disponibles (mock)
-      </h2>
-      {#if mockChallenges && mockChallenges.length > 0}
-        <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {#each mockChallenges as ch}
-            <div
-              class="bg-[#0a0e1a]/40 border border-white/10 rounded-xl p-4 flex flex-col gap-2"
-            >
-              <h3 class="text-lg font-semibold text-white truncate">
-                {ch.name}
-              </h3>
-              <p class="text-xs text-white/60 mb-2">{ch.description}</p>
-              <div class="flex flex-wrap gap-2 text-xs text-white/70">
-                <span class="inline-flex items-center gap-1"
-                  ><span class="text-yellow-300">🏆</span>{ch.level}</span
-                >
-                <span class="inline-flex items-center gap-1"
-                  ><span class="text-pink-300">⏱️</span
-                  >{ch.time_limit_minutes ?? "—"} min</span
-                >
-              </div>
-              <div class="mt-2 text-xs text-white/50 italic">{ch.id}</div>
-            </div>
-          {/each}
-        </div>
-      {:else}
-        <div class="text-white/70">Chargement des challenges...</div>
-      {/if}
-    </article>
     <div class="grid gap-4 lg:grid-cols-[1.15fr_0.95fr_0.75fr]">
       <!-- LEFT -->
       <div class="space-y-4">
