@@ -116,11 +116,6 @@
     }
   });
 
-  // TODO remplacer par le router SPA page module
-  function goBack() {
-    window.location.href = "/liste-challenges";
-  }
-
   // Pour voter sur le challenge principal
   async function voteForAChallenge(challengeId) {
     voteErrorMsg = "";
@@ -191,6 +186,7 @@
 <main class="min-h-[calc(100vh-200px)]">
   <!-- HERO -->
   <section class="relative w-full">
+    {JSON.stringify(challenge)}
     {#if loading}
       <div class="min-h-[360px] flex items-center justify-center text-white/70">
         Chargement du challenge...
@@ -229,14 +225,15 @@
               class="mt-3 flex flex-wrap items-center gap-4 text-sm text-white/80"
             >
               <span
-                >Par <span class="text-white">{challenge?.author}</span></span
+                >Par <span class="text-white">{challenge?.creator?.pseudo}</span
+                ></span
               >
               <span class="inline-flex items-center gap-2"
                 ><span class="text-yellow-300">🏆</span>{challenge?.level}</span
               >
               <span class="inline-flex items-center gap-2"
                 ><span class="text-orange-300">⚡</span
-                >{challenge?.difficulty}</span
+                >{challenge?.time_limit_minutes} minutes</span
               >
               <span class="inline-flex items-center gap-2"
                 ><span class="text-yellow-300">★</span>{challenge?.rating}</span
