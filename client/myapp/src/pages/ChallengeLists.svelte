@@ -110,7 +110,7 @@
   }
 </script>
 
-<main class="min-h-[calc(100vh-200px)] px-4 py-8">
+<main class="h-full px-4 py-8">
   <section class="mx-auto w-full max-w-6xl">
     <!-- Titre -->
     <div class="mb-6 text-center">
