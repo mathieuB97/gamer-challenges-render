@@ -182,6 +182,36 @@ class VoteController extends BaseController {
             next(error);
         }
     }
+
+    // POST : Ajouter un vote à une contribution (participation)
+    async voteForContribution(req, res, next) {
+        try {
+            const { contributionId } = req.params;
+            const userId = req.user_id; // récupéré via le middleware d'auth
+
+            if (!userId) {
+                throw new HttpError('Utilisateur non authentifié', 401);
+            }
+
+            const user = await User.findByPk(userId);
+            const contribution = await Contribution.findByPk(contributionId);
+
+            if (!user || !contribution) {
+                throw new HttpError('User ou contribution non trouvé', 404);
+            }
+
+            // Vérifier si le vote existe déjà
+            const alreadyVoted = await user.hasCollab_contribution(contribution);
+            if (alreadyVoted) {
+                throw new HttpError('Vous avez déjà voté pour cette contribution', 409);
+            }
+
+            await user.addCollab_contribution(contribution);
+            res.json({ success: true, message: 'Vote enregistré !' });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export default new VoteController();

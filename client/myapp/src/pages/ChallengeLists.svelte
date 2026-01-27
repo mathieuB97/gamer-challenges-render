@@ -110,7 +110,7 @@
   }
 </script>
 
-<main class="min-h-[calc(100vh-200px)] px-4 py-8">
+<main class="h-full px-4 py-8">
   <section class="mx-auto w-full max-w-6xl">
     <!-- Titre -->
     <div class="mb-6 text-center">
@@ -275,7 +275,7 @@
                 <!-- Ligne 2 : boutons -->
                 <div class="mt-4 grid grid-cols-2 gap-3">
                   <a
-                    href={`/detail-challenge/${c.id}`}
+                    href={`/detail-challenge/${c.id}?gameId=${gameId}`}
                     class="w-full text-center font-bold py-2.5 rounded-lg border border-white/15 text-white/80
                            hover:bg-white/5 transition"
                   >

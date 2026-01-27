@@ -10,9 +10,18 @@
     getChallengeDetail,
     postOneVoteForOneChallenge,
   } from "../lib/services/challenge.service.js";
+  import {
+    postOneVoteForOneContribution,
+    getVotesForCurrentUserContributions,
+  } from "../lib/services/contribution.service.js";
   /* Icônes */
   import { Confetti } from "svelte-confetti";
   import { tick } from "svelte";
+  import IconChallenge from "../components/icon-challenge.svelte";
+  import IconParticipant from "../components/icon-participant.svelte";
+  import IconOeil from "../components/icon-oeil.svelte";
+  import IconArrowLeft from "../components/icon-arrow-left.svelte";
+
   // Affichage confettis à la demande
   let displayConfetti = false;
   function triggerConfetti() {
@@ -24,30 +33,40 @@
       }, 2000);
     });
   }
-  import IconChallenge from "../components/icon-challenge.svelte";
-  import IconParticipant from "../components/icon-participant.svelte";
-  import IconOeil from "../components/icon-oeil.svelte";
-  // Si besoin d'une liste, utiliser import { mockChallenges } from "../mock/challenges.mock.js";
 
   let currentUser = null;
   let userLoading = true;
-
-  // Abonnement au store utilisateur pour la réactivité
   $: $userStore, (currentUser = $userStore);
 
-  // Reçu depuis le router (params.set({ challengeId: ctx.params.id }))
-  export let challengeId = null;
+  // --- Paramètres d'URL ---
+  let challengeId = null;
+  let gameId = null;
+  function extractParams() {
+    // Query param
+    const urlParams = new URLSearchParams(window.location.search);
+    gameId = urlParams.get("gameId");
+    // Path param (ex: /challenge/123)
+    const pathParts = window.location.pathname.split("/");
+    // Cherche un nombre dans le path (id du challenge)
+    challengeId = pathParts.find((part) => /^\d+$/.test(part));
+  }
+  extractParams();
 
   let loading = true;
   let errorMsg = "";
 
   let challenge = null;
-  let bestChallenges = [];
+  let participations = [];
 
   // Message d'erreur spécifique au vote
   let voteErrorMsg = "";
   // Pour désactiver le bouton après vote
   let hasVoted = false;
+  // Pour désactiver le bouton après vote (participation)
+  let hasVotedParticipation = false;
+
+  // Liste des IDs de contributions déjà votées par l'utilisateur
+  let votedContributionIds = [];
 
   // Bloc "activité" (mock en attendant API)
   let activity = {
@@ -56,9 +75,9 @@
     views: "45.2K",
   };
 
-  // Vote utilisateur (1..5)
-  let voteValue = 0;
-  0;
+  // Vote utilisateur (hard, medium, easy)
+  let levelOptions = ["hard", "medium", "easy"];
+  let selectedLevel = null;
 
   // Load data (API -> sinon mock)
   onMount(async () => {
@@ -70,28 +89,33 @@
     try {
       if (!challengeId) {
         challenge = mockChallenge;
-        bestChallenges = mockBestChallenges;
+        participations = mockBestChallenges;
         errorMsg = "challengeId absent : affichage mock.";
         return;
       }
 
       // Utilise le service getChallengeDetail
       challenge = await getChallengeDetail(challengeId);
-      bestChallenges = mockBestChallenges; // à remplacer quand API leaderboard dispo
+      participations = challenge.contributions; // à remplacer quand API leaderboard dispo
+      console.log(
+        "Détail participation reçu :",
+        participations,
+        "challenge",
+        challenge,
+      );
+
+      // Récupère les contributions déjà votées par l'utilisateur
+      const votedContributions = await getVotesForCurrentUserContributions();
+      votedContributionIds = votedContributions.map((c) => c.id);
     } catch (error) {
       console.error("Erreur API challenge detail:", error);
       challenge = { ...mockChallenge, id: Number(challengeId ?? 1) };
-      bestChallenges = mockBestChallenges;
+      participations = mockBestChallenges;
       errorMsg = "API indisponible : affichage mock.";
     } finally {
       loading = false;
     }
   });
-
-  // TODO remplacer par le router SPA page module
-  function goBack() {
-    window.location.href = "/liste-challenges";
-  }
 
   // Pour voter sur le challenge principal
   async function voteForAChallenge(challengeId) {
@@ -121,17 +145,45 @@
     }
   }
 
-  // Fonctions vides pour les boutons Détail et Vote sur les participations (meilleurs challenges)
+  // Fonctions vides pour les boutons Détail et Vote sur les participations (meilleures participations)
   function openParticipationDetail(row) {}
-  function voteForParticipation(row) {}
 
-  function submitVote() {
-    if (!voteValue) return alert("Choisis une note (1 à 5) avant de voter.");
-    alert(`Merci ! Vote envoyé: ${voteValue}/5`);
+  async function voteForParticipation(participationId) {
+    voteErrorMsg = "";
+    if (!participationId) {
+      voteErrorMsg = "Impossible de voter : participation introuvable";
+      return;
+    }
+    try {
+      const result = await postOneVoteForOneContribution(participationId);
+      hasVotedParticipation = true;
+      // Met à jour l'UI immédiatement : ajoute l'id à votedContributionIds
+      if (!votedContributionIds.includes(participationId)) {
+        votedContributionIds = [...votedContributionIds, participationId];
+      }
+      triggerConfetti();
+      console.info(
+        "Vote enregistré avec succès pour la contribution",
+        participationId,
+      );
+      return result;
+    } catch (error) {
+      // Si code 409, afficher uniquement le message du backend
+      if (error && error.data && error.data.statusCode === 409) {
+        voteErrorMsg = error.data.error;
+        hasVoted = true;
+      } else {
+        voteErrorMsg = "Erreur lors de l'envoi du vote. Veuillez réessayer.";
+      }
+      console.error("Erreur lors de l'envoi du vote:", error, error.data);
+    }
+  }
+  function submitLevel() {
+    alert(`Niveau sélectionné : ${selectedLevel}`); // À remplacer par l'appel API
   }
 </script>
 
-<main class="min-h-[calc(100vh-200px)]">
+<main class="h-full">
   <!-- HERO -->
   <section class="relative w-full">
     {#if loading}
@@ -152,16 +204,17 @@
       </div>
 
       <div class="absolute inset-0">
-        <div class="flex items-end h-full w-full mx-auto max-w-6xl px-4 pb-10">
+        <div class="flex items-end h-full w-full mx-auto px-6 pb-10">
           <div class="col-left">
-            <button
-              type="button"
-              on:click={goBack}
-              class="mb-4 inline-flex items-center gap-2 text-white/80 hover:text-white transition"
+            <a
+              href={gameId ? `/jeux/${gameId}/challenges` : "/liste-challenges"}
+              class="mb-4 inline-flex items-center gap-2 text-xl text-white/80 hover:text-white transition"
             >
-              <span class="text-lg">←</span>
-              <span class="text-sm">Retour aux challenges</span>
-            </button>
+              <span>
+                <IconArrowLeft />
+              </span>
+              <span>Retour aux challenges</span>
+            </a>
 
             <h1
               class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#00d9ff] drop-shadow"
@@ -173,14 +226,15 @@
               class="mt-3 flex flex-wrap items-center gap-4 text-sm text-white/80"
             >
               <span
-                >Par <span class="text-white">{challenge?.author}</span></span
+                >Par <span class="text-white">{challenge?.creator?.pseudo}</span
+                ></span
               >
               <span class="inline-flex items-center gap-2"
                 ><span class="text-yellow-300">🏆</span>{challenge?.level}</span
               >
               <span class="inline-flex items-center gap-2"
                 ><span class="text-orange-300">⚡</span
-                >{challenge?.difficulty}</span
+                >{challenge?.time_limit_minutes} minutes</span
               >
               <span class="inline-flex items-center gap-2"
                 ><span class="text-yellow-300">★</span>{challenge?.rating}</span
@@ -217,44 +271,12 @@
   </section>
 
   <!-- CONTENT -->
-  <section class="mx-auto w-full max-w-6xl px-4 py-8">
-    <!-- SECTION : Challenges disponibles (mock) -->
-    <article class="bg-[#141824] border border-white/10 rounded-2xl p-6 mb-8">
-      <h2 class="text-xl font-bold text-[#00d9ff] mb-4">
-        Challenges disponibles (mock)
-      </h2>
-      {#if mockChallenges && mockChallenges.length > 0}
-        <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {#each mockChallenges as ch}
-            <div
-              class="bg-[#0a0e1a]/40 border border-white/10 rounded-xl p-4 flex flex-col gap-2"
-            >
-              <h3 class="text-lg font-semibold text-white truncate">
-                {ch.name}
-              </h3>
-              <p class="text-xs text-white/60 mb-2">{ch.description}</p>
-              <div class="flex flex-wrap gap-2 text-xs text-white/70">
-                <span class="inline-flex items-center gap-1"
-                  ><span class="text-yellow-300">🏆</span>{ch.level}</span
-                >
-                <span class="inline-flex items-center gap-1"
-                  ><span class="text-pink-300">⏱️</span
-                  >{ch.time_limit_minutes ?? "—"} min</span
-                >
-              </div>
-              <div class="mt-2 text-xs text-white/50 italic">{ch.id}</div>
-            </div>
-          {/each}
-        </div>
-      {:else}
-        <div class="text-white/70">Chargement des challenges...</div>
-      {/if}
-    </article>
+  <section class="mx-auto w-full">
     <div class="grid gap-4 lg:grid-cols-[1.15fr_0.95fr_0.75fr]">
       <!-- LEFT -->
       <div class="space-y-4">
         <article class="bg-[#141824] border border-white/10 rounded-2xl p-6">
-          <h2 class="text-xl font-bold">
+          <h2 class="text-2xl font-bold">
             <span class="text-[#00d9ff]">Détails</span>
             <span class="text-white"> du challenge</span>
           </h2>
@@ -272,9 +294,12 @@
         </article>
 
         <article class="bg-[#141824] border border-white/10 rounded-2xl p-6">
-          <h2 class="text-xl font-bold">
-            <span class="text-purple-300">Objectifs</span>
-            <span class="text-white"> à atteindre</span>
+          <h2 class="text-2xl font-bold">
+            <span class="text-purple-300">Challenge</span>
+            <br />
+            <span class="text-white"
+              >{challenge?.name || "nom du challenge"}</span
+            >
           </h2>
 
           <div class="mt-5 grid gap-3 sm:grid-cols-2">
@@ -290,10 +315,14 @@
 
           <button
             type="button"
-            class="mt-5 w-full py-3 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
+            class="w-full py-3 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
                    text-white font-semibold hover:opacity-90 transition-opacity"
+            on:click={() =>
+              alert(
+                "Participation au challenge non implémentée 😭\nNous devons simuler une participation au challenge.\nUne solution serait d'ajouter un formulaire dans une modale(popin/popup pour les intimes 😂).\n On s'éclate sur ce projet… Faut revoir le sys de modale il va être utilisé pour afficher les feature que l'on aura pas le temps de pousser à fond niveau design !\nDonc on fait un composant hyper simple à utiliser qui permet d'ajouter du formulaire qui permet de remplir les infos nécessaire pour la BDD afin de simuler une une participation. Qui n'en veut ???",
+              )}
           >
-            Participer au challenge
+            Déposer une participation
           </button>
         </article>
       </div>
@@ -301,19 +330,19 @@
       <!-- MIDDLE -->
       <article class="bg-[#141824] border border-white/10 rounded-2xl p-6">
         <div class="flex items-center justify-between text-white">
-          <h2 class="text-xl font-bold">
+          <h2 class="text-2xl font-bold">
             <span class="text-yellow-300">Meilleurs</span>
-            challenges
+            participation
           </h2>
           <span class="text-xs text-white/60"
-            >{bestChallenges?.length ?? 0} entrées</span
+            >{participations?.length ?? 0} entrées</span
           >
         </div>
 
         <div
           class="mt-5 max-h-[520px] overflow-auto pr-2 space-y-3 custom-scroll"
         >
-          {#each bestChallenges as row (row.id)}
+          {#each participations as participation (participation.id)}
             <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4">
               <div class="flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3 min-w-0">
@@ -321,44 +350,52 @@
                     class="h-10 w-10 rounded-full bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
                            flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
                   >
-                    {row.user.slice(0, 2).toUpperCase()}
+                    {participation.creator.pseudo.slice(0, 2).toUpperCase()}
                   </div>
 
                   <div class="min-w-0">
-                    <p class="text-white font-semibold truncate">{row.user}</p>
-                    <p class="text-xs text-white/60">
-                      {row.level} • {row.points}
+                    <p class="text-white font-semibold truncate">
+                      {participation.challenge.name}
                     </p>
+                    <p>
+                      {participation.creator.pseudo}
+                    </p>
+
+                    <!-- <p class="text-xs text-white/60">
+                      {row.level} • {row.points}
+                    </p> -->
                     <div
                       class="mt-2 flex flex-wrap items-center gap-3 text-xs text-white/70"
                     >
-                      <span>🕒 {row.time}</span>
-                      <span class="text-yellow-300">★ {row.rating}</span>
-                      <span>{row.votes}</span>
+                      <span>🕒 {participation.duration} minutes </span>
+                      <!-- <span class="text-yellow-300">★ {participation.rating}</span>
+                      <span>{participation.votes}</span> -->
                     </div>
                   </div>
                 </div>
 
-                <div
+                <!-- <div
                   class="h-8 w-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-xs text-white/80"
                 >
-                  #{String(bestChallenges.indexOf(row) + 1)}
-                </div>
+                  #{String(participations.indexOf(row) + 1)}
+                </div> -->
               </div>
 
               <div class="mt-4 flex items-center justify-end gap-2">
                 <button
                   type="button"
                   class="flex flex-row items-end gap-1 px-3 py-2 rounded-lg border border-white/15 text-white/80 hover:bg-white/5 transition text-xs cursor-pointer"
-                  on:click={() => openParticipationDetail(row)}
+                  on:click={() => openParticipationDetail(participation)}
                 >
                   <IconPlay />
                   <span class="leading-3"> Détail </span>
                 </button>
                 <button
                   type="button"
-                  class="flex flex-row items-end gap-1 px-3 py-2 rounded-lg bg-pink-500/90 hover:bg-pink-500 transition text-white text-xs font-semibold cursor-pointer"
-                  on:click={() => voteForParticipation(row)}
+                  class="flex flex-row items-end gap-1 px-3 py-2 rounded-lg bg-pink-500/90 hover:bg-pink-500 transition text-white text-xs font-semibold cursor-pointer disabled:opacity-50"
+                  on:click={() =>
+                    voteForParticipation(Number(participation.id))}
+                  disabled={votedContributionIds.includes(participation.id)}
                 >
                   <IconLike size={16} class="inline-block color-white" />
                   <span class="leading-3"> Vote </span>
@@ -372,7 +409,7 @@
       <!-- RIGHT -->
       <div class="space-y-4">
         <article class="bg-[#141824] border border-white/10 rounded-2xl p-6">
-          <h2 class="text-xl font-bold">
+          <h2 class="text-2xl font-bold">
             <span class="text-pink-400">Activité</span>
             <span class="text-white"> du challenge</span>
           </h2>
@@ -434,24 +471,25 @@
         </article>
 
         <article class="bg-[#141824] border border-white/10 rounded-2xl p-6">
-          <h2 class="text-xl font-bold text-yellow-200">
-            Votez pour ce challenge
+          <h2 class="text-2xl font-bold text-yellow-200">
+            Estimez la difficulté du challenge
           </h2>
-          <p class="mt-2 text-sm text-white/70">
-            Donnez votre avis sur ce challenge
+          <p class="mt-2 text-white/70">
+            Partagez votre avis votre ressenti sur la difficulté de ce challenge
+            afin d'aider la communauté.
           </p>
 
           <div class="mt-4 flex items-center justify-between gap-2">
-            {#each [1, 2, 3, 4, 5] as n}
+            {#each levelOptions as level}
               <button
                 type="button"
-                class="h-10 w-10 rounded-full border border-white/15 text-white/80 hover:bg-white/5 transition
-                       {voteValue === n
+                class="h-10 w-24 rounded-full border border-white/15 text-white/80 hover:bg-white/5 transition {selectedLevel ===
+                level
                   ? 'bg-white/10 border-white/30 text-white'
                   : ''}"
-                on:click={() => (voteValue = n)}
+                on:click={() => (selectedLevel = level)}
               >
-                {n}
+                {level}
               </button>
             {/each}
           </div>
@@ -460,9 +498,9 @@
             type="button"
             class="mt-5 w-full py-3 rounded-lg bg-white/10 border border-white/10 text-white/90
                    hover:bg-white/15 transition font-semibold"
-            on:click={submitVote}
+            on:click={submitLevel}
           >
-            Voter
+            Partager mon évaluation
           </button>
         </article>
       </div>

@@ -508,6 +508,1110 @@
       "video_url": "https://youtube.com/watch?v=elden_perfect",
       "challenge_id": 3,
       "user_id": 1
+    },
+    {
+      "duration": 175,
+      "video_url": "https://youtube.com/watch?v=challenge_1_1",
+      "challenge_id": 1,
+      "user_id": 1
+    },
+    {
+      "duration": 185,
+      "video_url": "https://youtube.com/watch?v=challenge_1_2",
+      "challenge_id": 1,
+      "user_id": 3
+    },
+    {
+      "duration": 190,
+      "video_url": "https://youtube.com/watch?v=challenge_1_3",
+      "challenge_id": 1,
+      "user_id": 2
+    },
+    {
+      "duration": 192,
+      "video_url": "https://youtube.com/watch?v=challenge_1_4",
+      "challenge_id": 1,
+      "user_id": 1
+    },
+    {
+      "duration": 178,
+      "video_url": "https://youtube.com/watch?v=challenge_2_1",
+      "challenge_id": 2,
+      "user_id": 1
+    },
+    {
+      "duration": 62,
+      "video_url": "https://youtube.com/watch?v=challenge_2_2",
+      "challenge_id": 2,
+      "user_id": 2
+    },
+    {
+      "duration": 58,
+      "video_url": "https://youtube.com/watch?v=challenge_2_3",
+      "challenge_id": 2,
+      "user_id": 1
+    },
+    {
+      "duration": 61,
+      "video_url": "https://youtube.com/watch?v=challenge_2_4",
+      "challenge_id": 2,
+      "user_id": 2
+    },
+    {
+      "duration": 32,
+      "video_url": "https://youtube.com/watch?v=challenge_3_1",
+      "challenge_id": 3,
+      "user_id": 2
+    },
+    {
+      "duration": 28,
+      "video_url": "https://youtube.com/watch?v=challenge_3_2",
+      "challenge_id": 3,
+      "user_id": 3
+    },
+    {
+      "duration": 29,
+      "video_url": "https://youtube.com/watch?v=challenge_3_3",
+      "challenge_id": 3,
+      "user_id": 1
+    },
+    {
+      "duration": 31,
+      "video_url": "https://youtube.com/watch?v=challenge_3_4",
+      "challenge_id": 3,
+      "user_id": 2
+    },
+    {
+      "duration": 88,
+      "video_url": "https://youtube.com/watch?v=challenge_4_1",
+      "challenge_id": 4,
+      "user_id": 3
+    },
+    {
+      "duration": 92,
+      "video_url": "https://youtube.com/watch?v=challenge_4_2",
+      "challenge_id": 4,
+      "user_id": 1
+    },
+    {
+      "duration": 90,
+      "video_url": "https://youtube.com/watch?v=challenge_4_3",
+      "challenge_id": 4,
+      "user_id": 2
+    },
+    {
+      "duration": 91,
+      "video_url": "https://youtube.com/watch?v=challenge_4_4",
+      "challenge_id": 4,
+      "user_id": 3
+    },
+    {
+      "duration": 25,
+      "video_url": "https://youtube.com/watch?v=challenge_5_1",
+      "challenge_id": 5,
+      "user_id": 1
+    },
+    {
+      "duration": 23,
+      "video_url": "https://youtube.com/watch?v=challenge_5_2",
+      "challenge_id": 5,
+      "user_id": 2
+    },
+    {
+      "duration": 24,
+      "video_url": "https://youtube.com/watch?v=challenge_5_3",
+      "challenge_id": 5,
+      "user_id": 3
+    },
+    {
+      "duration": 26,
+      "video_url": "https://youtube.com/watch?v=challenge_5_4",
+      "challenge_id": 5,
+      "user_id": 1
+    },
+    {
+      "duration": 62,
+      "video_url": "https://youtube.com/watch?v=challenge_6_1",
+      "challenge_id": 6,
+      "user_id": 2
+    },
+    {
+      "duration": 59,
+      "video_url": "https://youtube.com/watch?v=challenge_6_2",
+      "challenge_id": 6,
+      "user_id": 3
+    },
+    {
+      "duration": 60,
+      "video_url": "https://youtube.com/watch?v=challenge_6_3",
+      "challenge_id": 6,
+      "user_id": 1
+    },
+    {
+      "duration": 61,
+      "video_url": "https://youtube.com/watch?v=challenge_6_4",
+      "challenge_id": 6,
+      "user_id": 2
+    },
+    {
+      "duration": 62,
+      "video_url": "https://youtube.com/watch?v=challenge_7_1",
+      "challenge_id": 7,
+      "user_id": 3
+    },
+    {
+      "duration": 61,
+      "video_url": "https://youtube.com/watch?v=challenge_7_2",
+      "challenge_id": 7,
+      "user_id": 1
+    },
+    {
+      "duration": 60,
+      "video_url": "https://youtube.com/watch?v=challenge_7_3",
+      "challenge_id": 7,
+      "user_id": 2
+    },
+    {
+      "duration": 59,
+      "video_url": "https://youtube.com/watch?v=challenge_7_4",
+      "challenge_id": 7,
+      "user_id": 3
+    },
+    {
+      "duration": 62,
+      "video_url": "https://youtube.com/watch?v=challenge_8_1",
+      "challenge_id": 8,
+      "user_id": 1
+    },
+    {
+      "duration": 61,
+      "video_url": "https://youtube.com/watch?v=challenge_8_2",
+      "challenge_id": 8,
+      "user_id": 2
+    },
+    {
+      "duration": 60,
+      "video_url": "https://youtube.com/watch?v=challenge_8_3",
+      "challenge_id": 8,
+      "user_id": 3
+    },
+    {
+      "duration": 59,
+      "video_url": "https://youtube.com/watch?v=challenge_8_4",
+      "challenge_id": 8,
+      "user_id": 1
+    },
+    {
+      "duration": 1000,
+      "video_url": "https://youtube.com/watch?v=challenge_9_1",
+      "challenge_id": 9,
+      "user_id": 2
+    },
+    {
+      "duration": 999,
+      "video_url": "https://youtube.com/watch?v=challenge_9_2",
+      "challenge_id": 9,
+      "user_id": 3
+    },
+    {
+      "duration": 1001,
+      "video_url": "https://youtube.com/watch?v=challenge_9_3",
+      "challenge_id": 9,
+      "user_id": 1
+    },
+    {
+      "duration": 998,
+      "video_url": "https://youtube.com/watch?v=challenge_9_4",
+      "challenge_id": 9,
+      "user_id": 2
+    },
+    {
+      "duration": 62,
+      "video_url": "https://youtube.com/watch?v=challenge_10_1",
+      "challenge_id": 10,
+      "user_id": 3
+    },
+    {
+      "duration": 60,
+      "video_url": "https://youtube.com/watch?v=challenge_10_2",
+      "challenge_id": 10,
+      "user_id": 1
+    },
+    {
+      "duration": 61,
+      "video_url": "https://youtube.com/watch?v=challenge_10_3",
+      "challenge_id": 10,
+      "user_id": 2
+    },
+    {
+      "duration": 59,
+      "video_url": "https://youtube.com/watch?v=challenge_10_4",
+      "challenge_id": 10,
+      "user_id": 3
+    },
+    {
+      "duration": 1000,
+      "video_url": "https://youtube.com/watch?v=challenge_11_1",
+      "challenge_id": 11,
+      "user_id": 1
+    },
+    {
+      "duration": 1002,
+      "video_url": "https://youtube.com/watch?v=challenge_11_2",
+      "challenge_id": 11,
+      "user_id": 2
+    },
+    {
+      "duration": 998,
+      "video_url": "https://youtube.com/watch?v=challenge_11_3",
+      "challenge_id": 11,
+      "user_id": 3
+    },
+    {
+      "duration": 1001,
+      "video_url": "https://youtube.com/watch?v=challenge_11_4",
+      "challenge_id": 11,
+      "user_id": 1
+    },
+    {
+      "duration": 1000,
+      "video_url": "https://youtube.com/watch?v=challenge_12_1",
+      "challenge_id": 12,
+      "user_id": 2
+    },
+    {
+      "duration": 999,
+      "video_url": "https://youtube.com/watch?v=challenge_12_2",
+      "challenge_id": 12,
+      "user_id": 3
+    },
+    {
+      "duration": 1001,
+      "video_url": "https://youtube.com/watch?v=challenge_12_3",
+      "challenge_id": 12,
+      "user_id": 1
+    },
+    {
+      "duration": 998,
+      "video_url": "https://youtube.com/watch?v=challenge_12_4",
+      "challenge_id": 12,
+      "user_id": 2
+    },
+    {
+      "duration": 31,
+      "video_url": "https://youtube.com/watch?v=challenge_13_1",
+      "challenge_id": 13,
+      "user_id": 3
+    },
+    {
+      "duration": 32,
+      "video_url": "https://youtube.com/watch?v=challenge_13_2",
+      "challenge_id": 13,
+      "user_id": 1
+    },
+    {
+      "duration": 30,
+      "video_url": "https://youtube.com/watch?v=challenge_13_3",
+      "challenge_id": 13,
+      "user_id": 2
+    },
+    {
+      "duration": 29,
+      "video_url": "https://youtube.com/watch?v=challenge_13_4",
+      "challenge_id": 13,
+      "user_id": 3
+    },
+    {
+      "duration": 40,
+      "video_url": "https://youtube.com/watch?v=challenge_14_1",
+      "challenge_id": 14,
+      "user_id": 1
+    },
+    {
+      "duration": 42,
+      "video_url": "https://youtube.com/watch?v=challenge_14_2",
+      "challenge_id": 14,
+      "user_id": 2
+    },
+    {
+      "duration": 41,
+      "video_url": "https://youtube.com/watch?v=challenge_14_3",
+      "challenge_id": 14,
+      "user_id": 3
+    },
+    {
+      "duration": 39,
+      "video_url": "https://youtube.com/watch?v=challenge_14_4",
+      "challenge_id": 14,
+      "user_id": 1
+    },
+    {
+      "duration": 36,
+      "video_url": "https://youtube.com/watch?v=challenge_15_1",
+      "challenge_id": 15,
+      "user_id": 2
+    },
+    {
+      "duration": 34,
+      "video_url": "https://youtube.com/watch?v=challenge_15_2",
+      "challenge_id": 15,
+      "user_id": 3
+    },
+    {
+      "duration": 35,
+      "video_url": "https://youtube.com/watch?v=challenge_15_3",
+      "challenge_id": 15,
+      "user_id": 1
+    },
+    {
+      "duration": 37,
+      "video_url": "https://youtube.com/watch?v=challenge_15_4",
+      "challenge_id": 15,
+      "user_id": 2
+    },
+    {
+      "duration": 180,
+      "video_url": "https://youtube.com/watch?v=challenge_16_1",
+      "challenge_id": 16,
+      "user_id": 3
+    },
+    {
+      "duration": 182,
+      "video_url": "https://youtube.com/watch?v=challenge_16_2",
+      "challenge_id": 16,
+      "user_id": 1
+    },
+    {
+      "duration": 181,
+      "video_url": "https://youtube.com/watch?v=challenge_16_3",
+      "challenge_id": 16,
+      "user_id": 2
+    },
+    {
+      "duration": 179,
+      "video_url": "https://youtube.com/watch?v=challenge_16_4",
+      "challenge_id": 16,
+      "user_id": 3
+    },
+    {
+      "duration": 122,
+      "video_url": "https://youtube.com/watch?v=challenge_17_1",
+      "challenge_id": 17,
+      "user_id": 1
+    },
+    {
+      "duration": 120,
+      "video_url": "https://youtube.com/watch?v=challenge_17_2",
+      "challenge_id": 17,
+      "user_id": 2
+    },
+    {
+      "duration": 121,
+      "video_url": "https://youtube.com/watch?v=challenge_17_3",
+      "challenge_id": 17,
+      "user_id": 3
+    },
+    {
+      "duration": 119,
+      "video_url": "https://youtube.com/watch?v=challenge_17_4",
+      "challenge_id": 17,
+      "user_id": 1
+    },
+    {
+      "duration": 62,
+      "video_url": "https://youtube.com/watch?v=challenge_18_1",
+      "challenge_id": 18,
+      "user_id": 2
+    },
+    {
+      "duration": 59,
+      "video_url": "https://youtube.com/watch?v=challenge_18_2",
+      "challenge_id": 18,
+      "user_id": 3
+    },
+    {
+      "duration": 60,
+      "video_url": "https://youtube.com/watch?v=challenge_18_3",
+      "challenge_id": 18,
+      "user_id": 1
+    },
+    {
+      "duration": 61,
+      "video_url": "https://youtube.com/watch?v=challenge_18_4",
+      "challenge_id": 18,
+      "user_id": 2
+    },
+    {
+      "duration": 62,
+      "video_url": "https://youtube.com/watch?v=challenge_19_1",
+      "challenge_id": 19,
+      "user_id": 3
+    },
+    {
+      "duration": 60,
+      "video_url": "https://youtube.com/watch?v=challenge_19_2",
+      "challenge_id": 19,
+      "user_id": 1
+    },
+    {
+      "duration": 61,
+      "video_url": "https://youtube.com/watch?v=challenge_19_3",
+      "challenge_id": 19,
+      "user_id": 2
+    },
+    {
+      "duration": 59,
+      "video_url": "https://youtube.com/watch?v=challenge_19_4",
+      "challenge_id": 19,
+      "user_id": 3
+    },
+    {
+      "duration": 31,
+      "video_url": "https://youtube.com/watch?v=challenge_20_1",
+      "challenge_id": 20,
+      "user_id": 1
+    },
+    {
+      "duration": 32,
+      "video_url": "https://youtube.com/watch?v=challenge_20_2",
+      "challenge_id": 20,
+      "user_id": 2
+    },
+    {
+      "duration": 30,
+      "video_url": "https://youtube.com/watch?v=challenge_20_3",
+      "challenge_id": 20,
+      "user_id": 3
+    },
+    {
+      "duration": 29,
+      "video_url": "https://youtube.com/watch?v=challenge_20_4",
+      "challenge_id": 20,
+      "user_id": 1
+    },
+    {
+      "duration": 22,
+      "video_url": "https://youtube.com/watch?v=challenge_21_1",
+      "challenge_id": 21,
+      "user_id": 2
+    },
+    {
+      "duration": 20,
+      "video_url": "https://youtube.com/watch?v=challenge_21_2",
+      "challenge_id": 21,
+      "user_id": 3
+    },
+    {
+      "duration": 21,
+      "video_url": "https://youtube.com/watch?v=challenge_21_3",
+      "challenge_id": 21,
+      "user_id": 1
+    },
+    {
+      "duration": 19,
+      "video_url": "https://youtube.com/watch?v=challenge_21_4",
+      "challenge_id": 21,
+      "user_id": 2
+    },
+    {
+      "duration": 28,
+      "video_url": "https://youtube.com/watch?v=challenge_22_1",
+      "challenge_id": 22,
+      "user_id": 3
+    },
+    {
+      "duration": 26,
+      "video_url": "https://youtube.com/watch?v=challenge_22_2",
+      "challenge_id": 22,
+      "user_id": 1
+    },
+    {
+      "duration": 27,
+      "video_url": "https://youtube.com/watch?v=challenge_22_3",
+      "challenge_id": 22,
+      "user_id": 2
+    },
+    {
+      "duration": 25,
+      "video_url": "https://youtube.com/watch?v=challenge_22_4",
+      "challenge_id": 22,
+      "user_id": 3
+    },
+    {
+      "duration": 32,
+      "video_url": "https://youtube.com/watch?v=challenge_23_1",
+      "challenge_id": 23,
+      "user_id": 1
+    },
+    {
+      "duration": 31,
+      "video_url": "https://youtube.com/watch?v=challenge_23_2",
+      "challenge_id": 23,
+      "user_id": 2
+    },
+    {
+      "duration": 30,
+      "video_url": "https://youtube.com/watch?v=challenge_23_3",
+      "challenge_id": 23,
+      "user_id": 3
+    },
+    {
+      "duration": 29,
+      "video_url": "https://youtube.com/watch?v=challenge_23_4",
+      "challenge_id": 23,
+      "user_id": 1
+    },
+    {
+      "duration": 31,
+      "video_url": "https://youtube.com/watch?v=challenge_24_1",
+      "challenge_id": 24,
+      "user_id": 2
+    },
+    {
+      "duration": 32,
+      "video_url": "https://youtube.com/watch?v=challenge_24_2",
+      "challenge_id": 24,
+      "user_id": 3
+    },
+    {
+      "duration": 30,
+      "video_url": "https://youtube.com/watch?v=challenge_24_3",
+      "challenge_id": 24,
+      "user_id": 1
+    },
+    {
+      "duration": 29,
+      "video_url": "https://youtube.com/watch?v=challenge_24_4",
+      "challenge_id": 24,
+      "user_id": 2
+    },
+    {
+      "duration": 121,
+      "video_url": "https://youtube.com/watch?v=challenge_25_1",
+      "challenge_id": 25,
+      "user_id": 3
+    },
+    {
+      "duration": 122,
+      "video_url": "https://youtube.com/watch?v=challenge_25_2",
+      "challenge_id": 25,
+      "user_id": 1
+    },
+    {
+      "duration": 120,
+      "video_url": "https://youtube.com/watch?v=challenge_25_3",
+      "challenge_id": 25,
+      "user_id": 2
+    },
+    {
+      "duration": 119,
+      "video_url": "https://youtube.com/watch?v=challenge_25_4",
+      "challenge_id": 25,
+      "user_id": 3
+    },
+    {
+      "duration": 182,
+      "video_url": "https://youtube.com/watch?v=challenge_26_1",
+      "challenge_id": 26,
+      "user_id": 1
+    },
+    {
+      "duration": 181,
+      "video_url": "https://youtube.com/watch?v=challenge_26_2",
+      "challenge_id": 26,
+      "user_id": 2
+    },
+    {
+      "duration": 180,
+      "video_url": "https://youtube.com/watch?v=challenge_26_3",
+      "challenge_id": 26,
+      "user_id": 3
+    },
+    {
+      "duration": 179,
+      "video_url": "https://youtube.com/watch?v=challenge_26_4",
+      "challenge_id": 26,
+      "user_id": 1
+    },
+    {
+      "duration": 62,
+      "video_url": "https://youtube.com/watch?v=challenge_27_1",
+      "challenge_id": 27,
+      "user_id": 2
+    },
+    {
+      "duration": 59,
+      "video_url": "https://youtube.com/watch?v=challenge_27_2",
+      "challenge_id": 27,
+      "user_id": 3
+    },
+    {
+      "duration": 60,
+      "video_url": "https://youtube.com/watch?v=challenge_27_3",
+      "challenge_id": 27,
+      "user_id": 1
+    },
+    {
+      "duration": 61,
+      "video_url": "https://youtube.com/watch?v=challenge_27_4",
+      "challenge_id": 27,
+      "user_id": 2
+    },
+    {
+      "duration": 62,
+      "video_url": "https://youtube.com/watch?v=challenge_28_1",
+      "challenge_id": 28,
+      "user_id": 3
+    },
+    {
+      "duration": 60,
+      "video_url": "https://youtube.com/watch?v=challenge_28_2",
+      "challenge_id": 28,
+      "user_id": 1
+    },
+    {
+      "duration": 61,
+      "video_url": "https://youtube.com/watch?v=challenge_28_3",
+      "challenge_id": 28,
+      "user_id": 2
+    },
+    {
+      "duration": 59,
+      "video_url": "https://youtube.com/watch?v=challenge_28_4",
+      "challenge_id": 28,
+      "user_id": 3
+    },
+    {
+      "duration": 31,
+      "video_url": "https://youtube.com/watch?v=challenge_29_1",
+      "challenge_id": 29,
+      "user_id": 1
+    },
+    {
+      "duration": 32,
+      "video_url": "https://youtube.com/watch?v=challenge_29_2",
+      "challenge_id": 29,
+      "user_id": 2
+    },
+    {
+      "duration": 30,
+      "video_url": "https://youtube.com/watch?v=challenge_29_3",
+      "challenge_id": 29,
+      "user_id": 3
+    },
+    {
+      "duration": 29,
+      "video_url": "https://youtube.com/watch?v=challenge_29_4",
+      "challenge_id": 29,
+      "user_id": 1
+    },
+    {
+      "duration": 26,
+      "video_url": "https://youtube.com/watch?v=challenge_30_1",
+      "challenge_id": 30,
+      "user_id": 2
+    },
+    {
+      "duration": 24,
+      "video_url": "https://youtube.com/watch?v=challenge_30_2",
+      "challenge_id": 30,
+      "user_id": 3
+    },
+    {
+      "duration": 25,
+      "video_url": "https://youtube.com/watch?v=challenge_30_3",
+      "challenge_id": 30,
+      "user_id": 1
+    },
+    {
+      "duration": 27,
+      "video_url": "https://youtube.com/watch?v=challenge_30_4",
+      "challenge_id": 30,
+      "user_id": 2
+    },
+    {
+      "duration": 16,
+      "video_url": "https://youtube.com/watch?v=challenge_31_1",
+      "challenge_id": 31,
+      "user_id": 3
+    },
+    {
+      "duration": 14,
+      "video_url": "https://youtube.com/watch?v=challenge_31_2",
+      "challenge_id": 31,
+      "user_id": 1
+    },
+    {
+      "duration": 15,
+      "video_url": "https://youtube.com/watch?v=challenge_31_3",
+      "challenge_id": 31,
+      "user_id": 2
+    },
+    {
+      "duration": 17,
+      "video_url": "https://youtube.com/watch?v=challenge_31_4",
+      "challenge_id": 31,
+      "user_id": 3
+    },
+    {
+      "duration": 31,
+      "video_url": "https://youtube.com/watch?v=challenge_32_1",
+      "challenge_id": 32,
+      "user_id": 1
+    },
+    {
+      "duration": 32,
+      "video_url": "https://youtube.com/watch?v=challenge_32_2",
+      "challenge_id": 32,
+      "user_id": 2
+    },
+    {
+      "duration": 30,
+      "video_url": "https://youtube.com/watch?v=challenge_32_3",
+      "challenge_id": 32,
+      "user_id": 3
+    },
+    {
+      "duration": 29,
+      "video_url": "https://youtube.com/watch?v=challenge_32_4",
+      "challenge_id": 32,
+      "user_id": 1
+    },
+    {
+      "duration": 41,
+      "video_url": "https://youtube.com/watch?v=challenge_33_1",
+      "challenge_id": 33,
+      "user_id": 2
+    },
+    {
+      "duration": 39,
+      "video_url": "https://youtube.com/watch?v=challenge_33_2",
+      "challenge_id": 33,
+      "user_id": 3
+    },
+    {
+      "duration": 40,
+      "video_url": "https://youtube.com/watch?v=challenge_33_3",
+      "challenge_id": 33,
+      "user_id": 1
+    },
+    {
+      "duration": 42,
+      "video_url": "https://youtube.com/watch?v=challenge_33_4",
+      "challenge_id": 33,
+      "user_id": 2
+    },
+    {
+      "duration": 21,
+      "video_url": "https://youtube.com/watch?v=challenge_34_1",
+      "challenge_id": 34,
+      "user_id": 3
+    },
+    {
+      "duration": 19,
+      "video_url": "https://youtube.com/watch?v=challenge_34_2",
+      "challenge_id": 34,
+      "user_id": 1
+    },
+    {
+      "duration": 20,
+      "video_url": "https://youtube.com/watch?v=challenge_34_3",
+      "challenge_id": 34,
+      "user_id": 2
+    },
+    {
+      "duration": 22,
+      "video_url": "https://youtube.com/watch?v=challenge_34_4",
+      "challenge_id": 34,
+      "user_id": 3
+    },
+    {
+      "duration": 16,
+      "video_url": "https://youtube.com/watch?v=challenge_35_1",
+      "challenge_id": 35,
+      "user_id": 1
+    },
+    {
+      "duration": 14,
+      "video_url": "https://youtube.com/watch?v=challenge_35_2",
+      "challenge_id": 35,
+      "user_id": 2
+    },
+    {
+      "duration": 15,
+      "video_url": "https://youtube.com/watch?v=challenge_35_3",
+      "challenge_id": 35,
+      "user_id": 3
+    },
+    {
+      "duration": 17,
+      "video_url": "https://youtube.com/watch?v=challenge_35_4",
+      "challenge_id": 35,
+      "user_id": 1
+    },
+    {
+      "duration": 26,
+      "video_url": "https://youtube.com/watch?v=challenge_36_1",
+      "challenge_id": 36,
+      "user_id": 2
+    },
+    {
+      "duration": 24,
+      "video_url": "https://youtube.com/watch?v=challenge_36_2",
+      "challenge_id": 36,
+      "user_id": 3
+    },
+    {
+      "duration": 25,
+      "video_url": "https://youtube.com/watch?v=challenge_36_3",
+      "challenge_id": 36,
+      "user_id": 1
+    },
+    {
+      "duration": 27,
+      "video_url": "https://youtube.com/watch?v=challenge_36_4",
+      "challenge_id": 36,
+      "user_id": 2
+    },
+    {
+      "duration": 31,
+      "video_url": "https://youtube.com/watch?v=challenge_37_1",
+      "challenge_id": 37,
+      "user_id": 3
+    },
+    {
+      "duration": 32,
+      "video_url": "https://youtube.com/watch?v=challenge_37_2",
+      "challenge_id": 37,
+      "user_id": 1
+    },
+    {
+      "duration": 30,
+      "video_url": "https://youtube.com/watch?v=challenge_37_3",
+      "challenge_id": 37,
+      "user_id": 2
+    },
+    {
+      "duration": 29,
+      "video_url": "https://youtube.com/watch?v=challenge_37_4",
+      "challenge_id": 37,
+      "user_id": 3
+    },
+    {
+      "duration": 11,
+      "video_url": "https://youtube.com/watch?v=challenge_38_1",
+      "challenge_id": 38,
+      "user_id": 1
+    },
+    {
+      "duration": 9,
+      "video_url": "https://youtube.com/watch?v=challenge_38_2",
+      "challenge_id": 38,
+      "user_id": 2
+    },
+    {
+      "duration": 10,
+      "video_url": "https://youtube.com/watch?v=challenge_38_3",
+      "challenge_id": 38,
+      "user_id": 3
+    },
+    {
+      "duration": 12,
+      "video_url": "https://youtube.com/watch?v=challenge_38_4",
+      "challenge_id": 38,
+      "user_id": 1
+    },
+    {
+      "duration": 9,
+      "video_url": "https://youtube.com/watch?v=challenge_39_1",
+      "challenge_id": 39,
+      "user_id": 2
+    },
+    {
+      "duration": 7,
+      "video_url": "https://youtube.com/watch?v=challenge_39_2",
+      "challenge_id": 39,
+      "user_id": 3
+    },
+    {
+      "duration": 8,
+      "video_url": "https://youtube.com/watch?v=challenge_39_3",
+      "challenge_id": 39,
+      "user_id": 1
+    },
+    {
+      "duration": 10,
+      "video_url": "https://youtube.com/watch?v=challenge_39_4",
+      "challenge_id": 39,
+      "user_id": 2
+    },
+    {
+      "duration": 41,
+      "video_url": "https://youtube.com/watch?v=challenge_40_1",
+      "challenge_id": 40,
+      "user_id": 3
+    },
+    {
+      "duration": 39,
+      "video_url": "https://youtube.com/watch?v=challenge_40_2",
+      "challenge_id": 40,
+      "user_id": 1
+    },
+    {
+      "duration": 40,
+      "video_url": "https://youtube.com/watch?v=challenge_40_3",
+      "challenge_id": 40,
+      "user_id": 2
+    },
+    {
+      "duration": 42,
+      "video_url": "https://youtube.com/watch?v=challenge_40_4",
+      "challenge_id": 40,
+      "user_id": 3
+    },
+    {
+      "duration": 31,
+      "video_url": "https://youtube.com/watch?v=challenge_41_1",
+      "challenge_id": 41,
+      "user_id": 1
+    },
+    {
+      "duration": 32,
+      "video_url": "https://youtube.com/watch?v=challenge_41_2",
+      "challenge_id": 41,
+      "user_id": 2
+    },
+    {
+      "duration": 30,
+      "video_url": "https://youtube.com/watch?v=challenge_41_3",
+      "challenge_id": 41,
+      "user_id": 3
+    },
+    {
+      "duration": 29,
+      "video_url": "https://youtube.com/watch?v=challenge_41_4",
+      "challenge_id": 41,
+      "user_id": 1
+    },
+    {
+      "duration": 31,
+      "video_url": "https://youtube.com/watch?v=challenge_42_1",
+      "challenge_id": 42,
+      "user_id": 2
+    },
+    {
+      "duration": 32,
+      "video_url": "https://youtube.com/watch?v=challenge_42_2",
+      "challenge_id": 42,
+      "user_id": 3
+    },
+    {
+      "duration": 30,
+      "video_url": "https://youtube.com/watch?v=challenge_42_3",
+      "challenge_id": 42,
+      "user_id": 1
+    },
+    {
+      "duration": 29,
+      "video_url": "https://youtube.com/watch?v=challenge_42_4",
+      "challenge_id": 42,
+      "user_id": 2
+    },
+    {
+      "duration": 183,
+      "video_url": "https://youtube.com/watch?v=challenge_43_1",
+      "challenge_id": 43,
+      "user_id": 3
+    },
+    {
+      "duration": 182,
+      "video_url": "https://youtube.com/watch?v=challenge_43_2",
+      "challenge_id": 43,
+      "user_id": 1
+    },
+    {
+      "duration": 181,
+      "video_url": "https://youtube.com/watch?v=challenge_43_3",
+      "challenge_id": 43,
+      "user_id": 2
+    },
+    {
+      "duration": 179,
+      "video_url": "https://youtube.com/watch?v=challenge_43_4",
+      "challenge_id": 43,
+      "user_id": 3
+    },
+    {
+      "duration": 182,
+      "video_url": "https://youtube.com/watch?v=challenge_44_1",
+      "challenge_id": 44,
+      "user_id": 1
+    },
+    {
+      "duration": 181,
+      "video_url": "https://youtube.com/watch?v=challenge_44_2",
+      "challenge_id": 44,
+      "user_id": 2
+    },
+    {
+      "duration": 180,
+      "video_url": "https://youtube.com/watch?v=challenge_44_3",
+      "challenge_id": 44,
+      "user_id": 3
+    },
+    {
+      "duration": 179,
+      "video_url": "https://youtube.com/watch?v=challenge_44_4",
+      "challenge_id": 44,
+      "user_id": 1
+    },
+    {
+      "duration": 122,
+      "video_url": "https://youtube.com/watch?v=challenge_45_1",
+      "challenge_id": 45,
+      "user_id": 2
+    },
+    {
+      "duration": 120,
+      "video_url": "https://youtube.com/watch?v=challenge_45_2",
+      "challenge_id": 45,
+      "user_id": 3
+    },
+    {
+      "duration": 121,
+      "video_url": "https://youtube.com/watch?v=challenge_45_3",
+      "challenge_id": 45,
+      "user_id": 1
+    },
+    {
+      "duration": 119,
+      "video_url": "https://youtube.com/watch?v=challenge_45_4",
+      "challenge_id": 45,
+      "user_id": 2
+    },
+    {
+      "duration": 32,
+      "video_url": "https://youtube.com/watch?v=challenge_46_1",
+      "challenge_id": 46,
+      "user_id": 3
+    },
+    {
+      "duration": 30,
+      "video_url": "https://youtube.com/watch?v=challenge_46_2",
+      "challenge_id": 46,
+      "user_id": 1
+    },
+    {
+      "duration": 31,
+      "video_url": "https://youtube.com/watch?v=challenge_46_3",
+      "challenge_id": 46,
+      "user_id": 2
+    },
+    {
+      "duration": 29,
+      "video_url": "https://youtube.com/watch?v=challenge_46_4",
+      "challenge_id": 46,
+      "user_id": 3
     }
   ],
 

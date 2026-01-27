@@ -33,6 +33,10 @@ class ChallengeController extends BaseController {
                         model: User,
                         as: 'creator',
                         attributes: ['pseudo'],
+                    }, {
+                        model: Challenge,
+                        as: 'challenge',
+                        attributes: ['name'],
                     }
                 ],
             },
