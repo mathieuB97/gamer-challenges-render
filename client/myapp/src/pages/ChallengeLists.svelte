@@ -9,6 +9,7 @@
   import { getUserById } from "../lib/services/user.service.js";
   import { mockGames } from "../mock/games.mock";
   import { mockUsers } from "../mock/users.mock.js";
+  import ParticipationModal from "../components/ParticipationModal.svelte";
   // Id du jeu passé par le router (SPA)
   export let gameId;
 
@@ -19,6 +20,10 @@
 
   // Modal description du jeu
   let isGameModalOpen = false;
+  
+  // Modal participation
+  let isParticipationModalOpen = false;
+  let selectedChallenge = null;
 
   // Infos jeu (dynamique)
   let game = null;
@@ -104,6 +109,12 @@
     window.removeEventListener("keydown", handleKeydown);
     document.body.style.overflow = "";
   });
+
+  function openParticipationModal(challenge) {
+    selectedChallenge = challenge;
+    isParticipationModalOpen = true;
+    document.body.style.overflow = "hidden";
+  }
 
   function submitParticipation(challenge) {
     alert(`Participation: ${challenge.title}`);
@@ -286,7 +297,7 @@
                     type="button"
                     class="w-full py-2.5 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
                            text-white font-semibold hover:opacity-90 transition-opacity"
-                    on:click={() => submitParticipation(c)}
+                    on:click={() => openParticipationModal(c)}
                   >
                     Déposer une participation
                   </button>
@@ -351,6 +362,14 @@
         </div>
       </div>
     </div>
+  {/if}
+
+  <!-- MODAL PARTICIPATION -->
+  {#if isParticipationModalOpen}
+    <ParticipationModal 
+      bind:isOpen={isParticipationModalOpen}
+      challenge={selectedChallenge}
+    />
   {/if}
 </main>
 

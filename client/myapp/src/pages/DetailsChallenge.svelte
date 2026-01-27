@@ -21,6 +21,7 @@
   import IconParticipant from "../components/icon-participant.svelte";
   import IconOeil from "../components/icon-oeil.svelte";
   import IconArrowLeft from "../components/icon-arrow-left.svelte";
+  import ParticipationModal from "../components/ParticipationModal.svelte";
 
   // Affichage confettis à la demande
   let displayConfetti = false;
@@ -117,6 +118,9 @@
     }
   });
 
+  // Modal participation
+  let isParticipationModalOpen = false;
+
   // Pour voter sur le challenge principal
   async function voteForAChallenge(challengeId) {
     voteErrorMsg = "";
@@ -147,6 +151,11 @@
 
   // Fonctions vides pour les boutons Détail et Vote sur les participations (meilleures participations)
   function openParticipationDetail(row) {}
+
+  function openParticipationModal() {
+    isParticipationModalOpen = true;
+    document.body.style.overflow = "hidden";
+  }
 
   async function voteForParticipation(participationId) {
     voteErrorMsg = "";
@@ -317,10 +326,7 @@
             type="button"
             class="w-full py-3 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
                    text-white font-semibold hover:opacity-90 transition-opacity"
-            on:click={() =>
-              alert(
-                "Participation au challenge non implémentée 😭\nNous devons simuler une participation au challenge.\nUne solution serait d'ajouter un formulaire dans une modale(popin/popup pour les intimes 😂).\n On s'éclate sur ce projet… Faut revoir le sys de modale il va être utilisé pour afficher les feature que l'on aura pas le temps de pousser à fond niveau design !\nDonc on fait un composant hyper simple à utiliser qui permet d'ajouter du formulaire qui permet de remplir les infos nécessaire pour la BDD afin de simuler une une participation. Qui n'en veut ???",
-              )}
+            on:click={openParticipationModal}
           >
             Déposer une participation
           </button>
@@ -507,3 +513,11 @@
     </div>
   </section>
 </main>
+
+<!-- MODAL PARTICIPATION -->
+{#if isParticipationModalOpen}
+  <ParticipationModal 
+    bind:isOpen={isParticipationModalOpen}
+    challenge={challenge}
+  />
+{/if}
