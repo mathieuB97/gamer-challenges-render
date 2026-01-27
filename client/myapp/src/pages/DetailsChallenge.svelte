@@ -295,8 +295,11 @@
 
         <article class="bg-[#141824] border border-white/10 rounded-2xl p-6">
           <h2 class="text-2xl font-bold">
-            <span class="text-purple-300">Objectifs</span>
-            <span class="text-white"> à atteindre</span>
+            <span class="text-purple-300">Challenge</span>
+            <br />
+            <span class="text-white"
+              >{challenge?.name || "nom du challenge"}</span
+            >
           </h2>
 
           <div class="mt-5 grid gap-3 sm:grid-cols-2">
@@ -312,14 +315,14 @@
 
           <button
             type="button"
-            class="mt-5 w-full py-3 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
+            class="w-full py-3 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
                    text-white font-semibold hover:opacity-90 transition-opacity"
             on:click={() =>
               alert(
                 "Participation au challenge non implémentée 😭\nNous devons simuler une participation au challenge.\nUne solution serait d'ajouter un formulaire dans une modale(popin/popup pour les intimes 😂).\n On s'éclate sur ce projet… Faut revoir le sys de modale il va être utilisé pour afficher les feature que l'on aura pas le temps de pousser à fond niveau design !\nDonc on fait un composant hyper simple à utiliser qui permet d'ajouter du formulaire qui permet de remplir les infos nécessaire pour la BDD afin de simuler une une participation. Qui n'en veut ???",
               )}
           >
-            Participer au challenge
+            Déposer une participation
           </button>
         </article>
       </div>
