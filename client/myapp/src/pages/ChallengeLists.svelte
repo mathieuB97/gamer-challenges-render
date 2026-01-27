@@ -9,6 +9,8 @@
   import { getUserById } from "../lib/services/user.service.js";
   import { mockGames } from "../mock/games.mock";
   import { mockUsers } from "../mock/users.mock.js";
+  // Import du composant pop-up pour envoyer une participation
+  import ParticipationModal from "../components/ParticipationModal.svelte";
   // Id du jeu passé par le router (SPA)
   export let gameId;
 
@@ -19,6 +21,10 @@
 
   // Modal description du jeu
   let isGameModalOpen = false;
+  
+  // Etats pour controler le pop-up de participation
+  let isParticipationModalOpen = false; // Vrai = pop-up visible
+  let selectedChallenge = null; // Challenge sélectionné pour le pop-up
 
   // Infos jeu (dynamique)
   let game = null;
@@ -104,6 +110,13 @@
     window.removeEventListener("keydown", handleKeydown);
     document.body.style.overflow = "";
   });
+
+  // Fonction qui ouvre le pop-up de participation pour un challenge donné
+  function openParticipationModal(challenge) {
+    selectedChallenge = challenge; // Stocke le challenge cliqué
+    isParticipationModalOpen = true; // Affiche le pop-up
+    document.body.style.overflow = "hidden"; // Bloque le scroll de la page
+  }
 
   function submitParticipation(challenge) {
     alert(`Participation: ${challenge.title}`);
@@ -281,12 +294,12 @@
                   >
                     Détail
                   </a>
-
+                  <!--Bouton qui ouvre le pop-up de participation pour ce challenge -->
                   <button
                     type="button"
                     class="w-full py-2.5 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
                            text-white font-semibold hover:opacity-90 transition-opacity"
-                    on:click={() => submitParticipation(c)}
+                    on:click={() => openParticipationModal(c)}
                   >
                     Déposer une participation
                   </button>
@@ -351,6 +364,14 @@
         </div>
       </div>
     </div>
+  {/if}
+
+  <!-- Bloc qui affiche le pop-up de participation quand isParticipationModalOpen = true -->
+  {#if isParticipationModalOpen}
+    <ParticipationModal 
+      bind:isOpen={isParticipationModalOpen}
+      challenge={selectedChallenge} 
+    />
   {/if}
 </main>
 
