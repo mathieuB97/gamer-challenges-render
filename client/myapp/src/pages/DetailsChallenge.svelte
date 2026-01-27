@@ -20,6 +20,7 @@
   import IconChallenge from "../components/icon-challenge.svelte";
   import IconParticipant from "../components/icon-participant.svelte";
   import IconOeil from "../components/icon-oeil.svelte";
+  import IconArrowLeft from "../components/icon-arrow-left.svelte";
 
   // Affichage confettis à la demande
   let displayConfetti = false;
@@ -74,9 +75,9 @@
     views: "45.2K",
   };
 
-  // Vote utilisateur (1..5)
-  let voteValue = 0;
-  0;
+  // Vote utilisateur (hard, medium, low)
+  let levelEvalOptions = ["hard", "medium", "low"];
+  let levelEval = levelEvalOptions[Math.floor(Math.random() * 3)]; // par défaut un des 3 niveaux au hasard
 
   // Load data (API -> sinon mock)
   onMount(async () => {
@@ -177,9 +178,8 @@
       console.error("Erreur lors de l'envoi du vote:", error, error.data);
     }
   }
-  function submitVote() {
-    if (!voteValue) return alert("Choisis une note (1 à 5) avant de voter.");
-    alert(`Merci ! Vote envoyé: ${voteValue}/5`);
+  function submitLevel() {
+    alert(`Niveau sélectionné : ${levelEval}`);
   }
 </script>
 
@@ -204,14 +204,16 @@
       </div>
 
       <div class="absolute inset-0">
-        <div class="flex items-end h-full w-full mx-auto max-w-6xl px-4 pb-10">
+        <div class="flex items-end h-full w-full mx-auto px-6 pb-10">
           <div class="col-left">
             <a
               href={gameId ? `/jeux/${gameId}/challenges` : "/liste-challenges"}
-              class="mb-4 inline-flex items-center gap-2 text-white/80 hover:text-white transition"
+              class="mb-4 inline-flex items-center gap-2 text-xl text-white/80 hover:text-white transition"
             >
-              <span class="text-lg">←</span>
-              <span class="text-sm">Retour aux challenges</span>
+              <span>
+                <IconArrowLeft />
+              </span>
+              <span>Retour aux challenges</span>
             </a>
 
             <h1
@@ -250,6 +252,15 @@
                 {voteErrorMsg}
               </p>
             {/if}
+            <button
+              type="button"
+              on:click={() => voteForAChallenge(challenge?.id)}
+              class="mt-3 w-full py-3 px-6 text-xl rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
+                     text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50"
+              disabled={userLoading || !currentUser || hasVoted}
+            >
+              {userLoading ? "Vérification..." : "Voter pour ce challenge"}
+            </button>
             {#if displayConfetti}
               <Confetti amount={200} rounded={true} />
             {/if}
@@ -265,7 +276,7 @@
       <!-- LEFT -->
       <div class="space-y-4">
         <article class="bg-[#141824] border border-white/10 rounded-2xl p-6">
-          <h2 class="text-xl font-bold">
+          <h2 class="text-2xl font-bold">
             <span class="text-[#00d9ff]">Détails</span>
             <span class="text-white"> du challenge</span>
           </h2>
@@ -283,7 +294,7 @@
         </article>
 
         <article class="bg-[#141824] border border-white/10 rounded-2xl p-6">
-          <h2 class="text-xl font-bold">
+          <h2 class="text-2xl font-bold">
             <span class="text-purple-300">Objectifs</span>
             <span class="text-white"> à atteindre</span>
           </h2>
@@ -303,6 +314,10 @@
             type="button"
             class="mt-5 w-full py-3 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
                    text-white font-semibold hover:opacity-90 transition-opacity"
+            on:click={() =>
+              alert(
+                "Participation au challenge non implémentée 😭\nNous devons simuler une participation au challenge.\nUne solution serait d'ajouter un formulaire dans une modale(popin/popup pour les intimes 😂).\n On s'éclate sur ce projet… Faut revoir le sys de modale il va être utilisé pour afficher les feature que l'on aura pas le temps de pousser à fond niveau design !\nDonc on fait un composant hyper simple à utiliser qui permet d'ajouter du formulaire qui permet de remplir les infos nécessaire pour la BDD afin de simuler une une participation. Qui n'en veut ???",
+              )}
           >
             Participer au challenge
           </button>
@@ -312,7 +327,7 @@
       <!-- MIDDLE -->
       <article class="bg-[#141824] border border-white/10 rounded-2xl p-6">
         <div class="flex items-center justify-between text-white">
-          <h2 class="text-xl font-bold">
+          <h2 class="text-2xl font-bold">
             <span class="text-yellow-300">Meilleurs</span>
             participation
           </h2>
@@ -391,7 +406,7 @@
       <!-- RIGHT -->
       <div class="space-y-4">
         <article class="bg-[#141824] border border-white/10 rounded-2xl p-6">
-          <h2 class="text-xl font-bold">
+          <h2 class="text-2xl font-bold">
             <span class="text-pink-400">Activité</span>
             <span class="text-white"> du challenge</span>
           </h2>
@@ -453,24 +468,25 @@
         </article>
 
         <article class="bg-[#141824] border border-white/10 rounded-2xl p-6">
-          <h2 class="text-xl font-bold text-yellow-200">
-            Votez pour ce challenge
+          <h2 class="text-2xl font-bold text-yellow-200">
+            Estimez la difficulté du challenge
           </h2>
-          <p class="mt-2 text-sm text-white/70">
-            Donnez votre avis sur ce challenge
+          <p class="mt-2 text-white/70">
+            Partagez votre avis votre ressenti sur la difficulté de ce challenge
+            afin d'aider la communauté.
           </p>
 
           <div class="mt-4 flex items-center justify-between gap-2">
-            {#each [1, 2, 3, 4, 5] as n}
+            {#each levelEvalOptions as level}
               <button
                 type="button"
-                class="h-10 w-10 rounded-full border border-white/15 text-white/80 hover:bg-white/5 transition
-                       {voteValue === n
+                class="h-10 w-24 rounded-full border border-white/15 text-white/80 hover:bg-white/5 transition {levelEval ===
+                level
                   ? 'bg-white/10 border-white/30 text-white'
                   : ''}"
-                on:click={() => (voteValue = n)}
+                on:click={() => (levelEval = level)}
               >
-                {n}
+                {level}
               </button>
             {/each}
           </div>
@@ -479,9 +495,9 @@
             type="button"
             class="mt-5 w-full py-3 rounded-lg bg-white/10 border border-white/10 text-white/90
                    hover:bg-white/15 transition font-semibold"
-            on:click={submitVote}
+            on:click={submitLevel}
           >
-            Voter
+            Partager mon évaluation
           </button>
         </article>
       </div>
