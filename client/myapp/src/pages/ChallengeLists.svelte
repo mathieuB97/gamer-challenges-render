@@ -315,14 +315,16 @@
   <!-- MODAL DESCRIPTION JEU -->
   {#if isGameModalOpen}
     <!-- Overlay -->
-    <div class="fixed inset-0 z-40 bg-black/60" on:click={closeGameModal}></div>
+    <div class="fixed inset-0 z-40 bg-black/60" on:click={closeGameModal} on:keydown={(e) => {
+      if (e.key === "Enter" || e.key === " ") closeGameModal();
+    }} role="button"aria-label="fermer la modal" tabindex="0"></div>
+
 
     <!-- Modal -->
     <div class="fixed inset-0 z-50 flex items-center justify-center px-4">
       <div
         class="w-full max-w-3xl rounded-2xl border border-white/10 bg-[#141824]
                shadow-xl overflow-hidden"
-        on:click|stopPropagation
       >
         <!-- Header modal -->
         <div class="flex items-start justify-between gap-4 p-6">
@@ -352,14 +354,11 @@
             class="mt-5 border-t border-white/10 pt-4 grid grid-cols-2 gap-4 text-sm"
           >
             <div>
-              <p class="text-white/60 text-xs">Genre</p>
+              <p class="text-white/60 text-xs">Catégorie : {game.category}</p>
               <p class="text-white font-semibold">{game.genre}</p>
             </div>
 
-            <div>
-              <p class="text-white/60 text-xs">Joueurs</p>
-              <p class="text-white font-semibold">{game.players}</p>
-            </div>
+            
           </div>
         </div>
       </div>
