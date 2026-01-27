@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from "svelte";
   import ChallengeCard from "../components/ChallengeCard.svelte";
   import IconArrowLeft from "../components/icon-arrow-left.svelte";
   import IconArrowRight from "../components/icon-arrow-right.svelte";
@@ -12,9 +13,31 @@
     ongoingChallenges as mockOngoingChallenges,
     leaderboardData as mockLeaderboardData,
   } from "../mock/data.js";
+  import { getTopChallenges } from "../lib/services/vote.service.js";
+
+  // Initialisation de la variable avec une valeur vide
+  let topChallenges = [];
+  let topChallengesChunked = $state([]);
+
+  onMount(async () => {
+    try {
+      // Tenter de récupérer les données depuis la base de données
+      const response = await getTopChallenges();
+      topChallenges = response.top_challenges;
+      if (!topChallenges) {
+        throw new Error("Données top challenges depuis a BDD non disponibles");
+      }
+      // Mettre à jour topChallengesChunked après avoir rempli topChallenges
+      topChallengesChunked = chunkArray(topChallenges, 3);
+    } catch (error) {
+      console.error("Erreur lors du chargement des top challenges :", error);
+      // En cas d'erreur, utiliser les données mock
+      topChallenges = mockTopChallenges;
+      topChallengesChunked = chunkArray(topChallenges, 3);
+    }
+  });
 
   // États initialisés avec les données mock, seront mises à jour avec les vraies données
-  let topChallenges = $state(mockTopChallenges);
   let newChallenges = $state(mockNewChallenges);
   let ongoingChallenges = $state(mockOngoingChallenges);
   let leaderboardData = $state(mockLeaderboardData);
@@ -34,8 +57,7 @@
   let newChallengesIndex = $state(0);
   let ongoingChallengesIndex = $state(0);
 
-  // Diviser les challenges en groupes de 3
-  let topChallengesChunked = $derived(chunkArray(topChallenges, 3));
+  // Diviser les challenges en groupes de 3 pour les carrousels
   let newChallengesChunked = $derived(chunkArray(newChallenges, 3));
   let ongoingChallengesChunked = $derived(chunkArray(ongoingChallenges, 3));
 
