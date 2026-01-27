@@ -14,19 +14,21 @@ class ChallengeController extends BaseController {
     getRequestOptions(req) {
         return [
             // Inclusion du modèle Game, alias 'game' dans les associations (récupère la totalité des infos de la table "game")
-            { model: Game, 
-                as: 'game' },
+            {
+                model: Game,
+                as: 'game'
+            },
 
             // Inclusion du modèle User, alias 'creator' dans les associations et "attributes" pour ne récupérer que le pseudo
-            { 
-                model: User, 
+            {
+                model: User,
                 as: 'creator',
-                attributes: ['pseudo'], 
+                attributes: ['pseudo'],
             },
 
             // Inclusion du modèle Contribution, alias 'contributions' avec une sous-inclusion du modèle User (l'auteur de la contribution)
-            { 
-                model: Contribution, 
+            {
+                model: Contribution,
                 as: 'contributions',
                 include: [
                     {
@@ -47,33 +49,16 @@ class ChallengeController extends BaseController {
      * GET /api/challenges
      * Retourne les challenges groupés par catégories (top, new, ongoing)
      */
-    getChallengesGrouped = async (req, res, next) => {
+    getChallenges = async (req, res, next) => {
         try {
             const options = this.getRequestOptions(req);
-            const allChallenges = await Challenge.findAll({ include: options });
+            const challenges = await Challenge.findAll({ include: options });
 
-            // Mapper les données pour correspondre à la structure attendue par le client
-            const transformedChallenges = allChallenges.map(challenge => ({
-                id: challenge.id,
-                title: challenge.game?.name || "Nom du jeu",
-                challengeName: challenge.name,
-                image: game.image || "https://via.placeholder.com/600x400",
-                likes: challenge.likes || 0,
-                participants: challenge.participants || 0,
-            }));
+            if (!challenges || challenges.length === 0) {
+                throw new HttpError('Aucun challenge trouvé', 404);
+            }
+            return res.sendResponse({ challenges });
 
-            // Grouper les challenges (vous pouvez adapter la logique selon vos besoins)
-            const topChallenges = transformedChallenges.slice(0, 4);
-            const newChallenges = transformedChallenges.slice(4, 9);
-            const ongoingChallenges = transformedChallenges.slice(0, 7);
-
-            res.sendResponse({
-                challenges: {
-                    topChallenges,
-                    newChallenges,
-                    ongoingChallenges
-                }
-            });
         } catch (error) {
             next(error);
         }
