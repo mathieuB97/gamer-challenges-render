@@ -522,6 +522,14 @@
   </section>
 </main>
 
+<!-- MODAL CONTRIBUTION DETAIL -->
+{#if isContributionDetailModalOpen}
+  <ContributionDetailModal 
+    bind:isOpen={isContributionDetailModalOpen}
+    contribution={selectedContribution}
+  />
+{/if}
+
 <!-- MODAL PARTICIPATION -->
 {#if isParticipationModalOpen}
   <ParticipationModal 
