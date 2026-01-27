@@ -75,9 +75,9 @@
     views: "45.2K",
   };
 
-  // Vote utilisateur (hard, medium, low)
-  let levelEvalOptions = ["hard", "medium", "low"];
-  let levelEval = levelEvalOptions[Math.floor(Math.random() * 3)]; // par défaut un des 3 niveaux au hasard
+  // Vote utilisateur (hard, medium, easy)
+  let levelOptions = ["hard", "medium", "easy"];
+  let selectedLevel = null;
 
   // Load data (API -> sinon mock)
   onMount(async () => {
@@ -179,7 +179,7 @@
     }
   }
   function submitLevel() {
-    alert(`Niveau sélectionné : ${levelEval}`);
+    alert(`Niveau sélectionné : ${selectedLevel}`); // À remplacer par l'appel API
   }
 </script>
 
@@ -480,14 +480,14 @@
           </p>
 
           <div class="mt-4 flex items-center justify-between gap-2">
-            {#each levelEvalOptions as level}
+            {#each levelOptions as level}
               <button
                 type="button"
-                class="h-10 w-24 rounded-full border border-white/15 text-white/80 hover:bg-white/5 transition {levelEval ===
+                class="h-10 w-24 rounded-full border border-white/15 text-white/80 hover:bg-white/5 transition {selectedLevel ===
                 level
                   ? 'bg-white/10 border-white/30 text-white'
                   : ''}"
-                on:click={() => (levelEval = level)}
+                on:click={() => (selectedLevel = level)}
               >
                 {level}
               </button>
