@@ -28,5 +28,7 @@ router.get('/votes/top-challenges', voteController.getTopChallenges);
 // POST /votes/contribution/:contributionId
 router.post('/votes/contribution/:contributionId', validateToken, voteController.voteForContribution);
 
+// Route pour le leaderboard retourne les utilisateurs ayant reçu le plus de votes sur leur participation
+router.get('/leaderboard', voteController.getLeaderboard);
 
 export default router;
