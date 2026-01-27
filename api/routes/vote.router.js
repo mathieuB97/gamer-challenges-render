@@ -20,6 +20,10 @@ router.get('/votes/contribution/:contributionId', voteController.getContribution
 // GET /votes/top-contributors?limit=10
 router.get('/votes/top-contributors', voteController.getTopContributors);
 
+// Route 4: Top challenges par nombre de votes
+// GET /votes/top-challenges?limit=10
+router.get('/votes/top-challenges', voteController.getTopChallenges);
+
 // Route POST : Voter pour une contribution (auth obligatoire)
 // POST /votes/contribution/:contributionId
 router.post('/votes/contribution/:contributionId', validateToken, voteController.voteForContribution);

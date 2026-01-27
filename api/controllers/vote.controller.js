@@ -1,6 +1,7 @@
 import BaseController from './base.controller.js';
-import { User, Challenge, Contribution } from '../models/index.js';
+import { User, Challenge, Contribution, Game } from '../models/index.js';
 import HttpError from '../utils/HttpError.js';
+import { fn, col, } from '../models/sequelize.client.js';
 
 
 class VoteController extends BaseController {
@@ -178,6 +179,44 @@ class VoteController extends BaseController {
                 top_contributors: contributorsStats
             });
 
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    // 4. Top challenges par nombre de votes (participants sur user_challenge)
+    async getTopChallenges(req_, res, next) {
+        try {
+            // Jointures:
+            // - 'game': relation 1-N (Challenge.belongsTo(Game)) pour récupérer le nom et l'image du jeu lié
+            // - 'participants': relation N-N (Challenge.belongsToMany(User) via table 'user_challenge')
+            //    utilisée uniquement pour compter les votes (participants). On ne sélectionne pas de colonnes utilisateurs
+            //    (attributes: []) et on n'expose pas de champs de la table de jonction (through: { attributes: [] }).
+            const rows = await Challenge.findAll({
+                include: [
+                    { model: Game, as: 'game', attributes: ['name', 'image'] },
+                    { model: User, as: 'participants', attributes: [], through: { attributes: [] } },
+                ],
+                attributes: [
+                    // Colonnes du challenge renvoyées
+                    'id', 'name', 'level', 'time_limit_minutes',
+                    // Agrégat: nombre de participants (votes) grâce à la jointure 'participants'
+                    // COUNT(participants.id) est possible car l'include crée la jointure avec l'alias 'participants'
+                    [fn('COUNT', col('participants.id')), 'votesCount'],
+                    // Nombre total de participants au challenge
+                    [fn('COUNT', col('participants.id')), 'totalParticipants']
+                ],
+                // Groupement nécessaire pour les agrégations et éviter la duplication des lignes
+                // On regroupe par l'identifiant du challenge et l'identifiant du jeu inclus
+                group: ['Challenge.id', 'game.id'],
+                // Tri sur l'alias "votesCount" en DESC pour obtenir les challenges les plus votés en premier
+                order: [['votesCount', 'DESC']],
+                limit: 10,
+                subQuery: false,
+                raw: true
+            });
+
+            res.json({ top_challenges: rows });
         } catch (error) {
             next(error);
         }
