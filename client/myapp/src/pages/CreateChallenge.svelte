@@ -101,9 +101,9 @@
 
                 <select name="challenge-select" id="challenge-select" class="bg-[#0a0e1a] border border-white/20">
                 <option value={formData.challengeSelect}>--Veuillez choisir une option--</option>
-                <option value="Low">Low ❤️</option>
-                <option value="Medium">Medium ⚔️</option>
-                <option value="Hard">Hard 💀</option>
+                <option value="easy">Easy ❤️</option>
+                <option value="medium">Medium ⚔️</option>
+                <option value="hard">Hard 💀</option>
                 </select>
 
                 <LabelInput
