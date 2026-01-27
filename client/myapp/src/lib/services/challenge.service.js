@@ -67,5 +67,9 @@ export async function getChallenges() {
  * Récupère les données du leaderboard depuis l'API
  */
 export async function getLeaderboard() {
-    return false;
+    const data = await api("/leaderboard");
+    if (Array.isArray(data.leaderboard)) {
+        return data.leaderboard;
+    }
+    throw new Error("Structure de données invalide : leaderboard doit être un tableau");
 }

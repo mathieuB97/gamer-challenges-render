@@ -222,6 +222,74 @@ class VoteController extends BaseController {
         }
     }
 
+    /**
+     * GET /api/votes/leaderboard
+     * Retourne les utilisateurs ayant reçu le plus de votes sur leur participation.
+     */
+    getLeaderboard = async (req, res, next) => {
+        try {
+            // Récupérer les utilisateurs avec leurs contributions et le nombre total de votes reçus sur leurs contributions
+            const users = await User.findAll({
+                include: [
+                    {
+                        model: Contribution,
+                        as: 'contributions',
+                        include: [
+                            {
+                                model: User,
+                                as: 'contributors',
+                                attributes: ['id'],
+                                through: { attributes: [] }
+                            },
+                            {
+                                model: Challenge,
+                                as: 'challenge',
+                                attributes: ['name', 'level', 'time_limit_minutes'],
+                                include: [
+                                    {
+                                        model: Game,
+                                        as: 'game',
+                                        attributes: ['name', 'image']
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                attributes: ['id', 'pseudo'],
+            });
+
+            // Calculer le nombre total de votes reçus sur toutes les contributions de chaque utilisateur
+            const leaderboard = users.map(user => {
+                // votesCount = somme des votes sur toutes les contributions de l'utilisateur
+                const votesCount = user.contributions.reduce((total, contrib) => {
+                    return total + (contrib.contributors ? contrib.contributors.length : 0);
+                }, 0);
+                // Chercher le premier jeu trouvé dans les contributions de l'utilisateur
+                let gameName = null;
+                let gameImage = null;
+                for (const contrib of user.contributions) {
+                    if (contrib.challenge && contrib.challenge.game) {
+                        gameName = contrib.challenge.game.name;
+                        gameImage = contrib.challenge.game.image;
+                        break;
+                    }
+                }
+                return {
+                    id: user.id,
+                    pseudo: user.pseudo,
+                    votesCount,
+                    game_name: gameName,
+                    game_image: gameImage,
+                };
+            }).sort((a, b) => b.votesCount - a.votesCount).slice(0, 10);
+
+            res.json({ leaderboard });
+        } catch (error) {
+            next(error);
+        }
+    }
+
     // POST : Ajouter un vote à une contribution (participation)
     async voteForContribution(req, res, next) {
         try {

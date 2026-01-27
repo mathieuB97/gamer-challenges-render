@@ -18,6 +18,7 @@
   // Initialisation de la variable avec une valeur vide
   let topChallenges = [];
   let topChallengesChunked = $state([]);
+  let leaderboard = $state([]);
 
   onMount(async () => {
     try {
@@ -34,6 +35,14 @@
       // En cas d'erreur, utiliser les données mock
       topChallenges = mockTopChallenges;
       topChallengesChunked = chunkArray(topChallenges, 3);
+    }
+
+    try {
+      const leaderboardResponse = await getLeaderboard();
+      leaderboard = leaderboardResponse;
+    } catch (error) {
+      console.error("Erreur lors du chargement du leaderboard :", error);
+      leaderboard = mockLeaderboardData;
     }
   });
 
@@ -107,33 +116,33 @@
     <div class="h-full overflow-y-auto px-4 py-4 scrollbar-thumb-gray-600">
       <h2 class="text-xl mb-4">Leaderboard</h2>
       <div class="space-y-4">
-        {#each leaderboardData as player (player.rank)}
+        {#each leaderboardData as player, i ((player.rank, i))}
           <div class="relative group cursor-pointer">
             <!-- rank best player-->
             <div
               class="absolute -top-2 -left-2 w-8 h-8 rounded-lg flex items-center justify-center z-10
-								{player.rank === 1
+								{i + 1 === 1
                 ? 'bg-gradient-to-br from-yellow-400 to-yellow-600'
-                : player.rank === 2
+                : i + 1 === 2
                   ? 'bg-gradient-to-br from-gray-300 to-gray-500'
-                  : player.rank === 3
+                  : i + 1 === 3
                     ? 'bg-gradient-to-br from-amber-600 to-amber-800'
                     : 'bg-gradient-to-br from-[#1a2139] to-[#12172b]'}"
             >
-              <span class="font-bold">{player.rank}</span>
+              <span class="font-bold">{i + 1 || player.rank}</span>
             </div>
             <!-- Card -->
             <div class="relative overflow-hidden rounded-lg">
               <img
-                src={player.image}
-                alt={player.name}
+                src={player.game_image ?? player.image}
+                alt={player.game_name ?? player.name}
                 class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"
               />
               <div
                 class="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-transparent"
               ></div>
               <div class="absolute bottom-2 left-2 right-2">
-                <p class="text-sm mb-0.5">{player.name}</p>
+                <p class="text-sm mb-0.5">{player.game_name ?? player.name}</p>
                 <p class="text-xs text-[#00d9ff] italic">
                   {player.pseudo}
                 </p>
