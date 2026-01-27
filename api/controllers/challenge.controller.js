@@ -64,42 +64,6 @@ class ChallengeController extends BaseController {
         }
     }
 
-    /**
-     * GET /api/leaderboard
-     * Retourne le classement des utilisateurs par nombre de contributions
-     */
-    getLeaderboard = async (req, res, next) => {
-        try {
-            // Récupérer les utilisateurs avec le nombre de contributions
-            const users = await User.findAll({
-                include: [{
-                    model: Contribution,
-                    as: 'contributions',
-                    attributes: [],
-                }],
-                attributes: ['id', 'pseudo', 'image', [require('sequelize').fn('COUNT', require('sequelize').col('contributions.id')), 'contributionCount']],
-                group: ['User.id'],
-                order: [[require('sequelize').literal('contributionCount'), 'DESC']],
-                limit: 10,
-                raw: true,
-                subQuery: false
-            });
-
-            // Mapper et ajouter les rangs
-            const leaderboardData = users.map((user, index) => ({
-                rank: index + 1,
-                name: "Nom du jeu", // À adapter selon votre logique
-                pseudo: user.pseudo,
-                image: user.image || "https://via.placeholder.com/400x400",
-            }));
-
-            res.sendResponse({
-                leaderboardData
-            });
-        } catch (error) {
-            next(error);
-        }
-    }
 }
 
 export default new ChallengeController();
