@@ -67,22 +67,5 @@ export async function getChallenges() {
  * Récupère les données du leaderboard depuis l'API
  */
 export async function getLeaderboard() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/leaderboard`);
-
-        if (!response.ok) {
-            throw new Error(`Erreur HTTP ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (data.leaderboardData) {
-            return data.leaderboardData;
-        }
-
-        throw new Error("Leaderboard non trouvé");
-    } catch (error) {
-        console.error("Erreur lors de la récupération du leaderboard:", error);
-        return mockLeaderboardData;
-    }
+    return false;
 }
