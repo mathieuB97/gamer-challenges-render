@@ -183,10 +183,9 @@
   }
 </script>
 
-<main class="min-h-[calc(100vh-200px)]">
+<main class="h-full">
   <!-- HERO -->
   <section class="relative w-full">
-    {JSON.stringify(challenge)}
     {#if loading}
       <div class="min-h-[360px] flex items-center justify-center text-white/70">
         Chargement du challenge...
@@ -261,7 +260,7 @@
   </section>
 
   <!-- CONTENT -->
-  <section class="mx-auto w-full max-w-6xl px-4 py-8">
+  <section class="mx-auto w-full">
     <div class="grid gap-4 lg:grid-cols-[1.15fr_0.95fr_0.75fr]">
       <!-- LEFT -->
       <div class="space-y-4">
