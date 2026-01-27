@@ -104,9 +104,11 @@
         challenge,
       );
 
-      // Récupère les contributions déjà votées par l'utilisateur
-      const votedContributions = await getVotesForCurrentUserContributions();
-      votedContributionIds = votedContributions.map((c) => c.id);
+      // Si utilisateur connecté, récupère les contributions déjà votées
+      if (currentUser) {
+        const votedContributions = await getVotesForCurrentUserContributions();
+        votedContributionIds = votedContributions.map((c) => c.id);
+      }
     } catch (error) {
       console.error("Erreur API challenge detail:", error);
       challenge = { ...mockChallenge, id: Number(challengeId ?? 1) };
@@ -120,6 +122,10 @@
   // Pour voter sur le challenge principal
   async function voteForAChallenge(challengeId) {
     voteErrorMsg = "";
+    if (!currentUser) {
+      voteErrorMsg = "Vous devez être connecté pour voter.";
+      return;
+    }
     if (!challengeId) {
       voteErrorMsg = "Impossible de voter : challenge introuvable";
       return;
@@ -150,6 +156,10 @@
 
   async function voteForParticipation(participationId) {
     voteErrorMsg = "";
+    if (!currentUser) {
+      voteErrorMsg = "Vous devez être connecté pour voter.";
+      return;
+    }
     if (!participationId) {
       voteErrorMsg = "Impossible de voter : participation introuvable";
       return;
@@ -187,13 +197,14 @@
   <!-- HERO -->
   <section class="relative w-full">
     {#if loading}
-      <div class="min-h-[360px] flex items-center justify-center text-white/70">
+      <div class="min-h-90 flex items-center justify-center text-white/70">
         Chargement du challenge...
       </div>
-    {:else}
-      <div class="relative h-[420px] w-full overflow-hidden">
+    {/if}
+    {#if !loading}
+      <div class="relative h-105 w-full overflow-hidden">
         <img
-          src={challenge?.game.image}
+          src={challenge?.game?.image || mockChallenge?.game?.image || ""}
           alt={challenge?.name}
           class="h-full w-full object-cover"
           loading="lazy"
@@ -255,11 +266,15 @@
             <button
               type="button"
               on:click={() => voteForAChallenge(challenge?.id)}
-              class="mt-3 w-full py-3 px-6 text-xl rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
+              class="mt-3 w-full py-3 px-6 rounded-lg bg-linear-to-r from-[#7b2cbf] to-[#00d9ff]
                      text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50"
               disabled={userLoading || !currentUser || hasVoted}
             >
-              {userLoading ? "Vérification..." : "Voter pour ce challenge"}
+              {userLoading
+                ? "Vérification..."
+                : !currentUser
+                  ? "Connectez-vous pour voter"
+                  : "Voter pour ce challenge"}
             </button>
             {#if displayConfetti}
               <Confetti amount={200} rounded={true} />
@@ -315,12 +330,14 @@
 
           <button
             type="button"
-            class="w-full py-3 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
-                   text-white font-semibold hover:opacity-90 transition-opacity"
+            class="w-full py-3 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff] text-white font-semibold hover:opacity-90 transition-opacity"
+            class:opacity-50={!currentUser}
+            class:cursor-not-allowed={!currentUser}
             on:click={() =>
               alert(
                 "Participation au challenge non implémentée 😭\nNous devons simuler une participation au challenge.\nUne solution serait d'ajouter un formulaire dans une modale(popin/popup pour les intimes 😂).\n On s'éclate sur ce projet… Faut revoir le sys de modale il va être utilisé pour afficher les feature que l'on aura pas le temps de pousser à fond niveau design !\nDonc on fait un composant hyper simple à utiliser qui permet d'ajouter du formulaire qui permet de remplir les infos nécessaire pour la BDD afin de simuler une une participation. Qui n'en veut ???",
               )}
+            disabled={!currentUser}
           >
             Déposer une participation
           </button>
@@ -386,6 +403,7 @@
                   type="button"
                   class="flex flex-row items-end gap-1 px-3 py-2 rounded-lg border border-white/15 text-white/80 hover:bg-white/5 transition text-xs cursor-pointer"
                   on:click={() => openParticipationDetail(participation)}
+                  disabled={!currentUser}
                 >
                   <IconPlay />
                   <span class="leading-3"> Détail </span>
@@ -395,9 +413,10 @@
                   class="flex flex-row items-end gap-1 px-3 py-2 rounded-lg bg-pink-500/90 hover:bg-pink-500 transition text-white text-xs font-semibold cursor-pointer disabled:opacity-50"
                   on:click={() =>
                     voteForParticipation(Number(participation.id))}
-                  disabled={votedContributionIds.includes(participation.id)}
+                  disabled={!currentUser ||
+                    votedContributionIds.includes(participation.id)}
                 >
-                  <IconLike size={16} class="inline-block color-white" />
+                  <IconLike size={16} />
                   <span class="leading-3"> Vote </span>
                 </button>
               </div>
@@ -439,7 +458,7 @@
             >
               <div class="flex items-center gap-3">
                 <div
-                  class="h-10 w-10 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500
+                  class="h-10 w-10 rounded-xl bg-linear-to-r from-pink-500 to-purple-500
             flex items-center justify-center"
                 >
                   <IconParticipant class="w-5 h-5 text-white" />
@@ -456,7 +475,7 @@
             >
               <div class="flex items-center gap-3">
                 <div
-                  class="h-10 w-10 rounded-xl bg-gradient-to-r from-orange-400 to-pink-500
+                  class="h-10 w-10 rounded-xl bg-linear-to-r from-orange-400 to-pink-500
             flex items-center justify-center"
                 >
                   <IconOeil class="w-5 h-5 text-white" />
@@ -488,6 +507,7 @@
                   ? 'bg-white/10 border-white/30 text-white'
                   : ''}"
                 on:click={() => (selectedLevel = level)}
+                disabled={!currentUser}
               >
                 {level}
               </button>
@@ -496,11 +516,17 @@
 
           <button
             type="button"
-            class="mt-5 w-full py-3 rounded-lg bg-white/10 border border-white/10 text-white/90
-                   hover:bg-white/15 transition font-semibold"
+            class="mt-5 w-full py-3 rounded-lg bg-white/10 border border-white/10 text-white/90 hover:bg-white/15 transition font-semibold"
+            class:opacity-50={!currentUser}
+            class:cursor-not-allowed={!currentUser}
             on:click={submitLevel}
+            disabled={!currentUser}
           >
-            Partager mon évaluation
+            {#if !currentUser}
+              Vous n'êtes pas connecté
+            {:else}
+              Partager mon évaluation
+            {/if}
           </button>
         </article>
       </div>
