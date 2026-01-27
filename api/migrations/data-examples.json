@@ -7,7 +7,6 @@
       "name": "user"
     }
   ],
-
   "users": [
     {
       "email": "josie.gamer@outlook.fr",
@@ -26,9 +25,50 @@
       "pseudo": "JeanLouis",
       "password": "bye",
       "roleName": "user"
+    },
+    {
+      "email": "user4.gamer@outlook.fr",
+      "pseudo": "User4",
+      "password": "pass4",
+      "roleName": "user"
+    },
+    {
+      "email": "user5.gamer@outlook.fr",
+      "pseudo": "User5",
+      "password": "pass5",
+      "roleName": "user"
+    },
+    {
+      "email": "user6.gamer@outlook.fr",
+      "pseudo": "User6",
+      "password": "pass6",
+      "roleName": "user"
+    },
+    {
+      "email": "user7.gamer@outlook.fr",
+      "pseudo": "User7",
+      "password": "pass7",
+      "roleName": "user"
+    },
+    {
+      "email": "user8.gamer@outlook.fr",
+      "pseudo": "User8",
+      "password": "pass8",
+      "roleName": "user"
+    },
+    {
+      "email": "user9.gamer@outlook.fr",
+      "pseudo": "User9",
+      "password": "pass9",
+      "roleName": "user"
+    },
+    {
+      "email": "user10.gamer@outlook.fr",
+      "pseudo": "User10",
+      "password": "pass10",
+      "roleName": "user"
     }
   ],
-
   "games": [
     {
       "name": "Valorant",
@@ -67,7 +107,6 @@
       "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600"
     }
   ],
-
   "challenges": [
     {
       "name": "Speedrun Mario",
@@ -114,7 +153,6 @@
       "user_id": 2,
       "game_id": 1
     },
-
     {
       "name": "Pentakill Challenge",
       "description": "Faire un pentakill en ranked.",
@@ -169,7 +207,6 @@
       "user_id": 1,
       "game_id": 2
     },
-
     {
       "name": "No Death Elden Ring",
       "description": "Terminer Elden Ring sans mourir.",
@@ -233,7 +270,6 @@
       "user_id": 3,
       "game_id": 3
     },
-
     {
       "name": "Speedrun Zelda",
       "description": "Finir le jeu en moins de 3h.",
@@ -306,7 +342,6 @@
       "user_id": 2,
       "game_id": 4
     },
-
     {
       "name": "Top 1 Solo",
       "description": "Gagner une partie en solo.",
@@ -397,7 +432,6 @@
       "user_id": 3,
       "game_id": 5
     },
-
     {
       "name": "Ender Dragon Rush",
       "description": "Tuer l'Ender Dragon en moins de 2h.",
@@ -489,13 +523,54 @@
       "game_id": 6
     }
   ],
-
   "contributions": [
     {
       "duration": 180,
       "video_url": "https://youtube.com/watch?v=mario_run",
       "challenge_id": 1,
       "user_id": 2
+    },
+    {
+      "duration": 201,
+      "video_url": "https://youtube.com/watch?v=challenge_new_1",
+      "challenge_id": 2,
+      "user_id": 4
+    },
+    {
+      "duration": 202,
+      "video_url": "https://youtube.com/watch?v=challenge_new_2",
+      "challenge_id": 3,
+      "user_id": 5
+    },
+    {
+      "duration": 203,
+      "video_url": "https://youtube.com/watch?v=challenge_new_3",
+      "challenge_id": 4,
+      "user_id": 6
+    },
+    {
+      "duration": 204,
+      "video_url": "https://youtube.com/watch?v=challenge_new_4",
+      "challenge_id": 5,
+      "user_id": 7
+    },
+    {
+      "duration": 205,
+      "video_url": "https://youtube.com/watch?v=challenge_new_5",
+      "challenge_id": 6,
+      "user_id": 8
+    },
+    {
+      "duration": 206,
+      "video_url": "https://youtube.com/watch?v=challenge_new_6",
+      "challenge_id": 7,
+      "user_id": 9
+    },
+    {
+      "duration": 207,
+      "video_url": "https://youtube.com/watch?v=challenge_new_7",
+      "challenge_id": 8,
+      "user_id": 10
     },
     {
       "duration": 120,
@@ -1614,21 +1689,72 @@
       "user_id": 3
     }
   ],
-
   "user_contribution": [
-    { "user_id": 1, "contribution_id": 1 },
-    { "user_id": 2, "contribution_id": 2 },
-    { "user_id": 3, "contribution_id": 3 },
-    { "user_id": 1, "contribution_id": 2 },
-    { "user_id": 2, "contribution_id": 3 }
+    {
+      "user_id": 1,
+      "contribution_id": 1
+    },
+    {
+      "user_id": 2,
+      "contribution_id": 2
+    },
+    {
+      "user_id": 3,
+      "contribution_id": 3
+    },
+    {
+      "user_id": 4,
+      "contribution_id": 4
+    },
+    {
+      "user_id": 5,
+      "contribution_id": 5
+    },
+    {
+      "user_id": 6,
+      "contribution_id": 6
+    },
+    {
+      "user_id": 7,
+      "contribution_id": 7
+    },
+    {
+      "user_id": 8,
+      "contribution_id": 8
+    },
+    {
+      "user_id": 9,
+      "contribution_id": 9
+    },
+    {
+      "user_id": 10,
+      "contribution_id": 10
+    }
   ],
-
   "user_challenge": [
-    { "challenge_id": 1, "user_id": 1 },
-    { "challenge_id": 2, "user_id": 2 },
-    { "challenge_id": 3, "user_id": 3 },
-    { "challenge_id": 1, "user_id": 2 },
-    { "challenge_id": 2, "user_id": 3 },
-    { "challenge_id": 3, "user_id": 1 }
+    {
+      "challenge_id": 1,
+      "user_id": 1
+    },
+    {
+      "challenge_id": 2,
+      "user_id": 2
+    },
+    {
+      "challenge_id": 3,
+      "user_id": 3
+    },
+    {
+      "challenge_id": 1,
+      "user_id": 2
+    },
+    {
+      "challenge_id": 2,
+      "user_id": 3
+    },
+    {
+      "challenge_id": 3,
+      "user_id": 1
+    }
   ]
 }
