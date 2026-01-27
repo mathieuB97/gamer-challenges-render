@@ -27,45 +27,45 @@
       "roleName": "user"
     },
     {
-      "email": "user4.gamer@outlook.fr",
-      "pseudo": "User4",
-      "password": "pass4",
+      "email": "patoche.gamer@outlook.fr",
+      "pseudo": "Patoche",
+      "password": "patoche",
       "roleName": "user"
     },
     {
-      "email": "user5.gamer@outlook.fr",
-      "pseudo": "User5",
-      "password": "pass5",
+      "email": "alex.gamer@outlook.fr",
+      "pseudo": "Alex",
+      "password": "alex",
       "roleName": "user"
     },
     {
-      "email": "user6.gamer@outlook.fr",
-      "pseudo": "User6",
-      "password": "pass6",
+      "email": "patate.gamer@outlook.fr",
+      "pseudo": "MrPatate",
+      "password": "patate",
       "roleName": "user"
     },
     {
-      "email": "user7.gamer@outlook.fr",
-      "pseudo": "User7",
-      "password": "pass7",
+      "email": "biloute.gamer@outlook.fr",
+      "pseudo": "Biloute",
+      "password": "biloute",
       "roleName": "user"
     },
     {
-      "email": "user8.gamer@outlook.fr",
-      "pseudo": "User8",
-      "password": "pass8",
+      "email": "Valou.gamer@outlook.fr",
+      "pseudo": "Valou",
+      "password": "valou",
       "roleName": "user"
     },
     {
-      "email": "user9.gamer@outlook.fr",
-      "pseudo": "User9",
-      "password": "pass9",
+      "email": "jaquouille.gamer@outlook.fr",
+      "pseudo": "Jaquouille",
+      "password": "jaquouille",
       "roleName": "user"
     },
     {
-      "email": "user10.gamer@outlook.fr",
-      "pseudo": "User10",
-      "password": "pass10",
+      "email": "rene.gamer@outlook.fr",
+      "pseudo": "Rene",
+      "password": "rene",
       "roleName": "user"
     }
   ],
@@ -539,25 +539,25 @@
     {
       "duration": 202,
       "video_url": "https://youtube.com/watch?v=challenge_new_2",
-      "challenge_id": 3,
+      "challenge_id": 6,
       "user_id": 5
     },
     {
       "duration": 203,
       "video_url": "https://youtube.com/watch?v=challenge_new_3",
-      "challenge_id": 4,
+      "challenge_id": 11,
       "user_id": 6
     },
     {
       "duration": 204,
       "video_url": "https://youtube.com/watch?v=challenge_new_4",
-      "challenge_id": 5,
+      "challenge_id": 16,
       "user_id": 7
     },
     {
       "duration": 205,
       "video_url": "https://youtube.com/watch?v=challenge_new_5",
-      "challenge_id": 6,
+      "challenge_id": 21,
       "user_id": 8
     },
     {
@@ -1691,24 +1691,24 @@
   ],
   "user_contribution": [
     {
-      "user_id": 1,
-      "contribution_id": 1
-    },
-    {
-      "user_id": 2,
-      "contribution_id": 2
-    },
-    {
-      "user_id": 3,
-      "contribution_id": 3
-    },
-    {
       "user_id": 4,
       "contribution_id": 4
     },
     {
       "user_id": 5,
       "contribution_id": 5
+    },
+    {
+      "user_id": 6,
+      "contribution_id": 6
+    },
+    {
+      "user_id": 7,
+      "contribution_id": 7
+    },
+    {
+      "user_id": 8,
+      "contribution_id": 8
     },
     {
       "user_id": 6,
