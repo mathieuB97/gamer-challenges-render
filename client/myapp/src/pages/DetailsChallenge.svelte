@@ -22,6 +22,7 @@
   import IconOeil from "../components/icon-oeil.svelte";
   import IconArrowLeft from "../components/icon-arrow-left.svelte";
   import ParticipationModal from "../components/ParticipationModal.svelte";
+  import ContributionDetailModal from "../components/ContributionDetailModal.svelte";
 
   // Affichage confettis à la demande
   let displayConfetti = false;
@@ -119,6 +120,10 @@
   });
 
   // Modal participation
+
+  // Modal contribution detail
+  let isContributionDetailModalOpen = false;
+  let selectedContribution = null;
   let isParticipationModalOpen = false;
 
   // Pour voter sur le challenge principal
@@ -150,7 +155,10 @@
   }
 
   // Fonctions vides pour les boutons Détail et Vote sur les participations (meilleures participations)
-  function openParticipationDetail(row) {}
+  function openParticipationDetail(contribution) {
+    selectedContribution = contribution;
+    isContributionDetailModalOpen = true;
+  }
 
   function openParticipationModal() {
     isParticipationModalOpen = true;
@@ -519,5 +527,13 @@
   <ParticipationModal 
     bind:isOpen={isParticipationModalOpen}
     challenge={challenge}
+  />
+{/if}
+
+<!-- MODAL CONTRIBUTION DETAIL -->
+{#if isContributionDetailModalOpen}
+  <ContributionDetailModal 
+    bind:isOpen={isContributionDetailModalOpen}
+    contribution={selectedContribution}
   />
 {/if}
