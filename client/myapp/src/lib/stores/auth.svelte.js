@@ -1,34 +1,28 @@
-export const authStore = $state({  token: null,  });
-import { userStore } from './user.store.js';
+import { writable } from "svelte/store";
+import { userStore } from "./user.store.js";
 
-export const setAuth = (token) => {
+export const authStore = writable({ token: null });
+
+// Login : set token et user
+export const setAuth = (token, user) => {
   localStorage.setItem("token", token);
-  authStore.token = token;
+  localStorage.setItem("user", JSON.stringify(user));
+  authStore.set({ token });
+  userStore.set(user);
 };
 
+// Déconnexion
 export const clearAuth = () => {
-  authStore.token = null;
-  // Déconnect
-  // Supprimer user et token du localStorage
-  localStorage.removeItem('token');
-  // Met à jour le store utilisateur global pour la réactivité
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  authStore.set({ token: null });
   userStore.set(null);
 };
 
+// Hydratation au démarrage
 export const getAuth = () => {
   const token = localStorage.getItem("token");
-  if (token) {
-    try {
-      authStore.token = token;
-    } catch (e) {
-      console.error('Error parsing:', e);
-      clearAuth();
-    }
-  }
-};
-
-export const isAuthenticated = () => {
-  const result = !!authStore.token;
-  console.log('isAuth', result);
-  return result;
+  const userStr = localStorage.getItem("user");
+  if (token) authStore.set({ token });
+  if (userStr) userStore.set(JSON.parse(userStr));
 };

@@ -87,8 +87,15 @@ class AuthController {
         { expiresIn: "24h" }, // le token expire dans 24 heures
       );
 
-      // Répondre avec le token
-      res.status(200).json({ token: token });
+      // Répondre avec le token ET les données utilisateur
+      res.status(200).json({ 
+        token: token,
+        user: {
+          id: userFromBDD.id,
+          pseudo: userFromBDD.pseudo,
+          email: userFromBDD.email
+        }
+      });
     } catch (error) {
       next(error);
     }
