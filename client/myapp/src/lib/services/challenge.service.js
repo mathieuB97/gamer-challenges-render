@@ -73,3 +73,18 @@ export async function getLeaderboard() {
     }
     throw new Error("Structure de données invalide : leaderboard doit être un tableau");
 }
+
+/**
+ * Crée un nouveau challenge
+ * @param {Object} payload - données du challenge
+ * @returns {Promise<Object>} le challenge créé
+ */
+export async function createChallenge(payload) {
+    try {
+        const data = await api("/challenges", "POST", payload);
+        return data;
+    } catch (error) {
+        console.error("Erreur dans createChallenge:", error);
+        throw error;
+    }
+}
