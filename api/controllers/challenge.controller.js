@@ -64,6 +64,28 @@ class ChallengeController extends BaseController {
         }
     }
 
+    /**
+     * GET /api/challenges/latest
+     * Retourne les 7 derniers challenges créés avec les images des jeux
+     */
+    getLatest = async (req, res, next) => {
+        try {
+            const options = this.getRequestOptions(req);
+            const challenges = await Challenge.findAll({ 
+                include: options,
+                order: [['createdAt', 'DESC']], 
+                limit: 7 
+            });
+
+            if (!challenges || challenges.length === 0) {
+                throw new HttpError('Aucun challenge trouvé', 404);
+            }
+            return res.sendResponse({ challenges });
+        } catch (error) {
+            next(error);
+        }
+    }
+
 }
 
 export default new ChallengeController();
