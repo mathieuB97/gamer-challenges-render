@@ -1,31 +1,38 @@
 <script>
   import { onMount } from "svelte";
+  import { tick } from "svelte";
+  import { Confetti } from "svelte-confetti";
+
   import { getCurrentUser } from "../lib/services/auth.service.js";
   import { userStore } from "../lib/stores/user.store.js";
+
   import IconLike from "../components/icon-like.svelte";
   import IconPlay from "../components/icon-play.svelte";
-  import { mockChallenge, mockBestChallenges } from "../mock/challenge.mock.js";
-  import { mockChallenges } from "../mock/challenges.mock.js";
-  import {
-    getChallengeDetail,
-    postOneVoteForOneChallenge,
-  } from "../lib/services/challenge.service.js";
-  import {
-    postOneVoteForOneContribution,
-    getVotesForCurrentUserContributions,
-  } from "../lib/services/contribution.service.js";
-  /* Icônes */
-  import { Confetti } from "svelte-confetti";
-  import { tick } from "svelte";
   import IconChallenge from "../components/icon-challenge.svelte";
   import IconParticipant from "../components/icon-participant.svelte";
   import IconOeil from "../components/icon-oeil.svelte";
   import IconArrowLeft from "../components/icon-arrow-left.svelte";
+
   import ParticipationModal from "../components/ParticipationModal.svelte";
   import ContributionDetailModal from "../components/ContributionDetailModal.svelte";
 
-  // Affichage confettis à la demande
+  import { mockChallenge, mockBestChallenges } from "../mock/challenge.mock.js";
+
+  import {
+    getChallengeDetail,
+    postOneVoteForOneChallenge,
+  } from "../lib/services/challenge.service.js";
+
+  import {
+    postOneVoteForOneContribution,
+    getVotesForCurrentUserContributions,
+  } from "../lib/services/contribution.service.js";
+
+  // ---------------------------------------------
+  // Confettis (bouton vote du challenge)
+  // ---------------------------------------------
   let displayConfetti = false;
+
   function triggerConfetti() {
     displayConfetti = false;
     tick().then(() => {
@@ -36,41 +43,56 @@
     });
   }
 
+  // ---------------------------------------------
+  // Confettis (bouton vote rose par participation)
+  // ---------------------------------------------
+  let confettiForParticipation = null;
+
+  function triggerConfettiForParticipation(id) {
+    confettiForParticipation = id;
+    setTimeout(() => {
+      confettiForParticipation = null;
+    }, 1800);
+  }
+
+  // ---------------------------------------------
+  // User
+  // ---------------------------------------------
   let currentUser = null;
   let userLoading = true;
   $: $userStore, (currentUser = $userStore);
 
-  // --- Paramètres d'URL ---
+  // ---------------------------------------------
+  // Params URL
+  // ---------------------------------------------
   let challengeId = null;
   let gameId = null;
+
   function extractParams() {
-    // Query param
     const urlParams = new URLSearchParams(window.location.search);
     gameId = urlParams.get("gameId");
-    // Path param (ex: /challenge/123)
+
     const pathParts = window.location.pathname.split("/");
-    // Cherche un nombre dans le path (id du challenge)
     challengeId = pathParts.find((part) => /^\d+$/.test(part));
   }
   extractParams();
 
+  // ---------------------------------------------
+  // Data
+  // ---------------------------------------------
   let loading = true;
   let errorMsg = "";
 
   let challenge = null;
   let participations = [];
 
-  // Message d'erreur spécifique au vote
   let voteErrorMsg = "";
-  // Pour désactiver le bouton après vote
   let hasVoted = false;
-  // Pour désactiver le bouton après vote (participation)
-  let hasVotedParticipation = false;
 
-  // Liste des IDs de contributions déjà votées par l'utilisateur
+  // ids des contributions déjà votées
   let votedContributionIds = [];
 
-  // Bloc "activité" (mock en attendant API)
+  // Bloc "activité" (mock)
   let activity = {
     challengesCount: 248,
     participants: 1234,
@@ -81,9 +103,7 @@
   let levelOptions = ["hard", "medium", "easy"];
   let selectedLevel = null;
 
-  // Load data (API -> sinon mock)
   onMount(async () => {
-    // Vérifie l'utilisateur connecté et met à jour le store
     userLoading = true;
     await getCurrentUser();
     userLoading = false;
@@ -96,17 +116,9 @@
         return;
       }
 
-      // Utilise le service getChallengeDetail
       challenge = await getChallengeDetail(challengeId);
-      participations = challenge.contributions; // à remplacer quand API leaderboard dispo
-      console.log(
-        "Détail participation reçu :",
-        participations,
-        "challenge",
-        challenge,
-      );
+      participations = challenge.contributions;
 
-      // Si utilisateur connecté, récupère les contributions déjà votées
       if (currentUser) {
         const votedContributions = await getVotesForCurrentUserContributions();
         votedContributionIds = votedContributions.map((c) => c.id);
@@ -121,46 +133,13 @@
     }
   });
 
-  // Modal participation
-
-  // Modal contribution detail
+  // ---------------------------------------------
+  // Modals
+  // ---------------------------------------------
   let isContributionDetailModalOpen = false;
   let selectedContribution = null;
   let isParticipationModalOpen = false;
 
-  // Pour voter sur le challenge principal
-  async function voteForAChallenge(challengeId) {
-    voteErrorMsg = "";
-    if (!currentUser) {
-      voteErrorMsg = "Vous devez être connecté pour voter.";
-      return;
-    }
-    if (!challengeId) {
-      voteErrorMsg = "Impossible de voter : challenge introuvable";
-      return;
-    }
-    try {
-      const result = await postOneVoteForOneChallenge(challengeId);
-      hasVoted = true;
-      triggerConfetti();
-      console.info(
-        "Vote enregistré avec succès pour le challenge",
-        challengeId,
-      );
-      return result;
-    } catch (error) {
-      // Si code 409, afficher uniquement le message du backend
-      if (error && error.data && error.data.statusCode === 409) {
-        voteErrorMsg = error.data.error;
-        hasVoted = true;
-      } else {
-        voteErrorMsg = "Erreur lors de l'envoi du vote. Veuillez réessayer.";
-      }
-      console.error("Erreur lors de l'envoi du vote:", error, error.data);
-    }
-  }
-
-  // Fonctions vides pour les boutons Détail et Vote sur les participations (meilleures participations)
   function openParticipationDetail(contribution) {
     selectedContribution = contribution;
     isContributionDetailModalOpen = true;
@@ -171,8 +150,45 @@
     document.body.style.overflow = "hidden";
   }
 
+  // ---------------------------------------------
+  // Vote challenge principal
+  // ---------------------------------------------
+  async function voteForAChallenge(challengeId) {
+    voteErrorMsg = "";
+
+    if (!currentUser) {
+      voteErrorMsg = "Vous devez être connecté pour voter.";
+      return;
+    }
+    if (!challengeId) {
+      voteErrorMsg = "Impossible de voter : challenge introuvable";
+      return;
+    }
+
+    try {
+      const result = await postOneVoteForOneChallenge(challengeId);
+
+      hasVoted = true;
+      triggerConfetti(); // ✅ confettis bouton principal
+
+      return result;
+    } catch (error) {
+      if (error?.data?.statusCode === 409) {
+        voteErrorMsg = error.data.error;
+        hasVoted = true;
+      } else {
+        voteErrorMsg = "Erreur lors de l'envoi du vote. Veuillez réessayer.";
+      }
+      console.error("Erreur lors de l'envoi du vote:", error, error?.data);
+    }
+  }
+
+  // ---------------------------------------------
+  // Vote participation (bouton rose)
+  // ---------------------------------------------
   async function voteForParticipation(participationId) {
     voteErrorMsg = "";
+
     if (!currentUser) {
       voteErrorMsg = "Vous devez être connecté pour voter.";
       return;
@@ -181,32 +197,31 @@
       voteErrorMsg = "Impossible de voter : participation introuvable";
       return;
     }
+
     try {
       const result = await postOneVoteForOneContribution(participationId);
-      hasVotedParticipation = true;
-      // Met à jour l'UI immédiatement : ajoute l'id à votedContributionIds
+
+      // update UI (désactive le bouton)
       if (!votedContributionIds.includes(participationId)) {
         votedContributionIds = [...votedContributionIds, participationId];
       }
-      triggerConfetti();
-      console.info(
-        "Vote enregistré avec succès pour la contribution",
-        participationId,
-      );
+
+      // ✅ confettis sur LE bouton rose cliqué
+      triggerConfettiForParticipation(participationId);
+
       return result;
     } catch (error) {
-      // Si code 409, afficher uniquement le message du backend
-      if (error && error.data && error.data.statusCode === 409) {
+      if (error?.data?.statusCode === 409) {
         voteErrorMsg = error.data.error;
-        hasVoted = true;
       } else {
         voteErrorMsg = "Erreur lors de l'envoi du vote. Veuillez réessayer.";
       }
-      console.error("Erreur lors de l'envoi du vote:", error, error.data);
+      console.error("Erreur vote participation:", error, error?.data);
     }
   }
+
   function submitLevel() {
-    alert(`Niveau sélectionné : ${selectedLevel}`); // À remplacer par l'appel API
+    alert(`Niveau sélectionné : ${selectedLevel}`);
   }
 </script>
 
@@ -218,6 +233,7 @@
         Chargement du challenge...
       </div>
     {/if}
+
     {#if !loading}
       <div class="relative h-105 w-full overflow-hidden">
         <img
@@ -238,9 +254,7 @@
               href={gameId ? `/jeux/${gameId}/challenges` : "/liste-challenges"}
               class="mb-4 inline-flex items-center gap-2 text-xl text-white/80 hover:text-white transition"
             >
-              <span>
-                <IconArrowLeft />
-              </span>
+              <span><IconArrowLeft /></span>
               <span>Retour aux challenges</span>
             </a>
 
@@ -253,10 +267,9 @@
             <div
               class="mt-3 flex flex-wrap items-center gap-4 text-sm text-white/80"
             >
-              <span
-                >Par <span class="text-white">{challenge?.creator?.pseudo}</span
-                ></span
-              >
+              <span>
+                Par <span class="text-white">{challenge?.creator?.pseudo}</span>
+              </span>
               <span class="inline-flex items-center gap-2"
                 ><span class="text-yellow-300">🏆</span>{challenge?.level}</span
               >
@@ -280,6 +293,7 @@
                 {voteErrorMsg}
               </p>
             {/if}
+
             <button
               type="button"
               on:click={() => voteForAChallenge(challenge?.id)}
@@ -293,8 +307,15 @@
                   ? "Connectez-vous pour voter"
                   : "Voter pour ce challenge"}
             </button>
+
             {#if displayConfetti}
-              <Confetti amount={200} rounded={true} />
+              <Confetti
+              amount={180}
+              gravity={0.9}
+              spread={80}
+              duration={1600}
+              colors={["#ec4899", "#a855f7", "#22d3ee"]}
+/>
             {/if}
           </div>
         </div>
@@ -327,18 +348,13 @@
 
         <article class="bg-[#141824] border border-white/10 rounded-2xl p-6">
           <h2 class="text-2xl font-bold">
-            <span class="text-purple-300">Challenge</span>
-            <br />
-            <span class="text-white"
-              >{challenge?.name || "nom du challenge"}</span
-            >
+            <span class="text-purple-300">Challenge</span><br />
+            <span class="text-white">{challenge?.name || "nom du challenge"}</span>
           </h2>
 
           <div class="mt-5 grid gap-3 sm:grid-cols-2">
             {#each challenge?.objectives ?? [] as obj}
-              <div
-                class="bg-[#0a0e1a]/40 border border-white/10 rounded-xl p-4"
-              >
+              <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-xl p-4">
                 <p class="text-xs text-white/60">{obj.label}</p>
                 <p class="mt-2 text-[#00d9ff] font-semibold">{obj.value}</p>
               </div>
@@ -350,10 +366,7 @@
             class="w-full py-3 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff] text-white font-semibold hover:opacity-90 transition-opacity"
             class:opacity-50={!currentUser}
             class:cursor-not-allowed={!currentUser}
-            on:click={() =>
-              alert(
-                "Participation au challenge non implémentée 😭\nNous devons simuler une participation au challenge.\nUne solution serait d'ajouter un formulaire dans une modale(popin/popup pour les intimes 😂).\n On s'éclate sur ce projet… Faut revoir le sys de modale il va être utilisé pour afficher les feature que l'on aura pas le temps de pousser à fond niveau design !\nDonc on fait un composant hyper simple à utiliser qui permet d'ajouter du formulaire qui permet de remplir les infos nécessaire pour la BDD afin de simuler une une participation. Qui n'en veut ???",
-              )}
+            on:click={openParticipationModal}
             disabled={!currentUser}
           >
             Déposer une participation
@@ -365,17 +378,14 @@
       <article class="bg-[#141824] border border-white/10 rounded-2xl p-6">
         <div class="flex items-center justify-between text-white">
           <h2 class="text-2xl font-bold">
-            <span class="text-yellow-300">Meilleurs</span>
-            participation
+            <span class="text-yellow-300">Meilleurs</span> participation
           </h2>
-          <span class="text-xs text-white/60"
-            >{participations?.length ?? 0} entrées</span
-          >
+          <span class="text-xs text-white/60">
+            {participations?.length ?? 0} entrées
+          </span>
         </div>
 
-        <div
-          class="mt-5 max-h-[520px] overflow-auto pr-2 space-y-3 custom-scroll"
-        >
+        <div class="mt-5 max-h-[520px] overflow-auto pr-2 space-y-3 custom-scroll">
           {#each participations as participation (participation.id)}
             <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4">
               <div class="flex items-center justify-between gap-3">
@@ -391,28 +401,13 @@
                     <p class="text-white font-semibold truncate">
                       {participation.challenge.name}
                     </p>
-                    <p>
-                      {participation.creator.pseudo}
-                    </p>
+                    <p>{participation.creator.pseudo}</p>
 
-                    <!-- <p class="text-xs text-white/60">
-                      {row.level} • {row.points}
-                    </p> -->
-                    <div
-                      class="mt-2 flex flex-wrap items-center gap-3 text-xs text-white/70"
-                    >
+                    <div class="mt-2 flex flex-wrap items-center gap-3 text-xs text-white/70">
                       <span>🕒 {participation.duration} minutes </span>
-                      <!-- <span class="text-yellow-300">★ {participation.rating}</span>
-                      <span>{participation.votes}</span> -->
                     </div>
                   </div>
                 </div>
-
-                <!-- <div
-                  class="h-8 w-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-xs text-white/80"
-                >
-                  #{String(participations.indexOf(row) + 1)}
-                </div> -->
               </div>
 
               <div class="mt-4 flex items-center justify-end gap-2">
@@ -425,16 +420,30 @@
                   <IconPlay />
                   <span class="leading-3"> Détail </span>
                 </button>
+
+                <!-- ✅ BOUTON ROSE + CONFETTIS -->
                 <button
                   type="button"
-                  class="flex flex-row items-end gap-1 px-3 py-2 rounded-lg bg-pink-500/90 hover:bg-pink-500 transition text-white text-xs font-semibold cursor-pointer disabled:opacity-50"
-                  on:click={() =>
-                    voteForParticipation(Number(participation.id))}
-                  disabled={!currentUser ||
-                    votedContributionIds.includes(participation.id)}
+                  class="relative flex flex-row items-end gap-1 px-3 py-2 rounded-lg 
+                         bg-pink-500/90 hover:bg-pink-500 transition text-white 
+                         text-xs font-semibold cursor-pointer disabled:opacity-50"
+                  on:click={() => voteForParticipation(Number(participation.id))}
+                  disabled={!currentUser || votedContributionIds.includes(participation.id)}
                 >
                   <IconLike size={16} />
                   <span class="leading-3"> Vote </span>
+
+                  {#if confettiForParticipation === participation.id}
+                    <div class="absolute inset-0 pointer-events-none">
+                      <Confetti
+                      amount={180}
+                      gravity={0.9}
+                      spread={80}
+                      duration={1600}
+                      colors={["#ec4899", "#a855f7", "#22d3ee"]}
+/>
+                    </div>
+                  {/if}
                 </button>
               </div>
             </div>
@@ -451,33 +460,21 @@
           </h2>
 
           <div class="mt-5 space-y-3">
-            <div
-              class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between"
-            >
+            <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between">
               <div class="flex items-center gap-3">
-                <div
-                  class="h-10 w-10 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-400
-            flex items-center justify-center"
-                >
+                <div class="h-10 w-10 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-400 flex items-center justify-center">
                   <IconChallenge class="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <p class="text-xs text-white/60">Challenges</p>
-                  <p class="text-[#00d9ff] font-bold">
-                    {activity.challengesCount}
-                  </p>
+                  <p class="text-[#00d9ff] font-bold">{activity.challengesCount}</p>
                 </div>
               </div>
             </div>
 
-            <div
-              class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between"
-            >
+            <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between">
               <div class="flex items-center gap-3">
-                <div
-                  class="h-10 w-10 rounded-xl bg-linear-to-r from-pink-500 to-purple-500
-            flex items-center justify-center"
-                >
+                <div class="h-10 w-10 rounded-xl bg-linear-to-r from-pink-500 to-purple-500 flex items-center justify-center">
                   <IconParticipant class="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -487,14 +484,9 @@
               </div>
             </div>
 
-            <div
-              class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between"
-            >
+            <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between">
               <div class="flex items-center gap-3">
-                <div
-                  class="h-10 w-10 rounded-xl bg-linear-to-r from-orange-400 to-pink-500
-            flex items-center justify-center"
-                >
+                <div class="h-10 w-10 rounded-xl bg-linear-to-r from-orange-400 to-pink-500 flex items-center justify-center">
                   <IconOeil class="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -511,18 +503,14 @@
             Estimez la difficulté du challenge
           </h2>
           <p class="mt-2 text-white/70">
-            Partagez votre avis votre ressenti sur la difficulté de ce challenge
-            afin d'aider la communauté.
+            Partagez votre avis votre ressenti sur la difficulté de ce challenge afin d'aider la communauté.
           </p>
 
           <div class="mt-4 flex items-center justify-between gap-2">
             {#each levelOptions as level}
               <button
                 type="button"
-                class="h-10 w-24 rounded-full border border-white/15 text-white/80 hover:bg-white/5 transition {selectedLevel ===
-                level
-                  ? 'bg-white/10 border-white/30 text-white'
-                  : ''}"
+                class="h-10 w-24 rounded-full border border-white/15 text-white/80 hover:bg-white/5 transition {selectedLevel === level ? 'bg-white/10 border-white/30 text-white' : ''}"
                 on:click={() => (selectedLevel = level)}
                 disabled={!currentUser}
               >
@@ -553,7 +541,7 @@
 
 <!-- MODAL CONTRIBUTION DETAIL -->
 {#if isContributionDetailModalOpen}
-  <ContributionDetailModal 
+  <ContributionDetailModal
     bind:isOpen={isContributionDetailModalOpen}
     contribution={selectedContribution}
   />
@@ -561,16 +549,8 @@
 
 <!-- MODAL PARTICIPATION -->
 {#if isParticipationModalOpen}
-  <ParticipationModal 
+  <ParticipationModal
     bind:isOpen={isParticipationModalOpen}
     challenge={challenge}
-  />
-{/if}
-
-<!-- MODAL CONTRIBUTION DETAIL -->
-{#if isContributionDetailModalOpen}
-  <ContributionDetailModal 
-    bind:isOpen={isContributionDetailModalOpen}
-    contribution={selectedContribution}
   />
 {/if}
