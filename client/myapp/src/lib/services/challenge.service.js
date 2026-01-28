@@ -88,3 +88,20 @@ export async function createChallenge(payload) {
         throw error;
     }
 }
+
+/**
+ * Récupère les 7 derniers challenges créés avec les images des jeux
+ * @returns {Promise<Array>} liste des 7 derniers challenges
+ */
+export async function getLatestChallenges() {
+    try {
+        const data = await api("/challenges/latest");
+        if (Array.isArray(data.challenges)) {
+            return data.challenges;
+        }
+        throw new Error("Structure de données invalide : challenges doit être un tableau");
+    } catch (error) {
+        console.error("Erreur dans getLatestChallenges:", error);
+        throw error;
+    }
+}
