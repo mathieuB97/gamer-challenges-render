@@ -66,7 +66,7 @@ GET /challenges/search/filter?gameId=1&level=hard&sortBy=popularity
 | POST    | `/votes/challenge/:challengeId`                 | Voter pour un challenge                              | Oui (JWT)    | —                           | ★★★★     |
 | GET     | `/votes/contribution/:contributionId`           | Nombre de votes d'une contribution                   | Non          | —                           | ★★★★     |
 | POST    | `/votes/contribution/:contributionId`           | Voter pour une contribution                          | Oui (JWT)    | —                           | ★★★★     |
-| GET     | `/votes/top-contributors`                       | Top contributeurs par votes                          | Non          | `?limit=10`                 | ★★★      |
+| GET     | `/votes/top-contributors`                       | Top contributeurs par votes                          | Non          | `?limit=10`                 | ★★★★     |
 | GET     | `/votes/top-challenges`                         | Top challenges par nombre de votes                   | Non          | `?limit=10`                 | ★★★★     |
 | GET     | `/leaderboard`                                  | Classement des meilleurs utilisateurs                | Non          | —                           | ★★★★     |
 
