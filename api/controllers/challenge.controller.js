@@ -102,7 +102,7 @@ class ChallengeController extends BaseController {
             // Construire les critères WHERE
             const where = {};
             if (gameId) {
-                where.GameId = gameId;
+                where.game_id = gameId;
             }
             if (level) {
                 where.level = level;
@@ -111,22 +111,25 @@ class ChallengeController extends BaseController {
             // Construire l'ordre des résultats
             let order = [['createdAt', 'DESC']]; // Par défaut: récent
             
-            if (sortBy === 'popularity') {
-                // Trier par nombre de votes (contributions)
-                order = [
-                    [Contribution, 'id', 'DESC'],
-                    ['createdAt', 'DESC']
-                ];
-            } else if (sortBy === 'name') {
+            if (sortBy === 'name') {
                 order = [['name', 'ASC']];
             }
+            // Pour la popularité, on triera après en JavaScript
 
-            const challenges = await Challenge.findAll({ 
+            let challenges = await Challenge.findAll({ 
                 where,
                 include: options,
                 order,
-                subQuery: false,
             });
+
+            // Si popularité, trier par nombre de contributions
+            if (sortBy === 'popularity') {
+                challenges = challenges.sort((a, b) => {
+                    const aCount = a.contributions ? a.contributions.length : 0;
+                    const bCount = b.contributions ? b.contributions.length : 0;
+                    return bCount - aCount; // Ordre décroissant
+                });
+            }
 
             if (!challenges || challenges.length === 0) {
                 return res.sendResponse({ challenges: [] });
