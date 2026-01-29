@@ -86,6 +86,59 @@ class ChallengeController extends BaseController {
         }
     }
 
+    /**
+     * GET /api/challenges/search/filter
+     * Filtre les challenges par jeu, niveau et popularité
+     * Query params:
+     *   - gameId: ID du jeu (optionnel)
+     *   - level: easy, medium, hard (optionnel)
+     *   - sortBy: 'popularity', 'recent', 'name' (optionnel, défaut: 'recent')
+     */
+    filterChallenges = async (req, res, next) => {
+        try {
+            const { gameId, level, sortBy = 'recent' } = req.query;
+            const options = this.getRequestOptions(req);
+            
+            // Construire les critères WHERE
+            const where = {};
+            if (gameId) {
+                where.GameId = gameId;
+            }
+            if (level) {
+                where.level = level;
+            }
+
+            // Construire l'ordre des résultats
+            let order = [['createdAt', 'DESC']]; // Par défaut: récent
+            
+            if (sortBy === 'popularity') {
+                // Trier par nombre de votes (contributions)
+                order = [
+                    [Contribution, 'id', 'DESC'],
+                    ['createdAt', 'DESC']
+                ];
+            } else if (sortBy === 'name') {
+                order = [['name', 'ASC']];
+            }
+
+            const challenges = await Challenge.findAll({ 
+                where,
+                include: options,
+                order,
+                subQuery: false,
+            });
+
+            if (!challenges || challenges.length === 0) {
+                return res.sendResponse({ challenges: [] });
+            }
+            
+            return res.sendResponse({ challenges });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
 }
 
 export default new ChallengeController();
