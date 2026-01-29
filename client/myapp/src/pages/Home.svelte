@@ -1,12 +1,14 @@
 <script>
   import { onMount, onDestroy } from "svelte";
   import ChallengeCard from "../components/ChallengeCard.svelte";
+  import SearchFilters from "../components/SearchFilters.svelte";
   import IconArrowLeft from "../components/icon-arrow-left.svelte";
   import IconArrowRight from "../components/icon-arrow-right.svelte";
   import {
     getChallenges,
     getLeaderboard,
     getLatestChallenges,
+    filterChallenges,
   } from "../lib/services/challenge.service.js";
   import {
     topChallenges as mockTopChallenges,
@@ -22,11 +24,14 @@
   let leaderboard = $state([]);
   let newChallenges = $state([]);
   let newChallengesChunked = $state([]);
+  let filteredChallenges = $state([]);
+  let filteredChallengesChunked = $state([]);
 
   // États initialisés avec les données mock, seront mises à jour avec les vraies données
   let ongoingChallenges = $state(mockOngoingChallenges);
   let leaderboardData = $state(mockLeaderboardData);
   let isLoading = $state(true);
+  let isFilterApplied = $state(false);
 
   // Fonction pour diviser un tableau en chunks
   const chunkArray = (array, size) => {
@@ -41,6 +46,7 @@
   let topChallengesIndex = $state(0);
   let newChallengesIndex = $state(0);
   let ongoingChallengesIndex = $state(0);
+  let filteredChallengesIndex = $state(0);
 
   // Diviser les challenges en groupes de 3 pour les carrousels
   let ongoingChallengesChunked = $derived(chunkArray(ongoingChallenges, 3));
@@ -72,6 +78,35 @@
       newChallenges = mockNewChallenges;
       newChallengesChunked = chunkArray(newChallenges, 3);
       leaderboardData = mockLeaderboardData;
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  // Fonction pour gérer le filtrage
+  async function handleFilter(event) {
+    try {
+      isLoading = true;
+      filteredChallengesIndex = 0;
+      const filterParams = event.detail;
+
+      if (!filterParams.gameId && !filterParams.level && filterParams.sortBy === 'recent') {
+        // Si aucun filtre n'est appliqué, réinitialiser
+        isFilterApplied = false;
+        filteredChallenges = [];
+        filteredChallengesChunked = [];
+      } else {
+        // Appliquer le filtre
+        const result = await filterChallenges(filterParams);
+        filteredChallenges = result || [];
+        filteredChallengesChunked = chunkArray(filteredChallenges, 3);
+        isFilterApplied = true;
+      }
+    } catch (error) {
+      console.error("Erreur lors du filtrage:", error);
+      isFilterApplied = false;
+      filteredChallenges = [];
+      filteredChallengesChunked = [];
     } finally {
       isLoading = false;
     }
@@ -158,6 +193,69 @@
 
   <!-- Challenges Section -->
   <div class="flex-1 space-y-8">
+    <!-- Search Filters -->
+    <SearchFilters on:filter={handleFilter} />
+
+    {#if isFilterApplied && filteredChallenges.length > 0}
+      <!-- Filtered Challenges Section -->
+      <section>
+        <div class="mb-6 flex items-center justify-between">
+          <h2 class="text-2xl">Résultats filtrés ({filteredChallenges.length})</h2>
+          <div class="carousel-navigation flex gap-2">
+            {#if filteredChallengesIndex > 0}
+              <button
+                onclick={() =>
+                  prevSlide(
+                    filteredChallengesIndex,
+                    (index) => (filteredChallengesIndex = index),
+                  )}
+                class="flex items-center justify-center text-[#00d9ff]"
+                title="Précédent"
+              >
+                <IconArrowLeft />
+              </button>
+            {/if}
+
+            {#if filteredChallengesIndex < filteredChallengesChunked.length - 1}
+              <button
+                onclick={() =>
+                  nextSlide(
+                    filteredChallengesIndex,
+                    filteredChallengesChunked.length,
+                    (index) => (filteredChallengesIndex = index),
+                  )}
+                class="flex items-center justify-center text-[#00d9ff]"
+                title="Suivant"
+              >
+                <IconArrowRight />
+              </button>
+            {/if}
+          </div>
+        </div>
+        <div class="relative">
+          <!-- Carousel Container -->
+          <div class="overflow-hidden">
+            <div
+              class="flex transition-transform duration-300 ease-in-out"
+              style="transform: translateX(-{filteredChallengesIndex * 100}%)"
+            >
+              {#each filteredChallengesChunked as chunk, i}
+                <div class="w-full shrink-0 grid grid-cols-3 gap-4">
+                  {#each chunk as challenge (challenge.id)}
+                    <ChallengeCard {...challenge} />
+                  {/each}
+                </div>
+              {/each}
+            </div>
+          </div>
+        </div>
+      </section>
+    {:else if isFilterApplied && filteredChallenges.length === 0}
+      <div class="bg-[#12172b] rounded-xl p-8 text-center">
+        <p class="text-gray-400">Aucun challenge ne correspond à vos critères de recherche.</p>
+      </div>
+    {/if}
+
     <!-- Top Challenges Carousel -->
     <section>
       <div class="mb-6 flex items-center justify-between">
