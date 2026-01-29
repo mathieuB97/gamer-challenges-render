@@ -4,6 +4,7 @@ import { isAllowed, validateToken } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
+router.get('/challenges/search/filter', challengeController.filterChallenges); // Filtrer les challenges
 router.get('/challenges/latest', challengeController.getLatest); // GET les 7 derniers challenges créés
 router.get('/challenges', challengeController.getChallenges); // GET Tous les challenges
 router.get('/challenges/:id', challengeController.getById); // Détails d'un challenge par son id
