@@ -15,6 +15,7 @@
     votesCount,
     totalParticipants,
     game,
+    showVotes = true,
     ...restProps
   } = $props();
 
@@ -62,12 +63,14 @@
     <h3 class="font-bold text-lg mb-1">{name ?? challengeName}</h3>
     <p class="text-sm text-gray-400 mb-2">{gameName ?? title}</p>
     <div class="flex items-center justify-between text-xs text-gray-400">
-      <div class="flex items-end gap-2 text-[#00D9FF]">
-        <IconLike className="w-6 h-6" />
-        <span class="leading-3">
-          {displayVotes}
-        </span>
-      </div>
+      {#if showVotes}
+        <div class="flex items-end gap-2 text-[#00D9FF]">
+          <IconLike className="w-6 h-6" />
+          <span class="leading-3">
+            {displayVotes}
+          </span>
+        </div>
+      {/if}
       <div class="flex items-end gap-2 leading-3 text-[#00D9FF]">
         <IconParticipant />
         <span class="leading-3">

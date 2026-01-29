@@ -258,7 +258,7 @@
             {#each newChallengesChunked as chunk, i}
               <div class="w-full shrink-0 grid grid-cols-3 gap-4">
                 {#each chunk as challenge (challenge.id)}
-                  <ChallengeCard {...challenge} />
+                  <ChallengeCard {...challenge} showVotes={false} />
                 {/each}
               </div>
             {/each}
