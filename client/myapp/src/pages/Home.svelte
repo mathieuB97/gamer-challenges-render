@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import ChallengeCard from "../components/ChallengeCard.svelte";
   import IconArrowLeft from "../components/icon-arrow-left.svelte";
   import IconArrowRight from "../components/icon-arrow-right.svelte";
@@ -80,6 +80,20 @@
   // Charger les données au montage du composant
   onMount(() => {
     loadAllData();
+    
+    // Recharger les données quand la page redevient visible
+    // (par exemple après avoir voté sur une page de détail et être revenu)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        loadAllData();
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   });
 
   // Fonctions de navigation

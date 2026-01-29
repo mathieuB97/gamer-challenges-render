@@ -1,4 +1,5 @@
 <script>
+  import page from 'page';
   import IconLike from "./icon-like.svelte";
   import IconParticipant from "./icon-participant.svelte";
   
@@ -20,17 +21,26 @@
   // Extraire les infos du jeu (peut venir de différentes sources)
   const gameName = game?.name ?? restProps["game.name"] ?? title;
   const gameImg = game?.image ?? restProps["game.image"] ?? image ?? "/src/assets/default-game.jpg";
+  const gameId = game?.id ?? restProps["game.id"];
 
-  // Variable locale pour tracker les likes
-  let localLikes = $state(0);
-  let displayVotes = $derived((votesCount ?? likes ?? 0) + localLikes);
+  // Afficher uniquement le nombre de votes réels de la base de données
+  // On ne peut pas voter depuis la home page
+  let displayVotes = $derived(votesCount ?? likes ?? 0);
 
-  function increment() {
-    localLikes += 1;
+  function navigateToDetail() {
+    if (gameId) {
+      page(`/detail-challenge/${id}?gameId=${gameId}`);
+    }
   }
 </script>
 
-<div class="relative overflow-hidden rounded-xl bg-[#181e2e] shadow-md">
+<div 
+  class="relative overflow-hidden rounded-xl bg-[#181e2e] shadow-md cursor-pointer transition-transform hover:scale-105"
+  onclick={navigateToDetail}
+  onkeydown={(e) => e.key === 'Enter' && navigateToDetail()}
+  role="button"
+  tabindex="0"
+>
   <div class="relative w-full h-32 bg-gradient-to-b from-gray-700 to-gray-900 flex items-center justify-center overflow-hidden">
     {#if gameImg && gameImg !== "/src/assets/default-game.jpg"}
       <img
@@ -52,23 +62,18 @@
     <h3 class="font-bold text-lg mb-1">{name ?? challengeName}</h3>
     <p class="text-sm text-gray-400 mb-2">{gameName ?? title}</p>
     <div class="flex items-center justify-between text-xs text-gray-400">
-      <button
-        on:click={increment}
-        class="flex items-end gap-2 text-[#00D9FF] cursor-pointer"
-      >
+      <div class="flex items-end gap-2 text-[#00D9FF]">
         <IconLike className="w-6 h-6" />
         <span class="leading-3">
           {displayVotes}
         </span>
-      </button>
-      <button
-        class="flex items-end gap-2 leading-3 text-[#00D9FF] cursor-pointer"
-      >
+      </div>
+      <div class="flex items-end gap-2 leading-3 text-[#00D9FF]">
         <IconParticipant />
         <span class="leading-3">
           {totalParticipants ?? participants}
         </span>
-      </button>
+      </div>
     </div>
   </div>
 </div>
