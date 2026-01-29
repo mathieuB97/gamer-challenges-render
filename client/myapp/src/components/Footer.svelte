@@ -5,7 +5,7 @@
     >
       <a href="#" class="hover:text-[#00d9ff] transition-colors"> contact </a>
       <span class="hidden md:inline">·</span>
-      <a href="#" class="hover:text-[#00d9ff] transition-colors">
+      <a href="/rgpd" class="hover:text-[#00d9ff] transition-colors">
         mentions légales (RGPD)
       </a>
       <span class="hidden md:inline">·</span>

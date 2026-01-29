@@ -11,6 +11,7 @@ import Register from './pages/Register.svelte';
 import ChallengeLists from './pages/ChallengeLists.svelte';
 import CreateChallenge from './pages/CreateChallenge.svelte';
 import DetailsChallenge from './pages/DetailsChallenge.svelte';
+import RGPD from './pages/RGPD.svelte';
 
 
 // Store pour le composant courant et les paramètres
@@ -78,6 +79,11 @@ page('/detail-challenge/:id', (ctx) => {
 page('/jeux/:id/creation-challenge', (ctx) => {
     currentComponent.set(CreateChallenge);
     routeParams.set({ gameId: ctx.params.id });
+});
+
+page('/rgpd', () => {
+    currentComponent.set(RGPD);
+    routeParams.set({});
 });
 
 // Catch-all pour les routes non trouvées
