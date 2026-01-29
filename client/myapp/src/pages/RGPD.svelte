@@ -89,7 +89,7 @@
         <li><strong>Droit d'opposition:</strong> Vous opposer au traitement de vos données</li>
       </ul>
       <p class="text-gray-300 leading-relaxed mt-4">
-        Pour exercer ces droits, contactez-nous à: <a href="mailto:contact@gamerchallenge.com" class="text-[#00d9ff] hover:underline">contact@gamerchallenge.com</a>
+        Pour exercer ces droits, veuillez utilliser la page: <a href="/contact" class="text-[#00d9ff] hover:underline">Contact</a>
       </p>
     </section>
 
@@ -163,7 +163,7 @@
           Pour toute question concernant cette politique ou vos données personnelles:
         </p>
         <div class="space-y-2">
-          <p><strong>Email:</strong> <a href="mailto:contact@gamerchallenge.com" class="text-[#00d9ff] hover:underline">contact@gamerchallenge.com</a></p>
+          <p><strong>Email:</strong> <a href="/contact" class="text-[#00d9ff] hover:underline">contact@gamerchallenge.com</a></p>
           <p class="text-sm text-gray-400 mt-4">
             En cas de non-résolution de votre plainte, vous avez le droit de la soumettre à l'autorité de protection des données compétente (CNIL en France).
           </p>

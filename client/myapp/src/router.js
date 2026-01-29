@@ -12,6 +12,7 @@ import ChallengeLists from './pages/ChallengeLists.svelte';
 import CreateChallenge from './pages/CreateChallenge.svelte';
 import DetailsChallenge from './pages/DetailsChallenge.svelte';
 import RGPD from './pages/RGPD.svelte';
+import Contact from './pages/Contact.svelte';
 
 
 // Store pour le composant courant et les paramètres
@@ -83,6 +84,11 @@ page('/jeux/:id/creation-challenge', (ctx) => {
 
 page('/rgpd', () => {
     currentComponent.set(RGPD);
+    routeParams.set({});
+});
+
+page('/contact', () => {
+    currentComponent.set(Contact);
     routeParams.set({});
 });
 

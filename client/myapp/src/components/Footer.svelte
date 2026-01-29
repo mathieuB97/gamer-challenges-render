@@ -3,7 +3,7 @@
     <div
       class="flex flex-col md:flex-row items-center justify-center gap-4 text-sm text-muted-foreground"
     >
-      <a href="#" class="hover:text-[#00d9ff] transition-colors"> contact </a>
+      <a href="/contact" class="hover:text-[#00d9ff] transition-colors"> contact </a>
       <span class="hidden md:inline">·</span>
       <a href="/rgpd" class="hover:text-[#00d9ff] transition-colors">
         mentions légales (RGPD)
