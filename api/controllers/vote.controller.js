@@ -194,7 +194,7 @@ class VoteController extends BaseController {
             //    (attributes: []) et on n'expose pas de champs de la table de jonction (through: { attributes: [] }).
             const rows = await Challenge.findAll({
                 include: [
-                    { model: Game, as: 'game', attributes: ['name', 'image'] },
+                    { model: Game, as: 'game', attributes: ['id', 'name', 'image'] },
                     { model: User, as: 'participants', attributes: [], through: { attributes: [] } },
                 ],
                 attributes: [

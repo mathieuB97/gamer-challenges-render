@@ -1,11 +1,12 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import ChallengeCard from "../components/ChallengeCard.svelte";
   import IconArrowLeft from "../components/icon-arrow-left.svelte";
   import IconArrowRight from "../components/icon-arrow-right.svelte";
   import {
     getChallenges,
     getLeaderboard,
+    getLatestChallenges,
   } from "../lib/services/challenge.service.js";
   import {
     topChallenges as mockTopChallenges,
@@ -19,35 +20,10 @@
   let topChallenges = [];
   let topChallengesChunked = $state([]);
   let leaderboard = $state([]);
-
-  onMount(async () => {
-    try {
-      // Tenter de récupérer les données depuis la base de données
-      const response = await getTopChallenges();
-      topChallenges = response.top_challenges;
-      if (!topChallenges) {
-        throw new Error("Données top challenges depuis a BDD non disponibles");
-      }
-      // Mettre à jour topChallengesChunked après avoir rempli topChallenges
-      topChallengesChunked = chunkArray(topChallenges, 3);
-    } catch (error) {
-      console.error("Erreur lors du chargement des top challenges :", error);
-      // En cas d'erreur, utiliser les données mock
-      topChallenges = mockTopChallenges;
-      topChallengesChunked = chunkArray(topChallenges, 3);
-    }
-
-    try {
-      const leaderboardResponse = await getLeaderboard();
-      leaderboard = leaderboardResponse;
-    } catch (error) {
-      console.error("Erreur lors du chargement du leaderboard :", error);
-      leaderboard = mockLeaderboardData;
-    }
-  });
+  let newChallenges = $state([]);
+  let newChallengesChunked = $state([]);
 
   // États initialisés avec les données mock, seront mises à jour avec les vraies données
-  let newChallenges = $state(mockNewChallenges);
   let ongoingChallenges = $state(mockOngoingChallenges);
   let leaderboardData = $state(mockLeaderboardData);
   let isLoading = $state(true);
@@ -67,32 +43,58 @@
   let ongoingChallengesIndex = $state(0);
 
   // Diviser les challenges en groupes de 3 pour les carrousels
-  let newChallengesChunked = $derived(chunkArray(newChallenges, 3));
   let ongoingChallengesChunked = $derived(chunkArray(ongoingChallenges, 3));
 
-  // Charger les données depuis le fichier JSON au montage du composant
-  async function loadChallengesData() {
+  // Fonction pour charger toutes les données
+  async function loadAllData() {
     try {
       isLoading = true;
-      const [challenges, leaderboard] = await Promise.all([
-        getChallenges(),
-        getLeaderboard(),
-      ]);
 
-      topChallenges = challenges.topChallenges || mockTopChallenges;
-      newChallenges = challenges.newChallenges || mockNewChallenges;
-      ongoingChallenges = challenges.ongoingChallenges || mockOngoingChallenges;
-      leaderboardData = leaderboard || mockLeaderboardData;
+      // Charger les top challenges
+      const topResponse = await getTopChallenges();
+      topChallenges = topResponse.top_challenges || mockTopChallenges;
+      topChallengesChunked = chunkArray(topChallenges, 3);
+
+      // Charger les nouveaux challenges (7 derniers)
+      const latestChallengesData = await getLatestChallenges();
+      newChallenges = latestChallengesData || mockNewChallenges;
+      newChallengesChunked = chunkArray(newChallenges, 3);
+
+      // Charger le leaderboard
+      const leaderboardResponse = await getLeaderboard();
+      leaderboardData = leaderboardResponse || mockLeaderboardData;
+      
     } catch (error) {
       console.error("Erreur lors du chargement des données:", error);
-      // Les données mock sont déjà initialisées comme fallback
+      // Utiliser les données mock en cas d'erreur
+      topChallenges = mockTopChallenges;
+      topChallengesChunked = chunkArray(topChallenges, 3);
+      newChallenges = mockNewChallenges;
+      newChallengesChunked = chunkArray(newChallenges, 3);
+      leaderboardData = mockLeaderboardData;
     } finally {
       isLoading = false;
     }
   }
 
-  // Charger les données au montage
-  loadChallengesData();
+  // Charger les données au montage du composant
+  onMount(() => {
+    loadAllData();
+    
+    // Recharger les données quand la page redevient visible
+    // (par exemple après avoir voté sur une page de détail et être revenu)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        loadAllData();
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  });
 
   // Fonctions de navigation
   const nextSlide = (currentIndex, maxIndex, setIndex) => {
@@ -256,7 +258,7 @@
             {#each newChallengesChunked as chunk, i}
               <div class="w-full shrink-0 grid grid-cols-3 gap-4">
                 {#each chunk as challenge (challenge.id)}
-                  <ChallengeCard {...challenge} />
+                  <ChallengeCard {...challenge} showVotes={false} />
                 {/each}
               </div>
             {/each}
