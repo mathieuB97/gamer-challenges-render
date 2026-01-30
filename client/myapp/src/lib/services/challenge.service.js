@@ -105,3 +105,38 @@ export async function getLatestChallenges() {
         throw error;
     }
 }
+/**
+ * Filtre les challenges par jeu, niveau et popularité
+ * @param {Object} filters - Objet contenant les paramètres de filtrage
+ * @param {string|null} filters.gameId - ID du jeu (optionnel)
+ * @param {string|null} filters.level - Niveau de difficulté (easy, medium, hard) (optionnel)
+ * @param {string} filters.sortBy - Ordre de tri (recent, popularity, name) (défaut: recent)
+ * @returns {Promise<Array>} liste des challenges filtrés
+ */
+export async function filterChallenges(filters = {}) {
+    try {
+        const params = new URLSearchParams();
+        
+        if (filters.gameId) {
+            params.append('gameId', filters.gameId);
+        }
+        if (filters.level) {
+            params.append('level', filters.level);
+        }
+        if (filters.sortBy) {
+            params.append('sortBy', filters.sortBy);
+        }
+
+        const queryString = params.toString();
+        const endpoint = `/challenges/search/filter${queryString ? `?${queryString}` : ''}`;
+        
+        const data = await api(endpoint);
+        if (Array.isArray(data.challenges)) {
+            return data.challenges;
+        }
+        throw new Error("Structure de données invalide : challenges doit être un tableau");
+    } catch (error) {
+        console.error("Erreur dans filterChallenges:", error);
+        throw error;
+    }
+}

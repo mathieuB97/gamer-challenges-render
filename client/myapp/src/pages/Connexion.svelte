@@ -21,14 +21,10 @@
       // Call your API to login the user
       const { token, user } = await loginUser({ emailOrPseudo, password });
       setAuth(token, user);
-      // Redirige vers la page précédente via le router SPA (page.js), sinon home
-      if (window.history.length > 1) {
-        page.back();
-      } else {
-        page("/");
-      }
+      // Redirige vers la home après connexion
+      page("/");
     } catch (e) {
-      throw new Error("Une erreur est survenue lors de l'inscription.");
+      throw new Error("Une erreur est survenue lors de la connexion.");
     }
   }
   function handleInput(field, event) {
