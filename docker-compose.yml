@@ -42,5 +42,24 @@ services:
     # Commande pour lancer le serveur de dev Vite/Svelte en mode exposé
     command: npm run dev -- --host
 
+  # 5. Frontend + reverse proxy Nginx - mode production
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    container_name: gamerChallenges_nginx
+    profiles:
+      - prod
+    depends_on:
+      - api-prod
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
 volumes:
   postgres_data:
