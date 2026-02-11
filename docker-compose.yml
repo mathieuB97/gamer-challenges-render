@@ -4,10 +4,11 @@ services:
     image: postgres:17-alpine
     container_name: gamerChallenges_db
     restart: always
-    environment:
-      POSTGRES_USER: gamer
-      POSTGRES_PASSWORD: gamer
-      POSTGRES_DB: gamer
+    profiles:
+      - dev
+      - prod
+    env_file:
+      - .database.env
     ports:
       - "5432:5432"
     volumes:
@@ -19,21 +20,25 @@ services:
     container_name: gamerChallenges_api
     ports:
       - "3000:3000"
-    environment:
-      DATABASE_URL: postgres://gamer:gamer@db:5432/gamer
+    profiles:
+      - dev
+    env_file:
+      - .database.env
     volumes:
       - ./api:/usr/src/app
       - /usr/src/app/node_modules
     depends_on:
       - db
 
-  # 3. Frontend (Client)
+  # 3. Frontend (Client) - mode développement
   client:
     # Le Dockerfile est dans client/myapp selon ton arborescence
     build: ./client/myapp
     container_name: gamerChallenges_client
     ports:
       - "5173:5173"
+    profiles:
+      - dev
     volumes:
       - ./client/myapp:/usr/src/app
       - /usr/src/app/node_modules
@@ -41,6 +46,26 @@ services:
       - api
     # Commande pour lancer le serveur de dev Vite/Svelte en mode exposé
     command: npm run dev -- --host
+
+  # 4. Backend (API) - mode production
+  api-prod:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.prod
+    container_name: gamerChallenges_api_prod
+    profiles:
+      - prod
+    env_file:
+      - .database.env
+      - api/.env.prod
+    restart: unless-stopped
+    depends_on:
+      - db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
 
   # 5. Frontend + reverse proxy Nginx - mode production
   nginx:
