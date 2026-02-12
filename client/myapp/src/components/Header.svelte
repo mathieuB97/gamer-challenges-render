@@ -41,26 +41,28 @@
   });
 </script>
 
-<header class="border-b border-white/10 bg-[#0a0e1a]/95 backdrop-blur-sm sticky top-0 z-50 px-4 md:px-2">
+<header
+  class="border-b border-white/10 bg-[#0a0e1a]/95 backdrop-blur-sm sticky top-0 z-50 px-4 md:px-2"
+>
   <div class="mx-auto py-3">
-    <div class="flex items-center justify-between gap-2">
+    <div class="flex flex-nowrap w-full items-center justify-between gap-2">
       <!-- Burger (mobile only) -->
       <button
         type="button"
-        class="md:hidden p-2 rounded-lg border border-white/20 hover:bg-white/10 transition-colors"
+        class="shrink-0 md:hidden p-2 rounded-lg border border-white/20 hover:bg-white/10 transition-colors"
         aria-label="Menu"
         on:click={toggleMobileMenu}
       >
         {#if mobileMenuOpen}
-          <IconCloseMenuBurger/>
+          <IconCloseMenuBurger />
         {:else}
-          <IconMenuBurger/>
+          <IconMenuBurger />
         {/if}
       </button>
 
       <!-- Logo -->
-      <a href="/" class="shrink-0">
-        <BrandLogo />
+      <a href="/" class="shrink sm:shrink-0 min-w-0">
+        <BrandLogo className="w-full max-w-[140px] sm:max-w-[206px] h-auto" />
       </a>
 
       <!-- Navigation Desktop -->
@@ -70,7 +72,7 @@
       </nav>
 
       <!-- Actions -->
-      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+      <div class="flex shrink sm:shrink-0 min-w-0 items-center gap-2 sm:gap-3">
         {#if $authStore.token}
           <div class="flex items-center gap-3">
             <Avatar size={36} />
@@ -101,7 +103,10 @@
 
     {#if mobileMenuOpen}
       <!-- Overlay -->
-      <div class="fixed inset-0 z-40 bg-black/40 md:hidden" on:click={closeMobileMenu}></div>
+      <div
+        class="fixed inset-0 z-40 bg-black/40 md:hidden"
+        on:click={closeMobileMenu}
+      ></div>
 
       <!-- Mobile Menu -->
       <nav
@@ -109,18 +114,33 @@
         class="fixed top-[64px] left-0 right-0 z-50 md:hidden bg-[#0a0e1a] border-t border-white/10 px-4 py-4 space-y-3"
         on:pointerdown|stopPropagation
       >
-        <a href="/jeux" class="block w-full text-left text-white/90 hover:text-[#00d9ff] py-2" on:click={closeMobileMenu}>Jeux</a>
-        <a href="/a-propos" class="block w-full text-left text-white/90 hover:text-[#00d9ff] py-2" on:click={closeMobileMenu}>À propos</a>
+        <a
+          href="/jeux"
+          class="block w-full text-left text-white/90 hover:text-[#00d9ff] py-2"
+          on:click={closeMobileMenu}>Jeux</a
+        >
+        <a
+          href="/a-propos"
+          class="block w-full text-left text-white/90 hover:text-[#00d9ff] py-2"
+          on:click={closeMobileMenu}>À propos</a
+        >
 
         {#if $authStore.token}
           <button
-            on:click={() => { clearAuth(); closeMobileMenu(); }}
+            on:click={() => {
+              clearAuth();
+              closeMobileMenu();
+            }}
             class="w-full px-3 py-2 rounded-lg border border-[#00d9ff] text-[#00d9ff] hover:bg-[#00d9ff] hover:text-white transition-colors"
           >
             Déconnexion
           </button>
         {:else}
-          <a href="/inscription" class="block w-full px-4 py-2 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff] hover:opacity-90 transition-opacity text-center" on:click={closeMobileMenu}>Inscription</a>
+          <a
+            href="/inscription"
+            class="block w-full px-4 py-2 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff] hover:opacity-90 transition-opacity text-center"
+            on:click={closeMobileMenu}>Inscription</a
+          >
         {/if}
       </nav>
     {/if}
