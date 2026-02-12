@@ -3,7 +3,7 @@ name: Deploy on release tag
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
 
 jobs:
   deploy:
