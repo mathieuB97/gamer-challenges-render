@@ -7,6 +7,7 @@
 .env.production.local
 .env.local
 .database.env
+**/.env.prod
 ### Node ###
 # Dependency directories
 node_modules/
