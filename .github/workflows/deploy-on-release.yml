@@ -40,10 +40,9 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           # Désactive la vérification stricte de l'hôte pour simplifier le TP
-          printf "Host prod-server\n  HostName %s\n  User %s\n  Port %s\n  IdentityFile ~/.ssh/id_rsa\n  StrictHostKeyChecking no\n" \
+          printf "Host prod-server\n  HostName %s\n  User %s\n  Port 22\n  IdentityFile ~/.ssh/id_rsa\n  StrictHostKeyChecking no\n" \
             "${{ secrets.SSH_HOST }}" \
-            "${{ secrets.SSH_USER }}" \
-            "${{ secrets.SSH_PORT }}" >> ~/.ssh/config
+            "${{ secrets.SSH_USER }}" >> ~/.ssh/config
 
       - name: Deploy via SSH on production server
         run: |
