@@ -87,7 +87,9 @@
             />
 
             <p class=" mx-auto block">
-                Déjà un compte ?<a href="/connexion"> Se connecter</a>
+                Déjà un compte ?
+                <a href="/connexion"
+                 class="text-[#00d9ff] hover:underline cursor-pointer"> Se connecter</a>
             </p>
         </form>
     </div>

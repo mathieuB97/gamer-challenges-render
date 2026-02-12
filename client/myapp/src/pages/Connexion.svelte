@@ -18,18 +18,13 @@
     const emailOrPseudo = formData.get("emailOrPseudo");
     const password = formData.get("password");
     try {
-      // Call your API to register the user
-      await loginUser({ emailOrPseudo, password });
-      const { token } = await loginUser({ emailOrPseudo, password });
-      setAuth(token);
-      // Redirige vers la page précédente via le router SPA (page.js), sinon home
-      if (window.history.length > 1) {
-        page.back();
-      } else {
-        page("/");
-      }
+      // Call your API to login the user
+      const { token, user } = await loginUser({ emailOrPseudo, password });
+      setAuth(token, user);
+      // Redirige vers la home après connexion
+      page("/");
     } catch (e) {
-      throw new Error("Une erreur est survenue lors de l'inscription.");
+      throw new Error("Une erreur est survenue lors de la connexion.");
     }
   }
   function handleInput(field, event) {

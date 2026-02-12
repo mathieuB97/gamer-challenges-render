@@ -1,37 +1,104 @@
 # Correspondances Routes Frontend ↔ Routes Backend (API)
 
-Tableau récapitulatif des pages frontend et des endpoints backend qu'elles utilisent principalement.  
+Documentation des routes frontend et leur correspondance avec l'API  
+(Projet Apothéose O'clock – Mise à jour : 29 janvier 2026)
 
+**Base URL Frontend :** `http://localhost:5173`  
+**Base URL Backend :** `http://localhost:3000`
+
+---
+
+## Routes Frontend Implémentées
 
 | Route Frontend (URL)                          | Page / Composant               | Méthode HTTP principale | Routes Backend appelées (principales)                                                                 | Type d'action principale | Accessible sans connexion ? | Remarques / Utilisation principale |
 |-----------------------------------------------|--------------------------------|--------------------------|-------------------------------------------------------------------------------------------------------|--------------------------|-----------------------------|------------------------------------|
-| `/`                                           | HomePage                       | GET                      | - GET `/api/games`<br>- GET `/api/challenges`<br>- GET `/api/leaderboard`                             | Chargement données       | Oui                         | Accueil : top jeux, défis trending, mini-classement |
-| `/games`                                      | GamesListPage                  | GET                      | GET `/api/games`                                                                                      | Liste complète           | Oui                         | Catalogue de tous les jeux disponibles |
-| `/games/:gameId`                              | GameDetailPage                 | GET                      | - GET `/api/games/:gameId`<br>- GET `/api/games/:gameId/challenges`                                   | Détail + liste           | Oui                         | Détail jeu + tous les challenges associés |
-| `/games/:gameId/create-challenge`             | CreateChallengePage            | POST                     | POST `/api/challenges`                                                                                | Création                 | Non                         | Formulaire de proposition de challenge (lié au jeu) |
-| `/games/:gameId/challenges/:challengeId`      | ChallengeDetailPage            | GET                      | - GET `/api/challenges/:challengeId`<br>- GET `/api/challenges/:challengeId/contributions`<br>- GET `/api/challenges/:challengeId/votes` | Détail + participations + stats | Oui                         | Page centrale : description, vidéos, stats |
-| `/games/:gameId/challenges/:challengeId` (action) | ChallengeDetailPage        | POST                     | - POST `/api/challenges/:challengeId/vote`<br>- POST `/api/contributions/:contributionId/vote`       | Vote                     | Oui                         | Voter pour le challenge ou une participation |
-| `/inscription`                                | RegisterPage                   | POST                     | POST `/api/auth/register`                                                                             | Inscription              | Oui                         | Création de compte |
-| `/connexion`                                  | LoginPage                      | POST                     | POST `/api/auth/login`                                                                                | Connexion                | Oui                         | Connexion + stockage JWT |
-| (Utilisé globalement – header/profil)         | — (store utilisateur)          | GET                      | GET `/api/auth/me`                                                                                    | Infos utilisateur        | Non (après login)           | Chargement profil utilisateur connecté |
+| `/`                                           | Home.svelte                    | GET                      | - GET `/challenges/latest`<br>- GET `/votes/top-challenges`<br>- GET `/leaderboard`<br>- **GET `/challenges/search/filter` 🆕** | Chargement données       | Oui                         | Accueil : top challenges, nouveaux défis, leaderboard, **filtres de recherche** |
+| `/jeux`                                       | Games.svelte                   | GET                      | GET `/games`                                                                                          | Liste complète           | Oui                         | Catalogue de tous les jeux disponibles |
+| `/jeux/:id/challenges`                        | ChallengeLists.svelte          | GET                      | - GET `/games/:id`<br>- GET `/games/:id/challenges`                                                  | Détail + liste           | Oui                         | Liste des challenges d'un jeu spécifique |
+| `/jeux/:id/creation-challenge`                | CreateChallenge.svelte         | POST                     | POST `/challenges`                                                                                    | Création                 | Non (JWT requis)            | Formulaire de proposition de challenge (lié au jeu) |
+| `/detail-challenge/:id`                       | DetailsChallenge.svelte        | GET, POST                | - GET `/challenges/:id`<br>- POST `/votes/challenge/:id`<br>- POST `/contributions`                  | Détail + participations + vote | Oui (vote: JWT requis)   | Page centrale : description, vidéos, stats, votes |
+| `/inscription`                                | Register.svelte                | POST                     | POST `/auth/register`                                                                                 | Inscription              | Oui                         | Création de compte |
+| `/connexion`                                  | Connexion.svelte               | POST                     | POST `/auth/login`                                                                                    | Connexion                | Oui                         | Connexion + stockage JWT (redirection vers home) |
+| `/a-propos`                                   | About.svelte                   | —                        | —                                                                                                     | Page statique            | Oui                         | Présentation du projet |
+| `/rgpd`                                       | RGPD.svelte                    | —                        | —                                                                                                     | Page statique            | Oui                         | Politique de confidentialité |
+| `/contact`                                    | Contact.svelte                 | —                        | —                                                                                                     | Page statique            | Oui                         | Formulaire de contact |
+| `*` (route inconnue)                          | NotFound.svelte                | —                        | —                                                                                                     | Page erreur 404          | Oui                         | Page non trouvée |
+| (Header/Store global)                         | Header.svelte                  | GET                      | GET `/auth/me`                                                                                        | Infos utilisateur        | Non (après login)           | Chargement profil utilisateur connecté |
 
-### Résumé rapide des correspondances essentielles
+---
+
+## Redirections
+
+| Route Frontend (ancienne)                     | Redirige vers                    | Remarque |
+|-----------------------------------------------|----------------------------------|----------|
+| `/liste-challenges/:id`                       | `/jeux/:id/challenges`           | Redirection vers la nouvelle nomenclature |
+
+---
+
+## Résumé des Actions Utilisateur
 
 | Action utilisateur principale                  | Page frontend concernée                  | Routes backend principales appelées                          |
 |------------------------------------------------|------------------------------------------|--------------------------------------------------------------|
-| Voir la liste des jeux                         | `/games`                                 | GET `/api/games`                                             |
-| Voir les détails d’un jeu + ses challenges     | `/games/:gameId`                         | GET `/api/games/:gameId` + GET `/api/games/:gameId/challenges` |
-| Proposer un nouveau challenge                  | `/games/:gameId/create-challenge`        | POST `/api/challenges`                                       |
-| Voir un challenge en détail                    | `/games/:gameId/challenges/:challengeId` | GET `/api/challenges/:challengeId` + GET contributions + GET votes |
-| Voter pour un challenge                        | même page                                | POST `/api/challenges/:challengeId/vote`                     |
-| Voter pour une participation                   | même page                                | POST `/api/contributions/:contributionId/vote`               |
-| S’inscrire                                     | `/inscription`                           | POST `/api/auth/register`                                    |
-| Se connecter                                   | `/connexion`                             | POST `/api/auth/login`                                       |
-| Récupérer infos utilisateur connecté           | Toutes les pages (store)                 | GET `/api/auth/me`                                           |
+| Voir la page d'accueil avec filtres            | `/`                                      | GET `/challenges/latest`, GET `/votes/top-challenges`, GET `/leaderboard`, **GET `/challenges/search/filter`** |
+| **Filtrer les challenges**                     | `/` 🆕                                   | **GET `/challenges/search/filter?gameId=X&level=Y&sortBy=Z`** |
+| Voir la liste des jeux                         | `/jeux`                                  | GET `/games`                                                 |
+| Voir les challenges d'un jeu                   | `/jeux/:id/challenges`                   | GET `/games/:id`, GET `/games/:id/challenges`                |
+| Proposer un nouveau challenge                  | `/jeux/:id/creation-challenge`           | POST `/challenges`                                           |
+| Voir un challenge en détail                    | `/detail-challenge/:id`                  | GET `/challenges/:id`                                        |
+| Voter pour un challenge                        | `/detail-challenge/:id`                  | POST `/votes/challenge/:id`                                  |
+| Soumettre une participation (vidéo)            | `/detail-challenge/:id`                  | POST `/contributions`                                        |
+| Voter pour une participation                   | `/detail-challenge/:id`                  | POST `/votes/contribution/:id`                               |
+| S'inscrire                                     | `/inscription`                           | POST `/auth/register`                                        |
+| Se connecter                                   | `/connexion`                             | POST `/auth/login`                                           |
+| Récupérer infos utilisateur connecté           | Toutes les pages (store)                 | GET `/auth/me`                                               |
+| Voir le classement des joueurs                 | `/` (section leaderboard)                | GET `/leaderboard`                                           |
+| Consulter la politique RGPD                    | `/rgpd`                                  | —                                                            |
+| Contacter l'équipe                             | `/contact`                               | —                                                            |
 
-Ce tableau montre parfaitement comment **chaque page frontend** consomme les routes backend.  
-Il est idéal pour la documentation de ton projet d'apothéose.
+---
 
-Tu peux le copier tel quel ou l'ajouter à ton cahier des charges.
+## Fonctionnalités Frontend Principales
 
-Si tu veux qu'on passe à l'implémentation (exemple de fichier `api.js`, configuration du routeur Svelte, ou code d'une page spécifique), dis-le-moi ! 🚀
+### 🏠 Page d'accueil (/)
+- **Top Challenges** : Carrousel des challenges les plus votés
+- **Nouveaux Challenges** : Les 7 derniers challenges créés
+- **Leaderboard** : Classement des meilleurs joueurs
+- **🆕 Filtres de recherche** : Filtrer par jeu, niveau (facile/moyen/difficile) et popularité
+
+### 🎮 Catalogue des jeux (/jeux)
+- Liste complète des jeux disponibles
+- Accès aux challenges de chaque jeu
+
+### 🏆 Liste des challenges d'un jeu (/jeux/:id/challenges)
+- Tous les challenges associés à un jeu spécifique
+- Possibilité de créer un nouveau challenge (utilisateur connecté)
+
+### 📝 Création de challenge (/jeux/:id/creation-challenge)
+- Formulaire de création de challenge
+- Authentification requise (JWT)
+
+### 🎯 Détail d'un challenge (/detail-challenge/:id)
+- Description complète du challenge
+- Liste des participations (vidéos)
+- Système de votes (challenge et participations)
+- Soumission de participation (authentification requise)
+
+### 🔐 Authentification
+- **Inscription** : Création de compte avec email, pseudo, mot de passe
+- **Connexion** : Authentification avec JWT, redirection automatique vers la home
+
+---
+
+
+## Notes Techniques
+
+- **Router** : Utilisation de `page.js` pour la navigation SPA
+- **Authentification** : JWT stocké dans localStorage
+- **Store global** : Svelte stores pour `authStore` et `userStore`
+- **API Client** : Fonction centralisée `api()` dans `lib/api.js`
+- **Protection des routes** : Middleware client-side pour vérifier l'authentification
+
+---
+
+**Version Frontend :** 1.0.0  
+**Date de mise à jour :** 29 janvier 2026

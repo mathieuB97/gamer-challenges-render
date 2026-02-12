@@ -1,0 +1,54 @@
+name: Deploy on release tag
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  deploy:
+    name: Deploy to production server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Étape optionnelle : ajouter ici build/tests si nécessaire
+      # - name: Run backend tests
+      #   run: |
+      #     cd api
+      #     npm ci
+      #     npm test
+      #
+      # - name: Run frontend tests
+      #   run: |
+      #     cd client/myapp
+      #     npm ci
+      #     npm test
+
+      - name: Install SSH client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openssh-client
+
+      - name: Add SSH private key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          # Désactive la vérification stricte de l'hôte pour simplifier le TP
+          printf "Host prod-server\n  HostName %s\n  User %s\n  Port %s\n  IdentityFile ~/.ssh/id_rsa\n  StrictHostKeyChecking no\n" \
+            "${{ secrets.SSH_HOST }}" \
+            "${{ secrets.SSH_USER }}" \
+            "${{ secrets.SSH_PORT }}" >> ~/.ssh/config
+
+      - name: Deploy via SSH on production server
+        run: |
+          ssh prod-server "cd '${{ secrets.APP_PATH }}' \
+            && git fetch origin \
+            && git checkout main \
+            && git pull origin main \
+            && docker compose --profile prod up -d --build"

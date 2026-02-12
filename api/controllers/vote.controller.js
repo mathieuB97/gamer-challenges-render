@@ -1,6 +1,7 @@
 import BaseController from './base.controller.js';
-import { User, Challenge, Contribution } from '../models/index.js';
+import { User, Challenge, Contribution, Game } from '../models/index.js';
 import HttpError from '../utils/HttpError.js';
+import { fn, col, } from '../models/sequelize.client.js';
 
 
 class VoteController extends BaseController {
@@ -178,6 +179,142 @@ class VoteController extends BaseController {
                 top_contributors: contributorsStats
             });
 
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    // 4. Top challenges par nombre de votes (participants sur user_challenge)
+    async getTopChallenges(req_, res, next) {
+        try {
+            // Jointures:
+            // - 'game': relation 1-N (Challenge.belongsTo(Game)) pour récupérer le nom et l'image du jeu lié
+            // - 'participants': relation N-N (Challenge.belongsToMany(User) via table 'user_challenge')
+            //    utilisée uniquement pour compter les votes (participants). On ne sélectionne pas de colonnes utilisateurs
+            //    (attributes: []) et on n'expose pas de champs de la table de jonction (through: { attributes: [] }).
+            const rows = await Challenge.findAll({
+                include: [
+                    { model: Game, as: 'game', attributes: ['id', 'name', 'image'] },
+                    { model: User, as: 'participants', attributes: [], through: { attributes: [] } },
+                ],
+                attributes: [
+                    // Colonnes du challenge renvoyées
+                    'id', 'name', 'level', 'time_limit_minutes',
+                    // Agrégat: nombre de participants (votes) grâce à la jointure 'participants'
+                    // COUNT(participants.id) est possible car l'include crée la jointure avec l'alias 'participants'
+                    [fn('COUNT', col('participants.id')), 'votesCount'],
+                    // Nombre total de participants au challenge
+                    [fn('COUNT', col('participants.id')), 'totalParticipants']
+                ],
+                // Groupement nécessaire pour les agrégations et éviter la duplication des lignes
+                // On regroupe par l'identifiant du challenge et l'identifiant du jeu inclus
+                group: ['Challenge.id', 'game.id'],
+                // Tri sur l'alias "votesCount" en DESC pour obtenir les challenges les plus votés en premier
+                order: [['votesCount', 'DESC']],
+                limit: 10,
+                subQuery: false,
+                raw: true
+            });
+
+            res.json({ top_challenges: rows });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    /**
+     * GET /api/votes/leaderboard
+     * Retourne les utilisateurs ayant reçu le plus de votes sur leur participation.
+     */
+    getLeaderboard = async (req, res, next) => {
+        try {
+            // Récupérer les utilisateurs avec leurs contributions et le nombre total de votes reçus sur leurs contributions
+            const users = await User.findAll({
+                include: [
+                    {
+                        model: Contribution,
+                        as: 'contributions',
+                        include: [
+                            {
+                                model: User,
+                                as: 'contributors',
+                                attributes: ['id'],
+                                through: { attributes: [] }
+                            },
+                            {
+                                model: Challenge,
+                                as: 'challenge',
+                                attributes: ['name', 'level', 'time_limit_minutes'],
+                                include: [
+                                    {
+                                        model: Game,
+                                        as: 'game',
+                                        attributes: ['name', 'image']
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                attributes: ['id', 'pseudo'],
+            });
+
+            // Calculer le nombre total de votes reçus sur toutes les contributions de chaque utilisateur
+            const leaderboard = users.map(user => {
+                // votesCount = somme des votes sur toutes les contributions de l'utilisateur
+                const votesCount = user.contributions.reduce((total, contrib) => {
+                    return total + (contrib.contributors ? contrib.contributors.length : 0);
+                }, 0);
+                // Chercher le premier jeu trouvé dans les contributions de l'utilisateur
+                let gameName = null;
+                let gameImage = null;
+                for (const contrib of user.contributions) {
+                    if (contrib.challenge && contrib.challenge.game) {
+                        gameName = contrib.challenge.game.name;
+                        gameImage = contrib.challenge.game.image;
+                        break;
+                    }
+                }
+                return {
+                    id: user.id,
+                    pseudo: user.pseudo,
+                    votesCount,
+                    game_name: gameName,
+                    game_image: gameImage,
+                };
+            }).sort((a, b) => b.votesCount - a.votesCount).slice(0, 10);
+
+            res.json({ leaderboard });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    // POST : Ajouter un vote à une contribution (participation)
+    async voteForContribution(req, res, next) {
+        try {
+            const { contributionId } = req.params;
+            const userId = req.user_id; // récupéré via le middleware d'auth
+
+            if (!userId) {
+                throw new HttpError('Utilisateur non authentifié', 401);
+            }
+
+            const user = await User.findByPk(userId);
+            const contribution = await Contribution.findByPk(contributionId);
+
+            if (!user || !contribution) {
+                throw new HttpError('User ou contribution non trouvé', 404);
+            }
+
+            // Vérifier si le vote existe déjà
+            const alreadyVoted = await user.hasCollab_contribution(contribution);
+            if (alreadyVoted) {
+                throw new HttpError('Vous avez déjà voté pour cette contribution', 409);
+            }
+
+            await user.addCollab_contribution(contribution);
+            res.json({ success: true, message: 'Vote enregistré !' });
         } catch (error) {
             next(error);
         }

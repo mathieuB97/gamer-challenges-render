@@ -14,25 +14,31 @@ class ChallengeController extends BaseController {
     getRequestOptions(req) {
         return [
             // Inclusion du modèle Game, alias 'game' dans les associations (récupère la totalité des infos de la table "game")
-            { model: Game, 
-                as: 'game' },
+            {
+                model: Game,
+                as: 'game'
+            },
 
             // Inclusion du modèle User, alias 'creator' dans les associations et "attributes" pour ne récupérer que le pseudo
-            { 
-                model: User, 
+            {
+                model: User,
                 as: 'creator',
-                attributes: ['pseudo'], 
+                attributes: ['pseudo'],
             },
 
             // Inclusion du modèle Contribution, alias 'contributions' avec une sous-inclusion du modèle User (l'auteur de la contribution)
-            { 
-                model: Contribution, 
+            {
+                model: Contribution,
                 as: 'contributions',
                 include: [
                     {
                         model: User,
                         as: 'creator',
                         attributes: ['pseudo'],
+                    }, {
+                        model: Challenge,
+                        as: 'challenge',
+                        attributes: ['name'],
                     }
                 ],
             },
@@ -43,74 +49,99 @@ class ChallengeController extends BaseController {
      * GET /api/challenges
      * Retourne les challenges groupés par catégories (top, new, ongoing)
      */
-    getChallengesGrouped = async (req, res, next) => {
+    getChallenges = async (req, res, next) => {
         try {
             const options = this.getRequestOptions(req);
-            const allChallenges = await Challenge.findAll({ include: options });
+            const challenges = await Challenge.findAll({ include: options });
 
-            // Mapper les données pour correspondre à la structure attendue par le client
-            const transformedChallenges = allChallenges.map(challenge => ({
-                id: challenge.id,
-                title: challenge.game?.name || "Nom du jeu",
-                challengeName: challenge.name,
-                image: game.image || "https://via.placeholder.com/600x400",
-                likes: challenge.likes || 0,
-                participants: challenge.participants || 0,
-            }));
+            if (!challenges || challenges.length === 0) {
+                throw new HttpError('Aucun challenge trouvé', 404);
+            }
+            return res.sendResponse({ challenges });
 
-            // Grouper les challenges (vous pouvez adapter la logique selon vos besoins)
-            const topChallenges = transformedChallenges.slice(0, 4);
-            const newChallenges = transformedChallenges.slice(4, 9);
-            const ongoingChallenges = transformedChallenges.slice(0, 7);
-
-            res.sendResponse({
-                challenges: {
-                    topChallenges,
-                    newChallenges,
-                    ongoingChallenges
-                }
-            });
         } catch (error) {
             next(error);
         }
     }
 
     /**
-     * GET /api/leaderboard
-     * Retourne le classement des utilisateurs par nombre de contributions
+     * GET /api/challenges/latest
+     * Retourne les 7 derniers challenges créés avec les images des jeux
      */
-    getLeaderboard = async (req, res, next) => {
+    getLatest = async (req, res, next) => {
         try {
-            // Récupérer les utilisateurs avec le nombre de contributions
-            const users = await User.findAll({
-                include: [{
-                    model: Contribution,
-                    as: 'contributions',
-                    attributes: [],
-                }],
-                attributes: ['id', 'pseudo', 'image', [require('sequelize').fn('COUNT', require('sequelize').col('contributions.id')), 'contributionCount']],
-                group: ['User.id'],
-                order: [[require('sequelize').literal('contributionCount'), 'DESC']],
-                limit: 10,
-                raw: true,
-                subQuery: false
+            const options = this.getRequestOptions(req);
+            const challenges = await Challenge.findAll({ 
+                include: options,
+                order: [['createdAt', 'DESC']], 
+                limit: 7 
             });
 
-            // Mapper et ajouter les rangs
-            const leaderboardData = users.map((user, index) => ({
-                rank: index + 1,
-                name: "Nom du jeu", // À adapter selon votre logique
-                pseudo: user.pseudo,
-                image: user.image || "https://via.placeholder.com/400x400",
-            }));
-
-            res.sendResponse({
-                leaderboardData
-            });
+            if (!challenges || challenges.length === 0) {
+                throw new HttpError('Aucun challenge trouvé', 404);
+            }
+            return res.sendResponse({ challenges });
         } catch (error) {
             next(error);
         }
     }
+
+    /**
+     * GET /api/challenges/search/filter
+     * Filtre les challenges par jeu, niveau et popularité
+     * Query params:
+     *   - gameId: ID du jeu (optionnel)
+     *   - level: easy, medium, hard (optionnel)
+     *   - sortBy: 'popularity', 'recent', 'name' (optionnel, défaut: 'recent')
+     */
+    filterChallenges = async (req, res, next) => {
+        try {
+            const { gameId, level, sortBy = 'recent' } = req.query;
+            const options = this.getRequestOptions(req);
+            
+            // Construire les critères WHERE
+            const where = {};
+            if (gameId) {
+                where.game_id = gameId;
+            }
+            if (level) {
+                where.level = level;
+            }
+
+            // Construire l'ordre des résultats
+            let order = [['createdAt', 'DESC']]; // Par défaut: récent
+            
+            if (sortBy === 'name') {
+                order = [['name', 'ASC']];
+            }
+            // Pour la popularité, on triera après en JavaScript
+
+            let challenges = await Challenge.findAll({ 
+                where,
+                include: options,
+                order,
+            });
+
+            // Si popularité, trier par nombre de contributions
+            if (sortBy === 'popularity') {
+                challenges = challenges.sort((a, b) => {
+                    const aCount = a.contributions ? a.contributions.length : 0;
+                    const bCount = b.contributions ? b.contributions.length : 0;
+                    return bCount - aCount; // Ordre décroissant
+                });
+            }
+
+            if (!challenges || challenges.length === 0) {
+                return res.sendResponse({ challenges: [] });
+            }
+            
+            return res.sendResponse({ challenges });
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
 }
 
 export default new ChallengeController();

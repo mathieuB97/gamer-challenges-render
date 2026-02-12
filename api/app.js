@@ -18,8 +18,18 @@ dotenv.config();
 const app = express();
 
 // 1. MIDDLEWARES DE BASE (Sécurité et Parsing)
+// CORS allowlist via CSV dans CORS_ORIGINS
+const originsCsv = process.env.CORS_ORIGINS || '';
+const allowlist = originsCsv.split(',').map(o => o.trim()).filter(Boolean);
+
 app.use(cors({
-  origin: 'http://localhost:5173'
+  origin: (origin, callback) => {
+    // Autoriser les clients sans header Origin (curl/postman)
+    if (!origin) return callback(null, true);
+    if (allowlist.includes(origin)) return callback(null, true);
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
 }));
 
 // Doit être AVANT les routes pour que req.body soit lisible

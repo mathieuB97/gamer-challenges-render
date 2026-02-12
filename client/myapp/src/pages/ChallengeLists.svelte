@@ -9,6 +9,8 @@
   import { getUserById } from "../lib/services/user.service.js";
   import { mockGames } from "../mock/games.mock";
   import { mockUsers } from "../mock/users.mock.js";
+  // Import du composant pop-up pour envoyer une participation
+  import ParticipationModal from "../components/ParticipationModal.svelte";
   // Id du jeu passé par le router (SPA)
   export let gameId;
 
@@ -19,6 +21,10 @@
 
   // Modal description du jeu
   let isGameModalOpen = false;
+  
+  // Etats pour controler le pop-up de participation
+  let isParticipationModalOpen = false; // Vrai = pop-up visible
+  let selectedChallenge = null; // Challenge sélectionné pour le pop-up
 
   // Infos jeu (dynamique)
   let game = null;
@@ -105,12 +111,19 @@
     document.body.style.overflow = "";
   });
 
+  // Fonction qui ouvre le pop-up de participation pour un challenge donné
+  function openParticipationModal(challenge) {
+    selectedChallenge = challenge; // Stocke le challenge cliqué
+    isParticipationModalOpen = true; // Affiche le pop-up
+    document.body.style.overflow = "hidden"; // Bloque le scroll de la page
+  }
+
   function submitParticipation(challenge) {
     alert(`Participation: ${challenge.title}`);
   }
 </script>
 
-<main class="min-h-[calc(100vh-200px)] px-4 py-8">
+<main class="h-full px-4 py-8">
   <section class="mx-auto w-full max-w-6xl">
     <!-- Titre -->
     <div class="mb-6 text-center">
@@ -275,18 +288,18 @@
                 <!-- Ligne 2 : boutons -->
                 <div class="mt-4 grid grid-cols-2 gap-3">
                   <a
-                    href={`/detail-challenge/${c.id}`}
+                    href={`/detail-challenge/${c.id}?gameId=${gameId}`}
                     class="w-full text-center font-bold py-2.5 rounded-lg border border-white/15 text-white/80
                            hover:bg-white/5 transition"
                   >
                     Détail
                   </a>
-
+                  <!--Bouton qui ouvre le pop-up de participation pour ce challenge -->
                   <button
                     type="button"
                     class="w-full py-2.5 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
                            text-white font-semibold hover:opacity-90 transition-opacity"
-                    on:click={() => submitParticipation(c)}
+                    on:click={() => openParticipationModal(c)}
                   >
                     Déposer une participation
                   </button>
@@ -302,14 +315,16 @@
   <!-- MODAL DESCRIPTION JEU -->
   {#if isGameModalOpen}
     <!-- Overlay -->
-    <div class="fixed inset-0 z-40 bg-black/60" on:click={closeGameModal}></div>
+    <div class="fixed inset-0 z-40 bg-black/60" on:click={closeGameModal} on:keydown={(e) => {
+      if (e.key === "Enter" || e.key === " ") closeGameModal();
+    }} role="button"aria-label="fermer la modal" tabindex="0"></div>
+
 
     <!-- Modal -->
     <div class="fixed inset-0 z-50 flex items-center justify-center px-4">
       <div
         class="w-full max-w-3xl rounded-2xl border border-white/10 bg-[#141824]
                shadow-xl overflow-hidden"
-        on:click|stopPropagation
       >
         <!-- Header modal -->
         <div class="flex items-start justify-between gap-4 p-6">
@@ -339,18 +354,23 @@
             class="mt-5 border-t border-white/10 pt-4 grid grid-cols-2 gap-4 text-sm"
           >
             <div>
-              <p class="text-white/60 text-xs">Genre</p>
+              <p class="text-white/60 text-xs">Catégorie : {game.category}</p>
               <p class="text-white font-semibold">{game.genre}</p>
             </div>
 
-            <div>
-              <p class="text-white/60 text-xs">Joueurs</p>
-              <p class="text-white font-semibold">{game.players}</p>
-            </div>
+            
           </div>
         </div>
       </div>
     </div>
+  {/if}
+
+  <!-- Bloc qui affiche le pop-up de participation quand isParticipationModalOpen = true -->
+  {#if isParticipationModalOpen}
+    <ParticipationModal 
+      bind:isOpen={isParticipationModalOpen}
+      challenge={selectedChallenge} 
+    />
   {/if}
 </main>
 

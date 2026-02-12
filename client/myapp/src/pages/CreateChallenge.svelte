@@ -5,34 +5,75 @@
     import IconArrowLeft from "../components/icon-arrow-left.svelte";
     import LabelInput from "../components/LabelInput.svelte";
     import { routeParams } from "../router";
+    import { createChallenge } from "../lib/services/challenge.service.js";
 
     let formData = {
         challengeName: "",
         challengeTitle: "",
         pseudo: "",
         challengeObjective: "",
+        time_limit_minutes: "",
+        challengeSelect: "",
     };
 
-    function handleInput(field, event) {
-        formData[field] = event.target.value;
-    }
+    let loading = false;
+    let errorMsg = "";
+    let successMsg = "";
 
-    function createChallenge(event) {
-        console.log("e.target", event.target);
+    // Debug: afficher les params de route
+    $: console.log("routeParams:", $routeParams);
 
+    async function handleOnSubmit(event) {
         event.preventDefault();
-        const formData = new FormData(event.target);
-        const challengeName = formData.get("challenge-name");
-        const challengeTitle = formData.get("challenge-title");
-        const pseudo = formData.get("pseudo");
-        const challengeObjective = formData.get("challenge-objective");
-        // Here you would typically send formData to your backend API
-        console.log("Challenge créé avec les données :", {
-            challengeName,
-            challengeTitle,
-            pseudo,
-            challengeObjective,
-        });
+        
+        errorMsg = "";
+        successMsg = "";
+        loading = true;
+        
+        try {
+            console.log("Route params au submit:", $routeParams);
+            const gameId = parseInt($routeParams.gameId, 10);
+            
+            if (!gameId || isNaN(gameId)) {
+                console.error("gameId invalide:", $routeParams.gameId, "gameId:", gameId);
+                throw new Error("ID du jeu invalide");
+            }
+            
+            const payload = {
+                name: formData.challengeName,
+                description: formData.challengeObjective,
+                rules: "Respecter les règles du jeu",
+                level: formData.challengeSelect,
+                time_limit_minutes: String(formData.time_limit_minutes),
+                game_id: gameId
+            };
+
+            console.log("Payload envoyé:", payload);
+
+            const result = await createChallenge(payload);
+            
+            // Afficher une confirmation
+            successMsg = "Défi envoyé ✓";
+            
+            // Réinitialiser le formulaire après 5s
+            setTimeout(() => {
+                formData = {
+                    challengeName: "",
+                    challengeTitle: "",
+                    pseudo: "",
+                    challengeObjective: "",
+                    time_limit_minutes: "",
+                    challengeSelect: "",
+                };
+                successMsg = "";
+            }, 5000);
+            
+        } catch (error) {
+            console.error("Erreur lors de la création du challenge:", error);
+            errorMsg = error.message || "Erreur lors de la création du challenge. Veuillez réessayer.";
+        } finally {
+            loading = false;
+        }
     }
 </script>
 
@@ -57,53 +98,75 @@
         <div
             class="w-2xl max-w-full m-auto bg-[#141824] border border-white/10 rounded-2xl p-8"
         >
-            <form class="space-y-4" on:submit={createChallenge}>
-                <LabelInput
-                    id="challenge-name"
-                    name="challenge-name"
-                    label="Nom du challenge"
-                    type="text"
-                    value={formData.challengeName}
-                    placeholder="nom du challenge"
-                    required={true}
-                    mandatory={true}
-                    on:input={(e) => handleInput("challengeName", e)}
-                />
+            {#if errorMsg}
+                <div
+                    class="mb-4 p-3 rounded-lg bg-red-500/20 border border-red-500/40 text-red-300 text-sm"
+                >
+                    {errorMsg}
+                </div>
+            {/if}
 
-                <LabelInput
-                    id="challenge-title"
-                    name="challenge-title"
-                    label="Titre du challenge"
-                    type="text"
-                    value={formData.challengeTitle}
-                    placeholder="titre du challenge"
-                    required={true}
-                    mandatory={true}
-                    on:input={(e) => handleInput("challengeTitle", e)}
-                />
+            {#if successMsg}
+                <div
+                    class="mb-4 p-3 rounded-lg bg-green-500/20 border border-green-500/40 text-green-300 text-sm"
+                >
+                    {successMsg}
+                </div>
+            {/if}
 
-                <LabelInput
+            <form class="space-y-4" on:submit={handleOnSubmit}>
+
+                  <LabelInput
                     id="pseudo"
                     name="pseudo"
                     label="Votre pseudo"
                     type="text"
-                    value={formData.pseudo}
+                    bind:value={formData.pseudo}
                     placeholder="votre pseudo"
                     required={true}
                     mandatory={true}
-                    on:input={(e) => handleInput("pseudo", e)}
                 />
+
+                <LabelInput
+                    id="name"
+                    name="name"
+                    label="Nom du challenge"
+                    type="text"
+                    bind:value={formData.challengeName}
+                    placeholder="nom du challenge"
+                    required={true}
+                    mandatory={true}
+                />
+
+                <LabelInput
+                    id="time-limit-minutes"
+                    name="time-limit-minutes"
+                    label="Temps limite (en minutes)"
+                    type="number"
+                    bind:value={formData.time_limit_minutes}
+                    placeholder="le temps a éffectué (en minutes)"
+                    required={true}
+                    mandatory={true}
+                />
+
+                <label for="level-select">Choisissez un niveaux de difficulté:</label>
+
+                <select name="challenge-select" id="challenge-select" class="bg-[#0a0e1a] border border-white/20" bind:value={formData.challengeSelect}>
+                <option value="">--Veuillez choisir une option--</option>
+                <option value="easy">Easy ❤️</option>
+                <option value="medium">Medium ⚔️</option>
+                <option value="hard">Hard 💀</option>
+                </select>
 
                 <LabelInput
                     id="challenge-objective"
                     name="challenge-objective"
                     label="Objectif du défi"
                     type="text-area"
-                    value={formData.challengeObjective}
+                    bind:value={formData.challengeObjective}
                     placeholder="objectif du défi"
                     required={true}
                     mandatory={true}
-                    on:input={(e) => handleInput("challengeObjective", e)}
                 />
                 <p class="text-white/70 mx-auto block mb-6">
                     Expliquez clairement ce que les joueurs doivent accomplir
@@ -116,11 +179,13 @@
                         text="Annuler"
                         className="max-w-73 mx-auto block"
                         type="reset"
+                        disabled={loading}
                     />
                     <ButtonSubmit
                         variant="primary"
-                        text="S'inscrire"
+                        text={loading ? "Envoi en cours..." : "Soumettre le défi"}
                         className="max-w-73 mx-auto block"
+                        disabled={loading}
                     />
                 </div>
             </form>

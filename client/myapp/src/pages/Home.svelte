@@ -1,10 +1,14 @@
 <script>
+  import { onMount, onDestroy } from "svelte";
   import ChallengeCard from "../components/ChallengeCard.svelte";
+  import SearchFilters from "../components/SearchFilters.svelte";
   import IconArrowLeft from "../components/icon-arrow-left.svelte";
   import IconArrowRight from "../components/icon-arrow-right.svelte";
   import {
     getChallenges,
     getLeaderboard,
+    getLatestChallenges,
+    filterChallenges,
   } from "../lib/services/challenge.service.js";
   import {
     topChallenges as mockTopChallenges,
@@ -12,13 +16,22 @@
     ongoingChallenges as mockOngoingChallenges,
     leaderboardData as mockLeaderboardData,
   } from "../mock/data.js";
+  import { getTopChallenges } from "../lib/services/vote.service.js";
+
+  // Initialisation de la variable avec une valeur vide
+  let topChallenges = [];
+  let topChallengesChunked = $state([]);
+  let leaderboard = $state([]);
+  let newChallenges = $state([]);
+  let newChallengesChunked = $state([]);
+  let filteredChallenges = $state([]);
+  let filteredChallengesChunked = $state([]);
 
   // États initialisés avec les données mock, seront mises à jour avec les vraies données
-  let topChallenges = $state(mockTopChallenges);
-  let newChallenges = $state(mockNewChallenges);
   let ongoingChallenges = $state(mockOngoingChallenges);
   let leaderboardData = $state(mockLeaderboardData);
   let isLoading = $state(true);
+  let isFilterApplied = $state(false);
 
   // Fonction pour diviser un tableau en chunks
   const chunkArray = (array, size) => {
@@ -33,35 +46,90 @@
   let topChallengesIndex = $state(0);
   let newChallengesIndex = $state(0);
   let ongoingChallengesIndex = $state(0);
+  let filteredChallengesIndex = $state(0);
 
-  // Diviser les challenges en groupes de 3
-  let topChallengesChunked = $derived(chunkArray(topChallenges, 3));
-  let newChallengesChunked = $derived(chunkArray(newChallenges, 3));
+  // Diviser les challenges en groupes de 3 pour les carrousels
   let ongoingChallengesChunked = $derived(chunkArray(ongoingChallenges, 3));
 
-  // Charger les données depuis le fichier JSON au montage du composant
-  async function loadChallengesData() {
+  // Fonction pour charger toutes les données
+  async function loadAllData() {
     try {
       isLoading = true;
-      const [challenges, leaderboard] = await Promise.all([
-        getChallenges(),
-        getLeaderboard(),
-      ]);
 
-      topChallenges = challenges.topChallenges || mockTopChallenges;
-      newChallenges = challenges.newChallenges || mockNewChallenges;
-      ongoingChallenges = challenges.ongoingChallenges || mockOngoingChallenges;
-      leaderboardData = leaderboard || mockLeaderboardData;
+      // Charger les top challenges
+      const topResponse = await getTopChallenges();
+      topChallenges = topResponse.top_challenges || mockTopChallenges;
+      topChallengesChunked = chunkArray(topChallenges, 3);
+
+      // Charger les nouveaux challenges (7 derniers)
+      const latestChallengesData = await getLatestChallenges();
+      newChallenges = latestChallengesData || mockNewChallenges;
+      newChallengesChunked = chunkArray(newChallenges, 3);
+
+      // Charger le leaderboard
+      const leaderboardResponse = await getLeaderboard();
+      leaderboardData = leaderboardResponse || mockLeaderboardData;
+      
     } catch (error) {
       console.error("Erreur lors du chargement des données:", error);
-      // Les données mock sont déjà initialisées comme fallback
+      // Utiliser les données mock en cas d'erreur
+      topChallenges = mockTopChallenges;
+      topChallengesChunked = chunkArray(topChallenges, 3);
+      newChallenges = mockNewChallenges;
+      newChallengesChunked = chunkArray(newChallenges, 3);
+      leaderboardData = mockLeaderboardData;
     } finally {
       isLoading = false;
     }
   }
 
-  // Charger les données au montage
-  loadChallengesData();
+  // Fonction pour gérer le filtrage
+  async function handleFilter(event) {
+    try {
+      isLoading = true;
+      filteredChallengesIndex = 0;
+      const filterParams = event.detail;
+
+      if (!filterParams.gameId && !filterParams.level && filterParams.sortBy === 'recent') {
+        // Si aucun filtre n'est appliqué, réinitialiser
+        isFilterApplied = false;
+        filteredChallenges = [];
+        filteredChallengesChunked = [];
+      } else {
+        // Appliquer le filtre
+        const result = await filterChallenges(filterParams);
+        filteredChallenges = result || [];
+        filteredChallengesChunked = chunkArray(filteredChallenges, 3);
+        isFilterApplied = true;
+      }
+    } catch (error) {
+      console.error("Erreur lors du filtrage:", error);
+      isFilterApplied = false;
+      filteredChallenges = [];
+      filteredChallengesChunked = [];
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  // Charger les données au montage du composant
+  onMount(() => {
+    loadAllData();
+    
+    // Recharger les données quand la page redevient visible
+    // (par exemple après avoir voté sur une page de détail et être revenu)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        loadAllData();
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  });
 
   // Fonctions de navigation
   const nextSlide = (currentIndex, maxIndex, setIndex) => {
@@ -85,33 +153,33 @@
     <div class="h-full overflow-y-auto px-4 py-4 scrollbar-thumb-gray-600">
       <h2 class="text-xl mb-4">Leaderboard</h2>
       <div class="space-y-4">
-        {#each leaderboardData as player (player.rank)}
+        {#each leaderboardData as player, i ((player.rank, i))}
           <div class="relative group cursor-pointer">
             <!-- rank best player-->
             <div
               class="absolute -top-2 -left-2 w-8 h-8 rounded-lg flex items-center justify-center z-10
-								{player.rank === 1
+								{i + 1 === 1
                 ? 'bg-gradient-to-br from-yellow-400 to-yellow-600'
-                : player.rank === 2
+                : i + 1 === 2
                   ? 'bg-gradient-to-br from-gray-300 to-gray-500'
-                  : player.rank === 3
+                  : i + 1 === 3
                     ? 'bg-gradient-to-br from-amber-600 to-amber-800'
                     : 'bg-gradient-to-br from-[#1a2139] to-[#12172b]'}"
             >
-              <span class="font-bold">{player.rank}</span>
+              <span class="font-bold">{i + 1 || player.rank}</span>
             </div>
             <!-- Card -->
             <div class="relative overflow-hidden rounded-lg">
               <img
-                src={player.image}
-                alt={player.name}
+                src={player.game_image ?? player.image}
+                alt={player.game_name ?? player.name}
                 class="w-full h-24 object-cover group-hover:scale-110 transition-transform duration-300"
               />
               <div
                 class="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-transparent"
               ></div>
               <div class="absolute bottom-2 left-2 right-2">
-                <p class="text-sm mb-0.5">{player.name}</p>
+                <p class="text-sm mb-0.5">{player.game_name ?? player.name}</p>
                 <p class="text-xs text-[#00d9ff] italic">
                   {player.pseudo}
                 </p>
@@ -125,6 +193,69 @@
 
   <!-- Challenges Section -->
   <div class="flex-1 space-y-8">
+    <!-- Search Filters -->
+    <SearchFilters on:filter={handleFilter} />
+
+    {#if isFilterApplied && filteredChallenges.length > 0}
+      <!-- Filtered Challenges Section -->
+      <section>
+        <div class="mb-6 flex items-center justify-between">
+          <h2 class="text-2xl">Résultats filtrés ({filteredChallenges.length})</h2>
+          <div class="carousel-navigation flex gap-2">
+            {#if filteredChallengesIndex > 0}
+              <button
+                onclick={() =>
+                  prevSlide(
+                    filteredChallengesIndex,
+                    (index) => (filteredChallengesIndex = index),
+                  )}
+                class="flex items-center justify-center text-[#00d9ff]"
+                title="Précédent"
+              >
+                <IconArrowLeft />
+              </button>
+            {/if}
+
+            {#if filteredChallengesIndex < filteredChallengesChunked.length - 1}
+              <button
+                onclick={() =>
+                  nextSlide(
+                    filteredChallengesIndex,
+                    filteredChallengesChunked.length,
+                    (index) => (filteredChallengesIndex = index),
+                  )}
+                class="flex items-center justify-center text-[#00d9ff]"
+                title="Suivant"
+              >
+                <IconArrowRight />
+              </button>
+            {/if}
+          </div>
+        </div>
+        <div class="relative">
+          <!-- Carousel Container -->
+          <div class="overflow-hidden">
+            <div
+              class="flex transition-transform duration-300 ease-in-out"
+              style="transform: translateX(-{filteredChallengesIndex * 100}%)"
+            >
+              {#each filteredChallengesChunked as chunk, i}
+                <div class="w-full shrink-0 grid grid-cols-3 gap-4">
+                  {#each chunk as challenge (challenge.id)}
+                    <ChallengeCard {...challenge} />
+                  {/each}
+                </div>
+              {/each}
+            </div>
+          </div>
+        </div>
+      </section>
+    {:else if isFilterApplied && filteredChallenges.length === 0}
+      <div class="bg-[#12172b] rounded-xl p-8 text-center">
+        <p class="text-gray-400">Aucun challenge ne correspond à vos critères de recherche.</p>
+      </div>
+    {/if}
+
     <!-- Top Challenges Carousel -->
     <section>
       <div class="mb-6 flex items-center justify-between">
@@ -225,7 +356,7 @@
             {#each newChallengesChunked as chunk, i}
               <div class="w-full shrink-0 grid grid-cols-3 gap-4">
                 {#each chunk as challenge (challenge.id)}
-                  <ChallengeCard {...challenge} />
+                  <ChallengeCard {...challenge} showVotes={false} />
                 {/each}
               </div>
             {/each}

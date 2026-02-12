@@ -1,11 +1,28 @@
 # README
 
-# Livrable (TP) - GamerChallenges
+## Livrable (TP) - GamerChallenges
 
 - test unitaires (au moins 1)
 - déploiement sur la VM O'Clock (mise en ligne du projet)
 - terminer ce qui a était lister dans le MVP (cf docs/conception/cahier-des-charges.md section Fonctionnalités principales (MVP))
 - vérifier le référentiel sur Kourou (présentation du projet lors du TP)
+
+## Évolution
+
+Mémorisation du niveau de difficulté choisi par l’utilisateur.
+
+Nous avons ajouté la possibilité pour chaque utilisateur de mémoriser son évaluation de la difficulté d’un challenge (niveau : hard, medium, easy).
+Pour cela, une nouvelle table de liaison devra être créée entre les utilisateurs et les challenges, permettant d’enregistrer le niveau sélectionné par chaque utilisateur pour chaque challenge.
+
+Fonctionnalités apportées :
+
+Un utilisateur peut choisir et enregistrer son ressenti sur la difficulté d’un challenge.
+Cette information est persisté en base de données et pourra être exploitée pour des statistiques ou des recommandations personnalisées.
+Implémentation technique :
+
+Création d’un modèle Sequelize ChallengeEvaluation (ou ChallengeLevel) avec les champs : user_id, challenge_id, level.
+Ajout des associations nécessaires dans les modèles Sequelize (User, Challenge).
+API et interface adaptées pour permettre la sélection et la sauvegarde du niveau.
 
 # GamerChallenges
 

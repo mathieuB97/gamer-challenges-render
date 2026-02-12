@@ -4,6 +4,8 @@
 // import : code natif JS
 // require "à l'ancienne" de sequelize
 import { Sequelize } from 'sequelize';
+// Ré-export des utilitaires Sequelize pour ESM
+export { fn, col } from 'sequelize';
 
 
 // import dotenv pour lire le fichier .env

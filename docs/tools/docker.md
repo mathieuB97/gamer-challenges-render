@@ -22,6 +22,7 @@ Installez Docker et Docker Compose.
 
 ```bash
 docker compose --profile dev up # lance les conteneurs en mode développement
+docker compose --profile dev up --build  # lance les conteneurs en mode développement et rebuild les images
 # ou
 docker compose --profile prod up -d # lance les conteneurs en mode production !important utiliser pm2 pour le backend et une build statique pour le frontend
 ```
