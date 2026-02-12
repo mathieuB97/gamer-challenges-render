@@ -17,5 +17,5 @@ jobs:
           git fetch origin
           git checkout main
           git pull origin main
-          docker compose prod down || true
+          docker compose down || true
           docker compose --profile prod up -d --build
