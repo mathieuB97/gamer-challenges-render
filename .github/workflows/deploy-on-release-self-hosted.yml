@@ -3,7 +3,7 @@ name: Deploy on release tag (self-hosted)
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - "v*.*.*"
 
 jobs:
   deploy:
