@@ -1,7 +1,5 @@
 # Mise en place HTTPS avec Nginx conteneurisé et Certbot
 
-> Document en cours de rédaction (pair-coding).
-
 Ce document décrit comment configurer HTTPS sur une VM avec :
 - Nginx dans un conteneur Docker
 - Certificats Let’s Encrypt gérés par Certbot installé sur l’hôte (VM cloud prêtée par l'école)
@@ -117,88 +115,22 @@ Après modification du fichier `docker-compose.yml`, il faudra **recréer** le c
 
 La prochaine étape consistera à adapter la configuration Nginx (`nginx/default.conf`) pour activer l'écoute sur `443` en utilisant ces certificats.
 
-### 3.2 Étape 5 : adapter nginx/default.conf pour HTTPS
+Toutes les requêtes HTTP (`http://...`) doivent être redirigées automatiquement vers HTTPS.
 
-Le fichier de configuration Nginx utilisé dans le conteneur est `nginx/default.conf`, monté dans `/etc/nginx/conf.d/default.conf`.
+### 3.2 Étape 5 : gestion des configurations Nginx HTTP/HTTPS
 
-1. Rediriger tout le trafic HTTP vers HTTPS :
+Le fichier de configuration utilisé par défaut dans le projet est `nginx/default.conf`. Il sert le site en HTTP uniquement, ce qui permet à tous les membres de l’équipe de lancer la stack sans prérequis particulier.
 
-   Modifier (ou créer) le bloc `server` qui écoute sur le port `80` pour qu'il redirige vers `https` :
+Pour activer HTTPS sur votre VM, suivez la procédure Certbot, puis copiez le fichier d’exemple `nginx/default.https.conf` vers `nginx/default.conf` :
 
-   ```nginx
-   server {
-     listen 80;
-     server_name _;
+```bash
+cp nginx/default.https.conf nginx/default.conf
+```
 
-     return 301 https://$host$request_uri;
-   }
-   ```
+Dans ce fichier, remplacez **toutes** les occurrences de `<pseudo-github>` par votre pseudo GitHub (ex. `manuelweb`).
 
-2. Ajouter un bloc `server` pour HTTPS (port 443) :
+**Attention** :
+- N’activez la configuration HTTPS qu’après avoir généré vos certificats avec Certbot, sinon Nginx ne démarrera pas.
+- Ne commitez pas votre version personnalisée de `default.conf` dans le dépôt principal.
 
-   Dans le même fichier, ajouter un second bloc `server` qui écoute sur `443` avec TLS activé et les chemins des certificats Let’s Encrypt :
-
-   ```nginx
-   server {
-     listen 443 ssl;
-     server_name _;
-
-     ssl_certificate     /etc/letsencrypt/live/<pseudo-github>-server.cloud.eddi.xyz/fullchain.pem;
-     ssl_certificate_key /etc/letsencrypt/live/<pseudo-github>-server.cloud.eddi.xyz/privkey.pem;
-
-     # Serve SPA build
-     root /usr/share/nginx/html;
-     index index.html;
-
-     # Proxy API to backend container (service Docker api-prod)
-     location /api/ {
-       proxy_pass http://api-prod:3000/;
-       proxy_http_version 1.1;
-       proxy_set_header Host $host;
-       proxy_set_header X-Real-IP $remote_addr;
-       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-       proxy_set_header X-Forwarded-Proto $scheme;
-       proxy_set_header Upgrade $http_upgrade;
-       proxy_set_header Connection "upgrade";
-     }
-
-     # SPA routing: fallback to index.html
-     location / {
-       try_files $uri $uri/ /index.html;
-     }
-
-     # Cache static assets agressivement
-     location ~* \.(ico|css|js|gif|jpe?g|png|svg|woff2?)$ {
-       expires 30d;
-       access_log off;
-       try_files $uri $uri/ /index.html;
-     }
-   }
-   ```
-
-   - Remplacer `<pseudo-github>` par votre pseudo GitHub (ex. `manuelweb`).
-   - Le bloc HTTPS reprend la même configuration que le bloc HTTP initial, mais avec `listen 443 ssl` et les directives `ssl_certificate` / `ssl_certificate_key`.
-
-3. Recharger la configuration Nginx dans le conteneur :
-
-   Si le conteneur tourne déjà :
-
-   - `sudo docker exec gamerChallenges_nginx nginx -t` (vérifier la syntaxe)
-   - `sudo docker exec gamerChallenges_nginx nginx -s reload` (recharger)
-
-   Sinon, relancer le service via docker-compose :
-
-   - `sudo docker compose up -d --force-recreate nginx`
-
-À ce stade, l'application doit être accessible en HTTPS à l'adresse :
-
-- `https://<pseudo-github>-server.cloud.eddi.xyz`
-
-et toutes les requêtes HTTP (`http://...`) doivent être redirigées automatiquement vers HTTPS.
-
-!important il faut ajouter le domaine maintenant en https dans votre fichier api/.env.prod sur la variable `CORS_ORIGINS` sans quoi les appels API depuis le front en HTTPS seront bloqués par le CORS.
-
-- `CORS_ORIGINS=https://<pseudo-github>-server.cloud.eddi.xyz` # ne pas mettre de slash à la fin du domaine.
-- Après modification de `api/.env.prod`, il faudra reconstruire et relancer le conteneur API pour que les changements soient pris en compte :
-- `sudo docker compose up -d --force-recreate api-prod`
-- Et voila ! Stack protégée par HTTPS avec Nginx et Certbot 🎉
+La configuration HTTP d’origine reste dans le dépôt pour garantir la compatibilité avec les environnements de développement et les déploiements non encore migrés en HTTPS.
