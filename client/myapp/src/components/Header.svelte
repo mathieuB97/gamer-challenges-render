@@ -1,5 +1,5 @@
 <script>
-  import { createBubbler, stopPropagation } from 'svelte/legacy';
+  import { createBubbler, stopPropagation } from "svelte/legacy";
 
   const bubble = createBubbler();
   import { onMount, onDestroy } from "svelte";
@@ -108,14 +108,18 @@
       <!-- Overlay -->
       <div
         class="fixed inset-0 z-40 bg-black/40 md:hidden"
+        role="button"
+        tabindex="0"
         onclick={closeMobileMenu}
+        onkeydown={(e) =>
+          (e.key === "Enter" || e.key === " ") && closeMobileMenu()}
       ></div>
 
       <!-- Mobile Menu -->
       <nav
         bind:this={mobileMenuEl}
         class="fixed top-[64px] left-0 right-0 z-50 md:hidden bg-[#0a0e1a] border-t border-white/10 px-4 py-4 space-y-3"
-        onpointerdown={stopPropagation(bubble('pointerdown'))}
+        onpointerdown={stopPropagation(bubble("pointerdown"))}
       >
         <a
           href="/jeux"

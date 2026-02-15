@@ -93,14 +93,20 @@
 <!-- Le pop-up s'affiche seulement quand isOpen est true -->
 {#if isOpen}
   <!-- Fond semi-transparent qui ferme le pop-up au clic extérieur -->
-  <div class="fixed inset-0 z-40 bg-black/60" onclick={closeModal}></div>
+  <div
+    class="fixed inset-0 z-40 bg-black/60"
+    role="button"
+    tabindex="0"
+    onclick={closeModal}
+    onkeydown={(e) => (e.key === "Enter" || e.key === " ") && closeModal()}
+  ></div>
 
   <!-- Conteneur centré du pop-up -->
   <div class="fixed inset-0 z-50 flex items-center justify-center px-4">
     <div
-      class="w-full max-w-2xl rounded-2xl border border-white/10 bg-[#141824]
-                   shadow-xl overflow-hidden"
-      onclick={stopPropagation(bubble("click"))}
+      class="w-full max-w-2xl rounded-2xl border border-white/10 bg-[#141824] shadow-xl overflow-hidden"
+      role="dialog"
+      aria-modal="true"
     >
       <!-- En-tête du pop-up -->
       <div class="flex items-start justify-between gap-4 p-6">
@@ -210,8 +216,7 @@
 {/if}
 
 <style>
-  input,
-  textarea {
+  input {
     transition: border-color 0.2s;
   }
 </style>

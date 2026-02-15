@@ -11,7 +11,7 @@
   import { mockUsers } from "../mock/users.mock.js";
   // Import du composant pop-up pour envoyer une participation
   import ParticipationModal from "../components/ParticipationModal.svelte";
-  
+
   /**
    * @typedef {Object} Props
    * @property {any} gameId - Id du jeu passé par le router (SPA)
@@ -27,7 +27,7 @@
 
   // Modal description du jeu
   let isGameModalOpen = $state(false);
-  
+
   // Etats pour controler le pop-up de participation
   let isParticipationModalOpen = $state(false); // Vrai = pop-up visible
   let selectedChallenge = $state(null); // Challenge sélectionné pour le pop-up
@@ -53,11 +53,13 @@
   }
 
   // Si pas d'id, fallback direct sur le mock
-  if (!gameId) {
-    game = mockGame;
-    challenges = mockChallenges.filter((ch) => ch.game_id === mockGame.id);
-    loading = false;
-  }
+  $effect(() => {
+    if (!gameId) {
+      game = mockGame;
+      challenges = mockChallenges.filter((ch) => ch.game_id === mockGame.id);
+      loading = false;
+    }
+  });
 
   onMount(async () => {
     // Si pas d'id, on a déjà fallback plus haut
@@ -321,10 +323,16 @@
   <!-- MODAL DESCRIPTION JEU -->
   {#if isGameModalOpen}
     <!-- Overlay -->
-    <div class="fixed inset-0 z-40 bg-black/60" onclick={closeGameModal} onkeydown={(e) => {
-      if (e.key === "Enter" || e.key === " ") closeGameModal();
-    }} role="button"aria-label="fermer la modal" tabindex="0"></div>
-
+    <div
+      class="fixed inset-0 z-40 bg-black/60"
+      onclick={closeGameModal}
+      onkeydown={(e) => {
+        if (e.key === "Enter" || e.key === " ") closeGameModal();
+      }}
+      role="button"
+      aria-label="fermer la modal"
+      tabindex="0"
+    ></div>
 
     <!-- Modal -->
     <div class="fixed inset-0 z-50 flex items-center justify-center px-4">
@@ -363,8 +371,6 @@
               <p class="text-white/60 text-xs">Catégorie : {game.category}</p>
               <p class="text-white font-semibold">{game.genre}</p>
             </div>
-
-            
           </div>
         </div>
       </div>
@@ -373,9 +379,9 @@
 
   <!-- Bloc qui affiche le pop-up de participation quand isParticipationModalOpen = true -->
   {#if isParticipationModalOpen}
-    <ParticipationModal 
+    <ParticipationModal
       bind:isOpen={isParticipationModalOpen}
-      challenge={selectedChallenge} 
+      challenge={selectedChallenge}
     />
   {/if}
 </main>
