@@ -1,7 +1,7 @@
 <script>
     import { onMount } from "svelte";
 
-    export let gameId;
+    let { gameId } = $props();
 
     let game = null;
     let challenges = [];

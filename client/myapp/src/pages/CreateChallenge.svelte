@@ -1,4 +1,6 @@
 <script>
+    import { run } from 'svelte/legacy';
+
     import AdviceBloc from "../components/AdviceBloc.svelte";
     import ButtonSubmit from "../components/ButtonSubmit.svelte";
     import Hero from "../components/Hero.svelte";
@@ -7,21 +9,23 @@
     import { routeParams } from "../router";
     import { createChallenge } from "../lib/services/challenge.service.js";
 
-    let formData = {
+    let formData = $state({
         challengeName: "",
         challengeTitle: "",
         pseudo: "",
         challengeObjective: "",
         time_limit_minutes: "",
         challengeSelect: "",
-    };
+    });
 
-    let loading = false;
-    let errorMsg = "";
-    let successMsg = "";
+    let loading = $state(false);
+    let errorMsg = $state("");
+    let successMsg = $state("");
 
     // Debug: afficher les params de route
-    $: console.log("routeParams:", $routeParams);
+    run(() => {
+        console.log("routeParams:", $routeParams);
+    });
 
     async function handleOnSubmit(event) {
         event.preventDefault();
@@ -114,7 +118,7 @@
                 </div>
             {/if}
 
-            <form class="space-y-4" on:submit={handleOnSubmit}>
+            <form class="space-y-4" onsubmit={handleOnSubmit}>
 
                   <LabelInput
                     id="pseudo"

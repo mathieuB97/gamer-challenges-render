@@ -1,12 +1,27 @@
 <script>
-  export let id = "";
-  export let name = "";
-  export let label = "";
-  export let type = "text";
-  export let value = "";
-  export let placeholder = "";
-  export let required = false;
-  export let mandatory = false;
+  /**
+   * @typedef {Object} Props
+   * @property {string} [id]
+   * @property {string} [name]
+   * @property {string} [label]
+   * @property {string} [type]
+   * @property {string} [value]
+   * @property {string} [placeholder]
+   * @property {boolean} [required]
+   * @property {boolean} [mandatory]
+   */
+
+  /** @type {Props} */
+  let {
+    id = "",
+    name = "",
+    label = "",
+    type = "text",
+    value = $bindable(""),
+    placeholder = "",
+    required = false,
+    mandatory = false
+  } = $props();
 </script>
 
 <label for={id} class="block text-sm mb-2 text-white/70">
@@ -50,7 +65,7 @@
                     border-l border-white/10
                     hover:bg-[#1a1f35]
                     text-white/70"
-            on:click={() => value = Number(value || 0) + 1}
+            onclick={() => value = Number(value || 0) + 1}
             tabindex="-1">
             ▲
         </button>
@@ -61,7 +76,7 @@
                     border-l border-t border-white/10
                     hover:bg-[#1a1f35]
                     text-white/70"
-            on:click={() => value = Math.max(0, Number(value || 0) - 1)}
+            onclick={() => value = Math.max(0, Number(value || 0) - 1)}
             tabindex="-1">
             ▼
         </button>

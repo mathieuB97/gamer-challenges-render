@@ -1,6 +1,12 @@
 <script>
   import { userStore } from "../lib/stores/user.store.js";
-  export let size = 36;
+  /**
+   * @typedef {Object} Props
+   * @property {number} [size]
+   */
+
+  /** @type {Props} */
+  let { size = 36 } = $props();
 
   function getInitials(str) {
     if (!str) return "?";
@@ -10,8 +16,8 @@
       : (parts[0][0] + parts[1][0]).toUpperCase();
   }
 
-  $: displayPseudo = $userStore?.pseudo ?? "?";
-  $: initials = getInitials(displayPseudo);
+  let displayPseudo = $derived($userStore?.pseudo ?? "?");
+  let initials = $derived(getInitials(displayPseudo));
 </script>
 
 <div

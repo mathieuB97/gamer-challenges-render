@@ -1,21 +1,21 @@
 <script>
     import LabelInput from "../components/LabelInput.svelte";
 
-  let formData = {
+  let formData = $state({
     name: '',
     email: '',
     subject: '',
     message: ''
-  };
+  });
 
-  let errors = {
+  let errors = $state({
     name: '',
     email: '',
     subject: '',
     message: ''
-  };
+  });
 
-  let showSuccessPopup = false;
+  let showSuccessPopup = $state(false);
 
   function validateForm() {
     errors = {
@@ -97,7 +97,7 @@
     <div class="grid md:grid-cols-2 gap-12">
       <!-- Formulaire -->
       <div>
-        <form on:submit={handleSubmit} class="space-y-6">
+        <form onsubmit={handleSubmit} class="space-y-6">
           <div>
             <!-- <label for="name" class="block text-sm font-medium text-gray-300 mb-2">
               Nom

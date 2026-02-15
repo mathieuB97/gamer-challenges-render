@@ -62,7 +62,7 @@
       <select
         id="game-filter"
         bind:value={selectedGame}
-        on:change={handleFilter}
+        onchange={handleFilter}
         class="px-3 py-2 bg-[#1a2139] border border-[#00d9ff] rounded text-white text-sm hover:border-[#00d9ff] transition-colors"
       >
         <option value="">Tous les jeux</option>
@@ -78,7 +78,7 @@
       <select
         id="level-filter"
         bind:value={selectedLevel}
-        on:change={handleFilter}
+        onchange={handleFilter}
         class="px-3 py-2 bg-[#1a2139] border border-[#00d9ff] rounded text-white text-sm hover:border-[#00d9ff] transition-colors"
       >
         {#each levels as level (level.value)}
@@ -93,7 +93,7 @@
       <select
         id="sort-filter"
         bind:value={selectedSort}
-        on:change={handleFilter}
+        onchange={handleFilter}
         class="px-3 py-2 bg-[#1a2139] border border-[#00d9ff] rounded text-white text-sm hover:border-[#00d9ff] transition-colors"
       >
         {#each sortOptions as option (option.value)}
@@ -105,7 +105,7 @@
 
   <!-- Reset Button -->
   <button
-    on:click={handleReset}
+    onclick={handleReset}
     class="w-full md:w-auto px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded text-white text-sm transition-colors"
   >
     Réinitialiser les filtres

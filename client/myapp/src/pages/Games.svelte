@@ -6,8 +6,8 @@
   import api from "../lib/api.js";
   import { onMount } from "svelte";
 
-  let games = [];
-  let isLoading = true;
+  let games = $state([]);
+  let isLoading = $state(true);
 
   // Au montage, on tente de charger les jeux via l'API, sinon fallback mock
   onMount(async () => {

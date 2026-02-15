@@ -1,6 +1,15 @@
 <script>
-	export let contribution = null;
-	export let isOpen = false;
+	import { createBubbler, stopPropagation } from 'svelte/legacy';
+
+	const bubble = createBubbler();
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} [contribution]
+	 * @property {boolean} [isOpen]
+	 */
+
+	/** @type {Props} */
+	let { contribution = null, isOpen = $bindable(false) } = $props();
 
 	function closeModal() {
 		isOpen = false;
@@ -11,18 +20,18 @@
 	}
 </script>
 
-<svelte:window on:keydown={handleKeydown} />
+<svelte:window onkeydown={handleKeydown} />
 
 {#if isOpen}
 	<!-- Overlay -->
-	<div class="fixed inset-0 z-40 bg-black/60" on:click={closeModal}></div>
+	<div class="fixed inset-0 z-40 bg-black/60" onclick={closeModal}></div>
 
 	<!-- Modal -->
 	<div class="fixed inset-0 z-50 flex items-center justify-center px-4">
 		<div
 			class="w-full max-w-md rounded-2xl border border-white/10 bg-[#141824]
                    shadow-xl overflow-hidden"
-			on:click|stopPropagation
+			onclick={stopPropagation(bubble('click'))}
 		>
 			<!-- Header -->
 			<div class="flex items-start justify-between gap-4 p-6">
@@ -32,7 +41,7 @@
 					type="button"
 					class="h-10 w-10 rounded-lg border border-white/15 text-white/80
                            hover:bg-white/5 transition flex items-center justify-center"
-					on:click={closeModal}
+					onclick={closeModal}
 					aria-label="Fermer"
 				>
 					✕

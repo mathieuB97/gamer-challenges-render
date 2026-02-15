@@ -1,4 +1,6 @@
 <script>
+  import { run } from 'svelte/legacy';
+
   import { onMount } from "svelte";
   import { tick } from "svelte";
   import { Confetti } from "svelte-confetti";
@@ -31,7 +33,7 @@
   // ---------------------------------------------
   // Confettis (bouton vote du challenge)
   // ---------------------------------------------
-  let displayConfetti = false;
+  let displayConfetti = $state(false);
 
   function triggerConfetti() {
     displayConfetti = false;
@@ -46,7 +48,7 @@
   // ---------------------------------------------
   // Confettis (bouton vote rose par participation)
   // ---------------------------------------------
-  let confettiForParticipation = null;
+  let confettiForParticipation = $state(null);
 
   function triggerConfettiForParticipation(id) {
     confettiForParticipation = id;
@@ -58,15 +60,17 @@
   // ---------------------------------------------
   // User
   // ---------------------------------------------
-  let currentUser = null;
-  let userLoading = true;
-  $: $userStore, (currentUser = $userStore);
+  let currentUser = $state(null);
+  let userLoading = $state(true);
+  run(() => {
+    $userStore, (currentUser = $userStore);
+  });
 
   // ---------------------------------------------
   // Params URL
   // ---------------------------------------------
   let challengeId = null;
-  let gameId = null;
+  let gameId = $state(null);
 
   function extractParams() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -80,17 +84,17 @@
   // ---------------------------------------------
   // Data
   // ---------------------------------------------
-  let loading = true;
-  let errorMsg = "";
+  let loading = $state(true);
+  let errorMsg = $state("");
 
-  let challenge = null;
-  let participations = [];
+  let challenge = $state(null);
+  let participations = $state([]);
 
-  let voteErrorMsg = "";
-  let hasVoted = false;
+  let voteErrorMsg = $state("");
+  let hasVoted = $state(false);
 
   // ids des contributions déjà votées
-  let votedContributionIds = [];
+  let votedContributionIds = $state([]);
 
   // Bloc "activité" (mock)
   let activity = {
@@ -101,7 +105,7 @@
 
   // Vote utilisateur (hard, medium, easy)
   let levelOptions = ["hard", "medium", "easy"];
-  let selectedLevel = null;
+  let selectedLevel = $state(null);
 
   onMount(async () => {
     userLoading = true;
@@ -136,9 +140,9 @@
   // ---------------------------------------------
   // Modals
   // ---------------------------------------------
-  let isContributionDetailModalOpen = false;
-  let selectedContribution = null;
-  let isParticipationModalOpen = false;
+  let isContributionDetailModalOpen = $state(false);
+  let selectedContribution = $state(null);
+  let isParticipationModalOpen = $state(false);
 
   function openParticipationDetail(contribution) {
     selectedContribution = contribution;
@@ -296,7 +300,7 @@
 
             <button
               type="button"
-              on:click={() => voteForAChallenge(challenge?.id)}
+              onclick={() => voteForAChallenge(challenge?.id)}
               class="mt-3 w-full py-3 px-6 rounded-lg bg-linear-to-r from-[#7b2cbf] to-[#00d9ff]
                      text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50"
               disabled={userLoading || !currentUser || hasVoted}
@@ -366,7 +370,7 @@
             class="w-full py-3 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff] text-white font-semibold hover:opacity-90 transition-opacity"
             class:opacity-50={!currentUser}
             class:cursor-not-allowed={!currentUser}
-            on:click={openParticipationModal}
+            onclick={openParticipationModal}
             disabled={!currentUser}
           >
             Déposer une participation
@@ -414,7 +418,7 @@
                 <button
                   type="button"
                   class="flex flex-row items-end gap-1 px-3 py-2 rounded-lg border border-white/15 text-white/80 hover:bg-white/5 transition text-xs cursor-pointer"
-                  on:click={() => openParticipationDetail(participation)}
+                  onclick={() => openParticipationDetail(participation)}
                   disabled={!currentUser}
                 >
                   <IconPlay />
@@ -427,7 +431,7 @@
                   class="relative flex flex-row items-end gap-1 px-3 py-2 rounded-lg 
                          bg-pink-500/90 hover:bg-pink-500 transition text-white 
                          text-xs font-semibold cursor-pointer disabled:opacity-50"
-                  on:click={() => voteForParticipation(Number(participation.id))}
+                  onclick={() => voteForParticipation(Number(participation.id))}
                   disabled={!currentUser || votedContributionIds.includes(participation.id)}
                 >
                   <IconLike size={16} />
@@ -511,7 +515,7 @@
               <button
                 type="button"
                 class="h-10 w-24 rounded-full border border-white/15 text-white/80 hover:bg-white/5 transition {selectedLevel === level ? 'bg-white/10 border-white/30 text-white' : ''}"
-                on:click={() => (selectedLevel = level)}
+                onclick={() => (selectedLevel = level)}
                 disabled={!currentUser}
               >
                 {level}
@@ -524,7 +528,7 @@
             class="mt-5 w-full py-3 rounded-lg bg-white/10 border border-white/10 text-white/90 hover:bg-white/15 transition font-semibold"
             class:opacity-50={!currentUser}
             class:cursor-not-allowed={!currentUser}
-            on:click={submitLevel}
+            onclick={submitLevel}
             disabled={!currentUser}
           >
             {#if !currentUser}

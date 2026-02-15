@@ -1,9 +1,20 @@
 <script>
-    export let text = "Add btn text";
-    export let className = "";
-    export let variant = "primary";
-    /** @type {'button' | 'submit' | 'reset'} */
-    export let type = "submit";
+    
+    /**
+     * @typedef {Object} Props
+     * @property {string} [text]
+     * @property {string} [className]
+     * @property {string} [variant]
+     * @property {'button' | 'submit' | 'reset'} [type]
+     */
+
+    /** @type {Props} */
+    let {
+        text = "Add btn text",
+        className = "",
+        variant = "primary",
+        type = "submit"
+    } = $props();
 </script>
 
 {#if variant === "secondary"}

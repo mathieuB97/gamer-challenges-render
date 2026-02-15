@@ -1,4 +1,6 @@
 <script>
+  import { run } from 'svelte/legacy';
+
   import BrandLogo from "../components/Brand-logo.svelte";
   import IconCercle from "../components/icon-cercle.svelte";
   import IconTrophy from "../components/icon-trophy.svelte";
@@ -14,7 +16,9 @@
 
   // Réactivité sur le store utilisateur
   // Utilise le store utilisateur directement dans le template
-  $: $userStore;
+  run(() => {
+    $userStore;
+  });
   onMount(async () => {
     await getCurrentUser();
   });
@@ -104,7 +108,7 @@
             aria-hidden="true"
           >
             <div class="h-7 w-7 text-white">
-              <svelte:component this={f.icon} />
+              <f.icon />
             </div>
           </div>
 
@@ -141,7 +145,7 @@
             type="button"
             class="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-900 hover:opacity-90 transition-opacity disabled:opacity-50 disabled:pointer-events-none"
             disabled={!!$userStore}
-            on:click={goToInscription}
+            onclick={goToInscription}
           >
             S'inscrire
           </button>

@@ -11,23 +11,29 @@
   import { mockUsers } from "../mock/users.mock.js";
   // Import du composant pop-up pour envoyer une participation
   import ParticipationModal from "../components/ParticipationModal.svelte";
-  // Id du jeu passé par le router (SPA)
-  export let gameId;
+  
+  /**
+   * @typedef {Object} Props
+   * @property {any} gameId - Id du jeu passé par le router (SPA)
+   */
+
+  /** @type {Props} */
+  let { gameId } = $props();
 
   // Etat page (liste challenges)
-  let challenges = [];
-  let loading = true;
-  let errorMsg = "";
+  let challenges = $state([]);
+  let loading = $state(true);
+  let errorMsg = $state("");
 
   // Modal description du jeu
-  let isGameModalOpen = false;
+  let isGameModalOpen = $state(false);
   
   // Etats pour controler le pop-up de participation
-  let isParticipationModalOpen = false; // Vrai = pop-up visible
-  let selectedChallenge = null; // Challenge sélectionné pour le pop-up
+  let isParticipationModalOpen = $state(false); // Vrai = pop-up visible
+  let selectedChallenge = $state(null); // Challenge sélectionné pour le pop-up
 
   // Infos jeu (dynamique)
-  let game = null;
+  let game = $state(null);
   // Fallback mock si besoin
   const mockGame = mockGames[0];
   // Service pour récupérer les infos du jeu
@@ -178,7 +184,7 @@
               type="button"
               class="w-full py-3 rounded-lg border border-[#00d9ff] text-[#00d9ff]
                      hover:bg-[#00d9ff]/10 transition-colors font-medium"
-              on:click={openGameModal}
+              onclick={openGameModal}
             >
               Description
             </button>
@@ -299,7 +305,7 @@
                     type="button"
                     class="w-full py-2.5 rounded-lg bg-gradient-to-r from-[#7b2cbf] to-[#00d9ff]
                            text-white font-semibold hover:opacity-90 transition-opacity"
-                    on:click={() => openParticipationModal(c)}
+                    onclick={() => openParticipationModal(c)}
                   >
                     Déposer une participation
                   </button>
@@ -315,7 +321,7 @@
   <!-- MODAL DESCRIPTION JEU -->
   {#if isGameModalOpen}
     <!-- Overlay -->
-    <div class="fixed inset-0 z-40 bg-black/60" on:click={closeGameModal} on:keydown={(e) => {
+    <div class="fixed inset-0 z-40 bg-black/60" onclick={closeGameModal} onkeydown={(e) => {
       if (e.key === "Enter" || e.key === " ") closeGameModal();
     }} role="button"aria-label="fermer la modal" tabindex="0"></div>
 
@@ -337,7 +343,7 @@
             type="button"
             class="h-10 w-10 rounded-lg border border-white/15 text-white/80
                    hover:bg-white/5 transition flex items-center justify-center"
-            on:click={closeGameModal}
+            onclick={closeGameModal}
             aria-label="Fermer"
           >
             ✕

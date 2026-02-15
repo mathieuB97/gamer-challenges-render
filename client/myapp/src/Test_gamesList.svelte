@@ -2,9 +2,9 @@
   import { onMount } from 'svelte';
 
   // Variables réactives
-  let games = [];
-  let loading = true;
-  let error = null;
+  let games = $state([]);
+  let loading = $state(true);
+  let error = $state(null);
 
   // Fonction pour appeler ton API
   async function loadGames() {
