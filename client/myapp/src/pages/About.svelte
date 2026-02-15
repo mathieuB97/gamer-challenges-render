@@ -1,6 +1,4 @@
 <script>
-  import { run } from 'svelte/legacy';
-
   import BrandLogo from "../components/Brand-logo.svelte";
   import IconCercle from "../components/icon-cercle.svelte";
   import IconTrophy from "../components/icon-trophy.svelte";
@@ -16,9 +14,6 @@
 
   // Réactivité sur le store utilisateur
   // Utilise le store utilisateur directement dans le template
-  run(() => {
-    $userStore;
-  });
   onMount(async () => {
     await getCurrentUser();
   });
@@ -161,7 +156,3 @@
     </div>
   </section>
 </main>
-
-<style>
-  /*  Tailwind */
-</style>

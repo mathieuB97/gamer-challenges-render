@@ -69,7 +69,6 @@
       // Charger le leaderboard
       const leaderboardResponse = await getLeaderboard();
       leaderboardData = leaderboardResponse || mockLeaderboardData;
-      
     } catch (error) {
       console.error("Erreur lors du chargement des données:", error);
       // Utiliser les données mock en cas d'erreur
@@ -84,13 +83,16 @@
   }
 
   // Fonction pour gérer le filtrage
-  async function handleFilter(event) {
+  async function handleFilter(filterParams) {
     try {
       isLoading = true;
       filteredChallengesIndex = 0;
-      const filterParams = event.detail;
 
-      if (!filterParams.gameId && !filterParams.level && filterParams.sortBy === 'recent') {
+      if (
+        !filterParams.gameId &&
+        !filterParams.level &&
+        filterParams.sortBy === "recent"
+      ) {
         // Si aucun filtre n'est appliqué, réinitialiser
         isFilterApplied = false;
         filteredChallenges = [];
@@ -115,7 +117,7 @@
   // Charger les données au montage du composant
   onMount(() => {
     loadAllData();
-    
+
     // Recharger les données quand la page redevient visible
     // (par exemple après avoir voté sur une page de détail et être revenu)
     const handleVisibilityChange = () => {
@@ -123,11 +125,11 @@
         loadAllData();
       }
     };
-    
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   });
 
@@ -194,13 +196,15 @@
   <!-- Challenges Section -->
   <div class="flex-1 space-y-8">
     <!-- Search Filters -->
-    <SearchFilters on:filter={handleFilter} />
+    <SearchFilters onFilter={handleFilter} />
 
     {#if isFilterApplied && filteredChallenges.length > 0}
       <!-- Filtered Challenges Section -->
       <section>
         <div class="mb-6 flex items-center justify-between">
-          <h2 class="text-2xl">Résultats filtrés ({filteredChallenges.length})</h2>
+          <h2 class="text-2xl">
+            Résultats filtrés ({filteredChallenges.length})
+          </h2>
           <div class="carousel-navigation flex gap-2">
             {#if filteredChallengesIndex > 0}
               <button
@@ -252,7 +256,9 @@
       </section>
     {:else if isFilterApplied && filteredChallenges.length === 0}
       <div class="bg-[#12172b] rounded-xl p-8 text-center">
-        <p class="text-gray-400">Aucun challenge ne correspond à vos critères de recherche.</p>
+        <p class="text-gray-400">
+          Aucun challenge ne correspond à vos critères de recherche.
+        </p>
       </div>
     {/if}
 

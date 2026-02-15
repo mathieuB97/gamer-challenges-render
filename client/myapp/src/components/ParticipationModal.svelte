@@ -1,11 +1,4 @@
 <script>
-  import {
-    createBubbler,
-    stopPropagation,
-    preventDefault,
-  } from "svelte/legacy";
-
-  const bubble = createBubbler();
   import { createParticipation } from "../lib/services/contribution.service.js";
 
   /**
@@ -81,13 +74,13 @@
     }
   }
 
-  // Ferme le pop-up avec la touche Échap
+  // Ferme le pop-up avec la touche ESC
   function handleKeydown(e) {
     if (e.key === "Escape" && isOpen) closeModal();
   }
 </script>
 
-<!-- Écoute la touche Échap sur toute la fenêtre -->
+<!-- Écoute la touche ESC sur toute la fenêtre -->
 <svelte:window onkeydown={handleKeydown} />
 
 <!-- Le pop-up s'affiche seulement quand isOpen est true -->
@@ -148,7 +141,13 @@
         {/if}
 
         <!-- Formulaire qui déclenche handleSubmit au submit -->
-        <form onsubmit={preventDefault(handleSubmit)} class="space-y-4">
+        <form
+          onsubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+          class="space-y-4"
+        >
           <!-- Champ URL vidéo -->
           <div>
             <label

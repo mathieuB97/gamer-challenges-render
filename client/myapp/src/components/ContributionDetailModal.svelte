@@ -1,7 +1,4 @@
 <script>
-  import { createBubbler, stopPropagation } from "svelte/legacy";
-
-  const bubble = createBubbler();
   /**
    * @typedef {Object} Props
    * @property {any} [contribution]
@@ -29,9 +26,9 @@
     role="dialog"
     aria-modal="true"
     tabindex="0"
-    onclick={stopPropagation(bubble("click"))}
+    onclick={(e) => e.stopPropagation()}
     onkeydown={(e) =>
-      (e.key === "Enter" || e.key === " ") && stopPropagation(bubble("click"))}
+      (e.key === "Enter" || e.key === " ") && e.stopPropagation()}
   >
     <div class="flex items-start justify-between gap-4 p-6">
       <h2 class="text-2xl font-extrabold text-white">Détail participation</h2>

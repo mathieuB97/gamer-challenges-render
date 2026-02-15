@@ -1,18 +1,10 @@
 <script>
-  import { createBubbler, stopPropagation } from "svelte/legacy";
-
-  const bubble = createBubbler();
   import { onMount, onDestroy } from "svelte";
   import BrandLogo from "./Brand-logo.svelte";
   import { authStore, clearAuth, getAuth } from "../lib/stores/auth.svelte";
-
-  // Icônes menu burger
   import IconMenuBurger from "./icon-Menu-burger.svelte";
   import IconCloseMenuBurger from "./icon-close-Menu-burger.svelte";
-
-  // Avatar
   import Avatar from "./Avatar.svelte";
-  import { userStore } from "../lib/stores/user.store.js";
 
   let mobileMenuOpen = $state(false);
   let mobileMenuEl = $state();
@@ -119,7 +111,7 @@
       <nav
         bind:this={mobileMenuEl}
         class="fixed top-[64px] left-0 right-0 z-50 md:hidden bg-[#0a0e1a] border-t border-white/10 px-4 py-4 space-y-3"
-        onpointerdown={stopPropagation(bubble("pointerdown"))}
+        onpointerdown={(e) => e.stopPropagation()}
       >
         <a
           href="/jeux"

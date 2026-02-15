@@ -1,6 +1,4 @@
 <script>
-  import { run } from 'svelte/legacy';
-
   import { onMount } from "svelte";
   import { tick } from "svelte";
   import { Confetti } from "svelte-confetti";
@@ -62,9 +60,6 @@
   // ---------------------------------------------
   let currentUser = $state(null);
   let userLoading = $state(true);
-  run(() => {
-    $userStore, (currentUser = $userStore);
-  });
 
   // ---------------------------------------------
   // Params URL
@@ -313,13 +308,7 @@
             </button>
 
             {#if displayConfetti}
-              <Confetti
-              amount={180}
-              gravity={0.9}
-              spread={80}
-              duration={1600}
-              colors={["#ec4899", "#a855f7", "#22d3ee"]}
-/>
+              <Confetti amount={180} noGravity xSpread={0.1} duration={1600} />
             {/if}
           </div>
         </div>
@@ -353,12 +342,16 @@
         <article class="bg-[#141824] border border-white/10 rounded-2xl p-6">
           <h2 class="text-2xl font-bold">
             <span class="text-purple-300">Challenge</span><br />
-            <span class="text-white">{challenge?.name || "nom du challenge"}</span>
+            <span class="text-white"
+              >{challenge?.name || "nom du challenge"}</span
+            >
           </h2>
 
           <div class="mt-5 grid gap-3 sm:grid-cols-2">
             {#each challenge?.objectives ?? [] as obj}
-              <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-xl p-4">
+              <div
+                class="bg-[#0a0e1a]/40 border border-white/10 rounded-xl p-4"
+              >
                 <p class="text-xs text-white/60">{obj.label}</p>
                 <p class="mt-2 text-[#00d9ff] font-semibold">{obj.value}</p>
               </div>
@@ -389,7 +382,9 @@
           </span>
         </div>
 
-        <div class="mt-5 max-h-[520px] overflow-auto pr-2 space-y-3 custom-scroll">
+        <div
+          class="mt-5 max-h-[520px] overflow-auto pr-2 space-y-3 custom-scroll"
+        >
           {#each participations as participation (participation.id)}
             <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4">
               <div class="flex items-center justify-between gap-3">
@@ -407,7 +402,9 @@
                     </p>
                     <p>{participation.creator.pseudo}</p>
 
-                    <div class="mt-2 flex flex-wrap items-center gap-3 text-xs text-white/70">
+                    <div
+                      class="mt-2 flex flex-wrap items-center gap-3 text-xs text-white/70"
+                    >
                       <span>🕒 {participation.duration} minutes </span>
                     </div>
                   </div>
@@ -428,11 +425,12 @@
                 <!-- ✅ BOUTON ROSE + CONFETTIS -->
                 <button
                   type="button"
-                  class="relative flex flex-row items-end gap-1 px-3 py-2 rounded-lg 
-                         bg-pink-500/90 hover:bg-pink-500 transition text-white 
+                  class="relative flex flex-row items-end gap-1 px-3 py-2 rounded-lg
+                         bg-pink-500/90 hover:bg-pink-500 transition text-white
                          text-xs font-semibold cursor-pointer disabled:opacity-50"
                   onclick={() => voteForParticipation(Number(participation.id))}
-                  disabled={!currentUser || votedContributionIds.includes(participation.id)}
+                  disabled={!currentUser ||
+                    votedContributionIds.includes(participation.id)}
                 >
                   <IconLike size={16} />
                   <span class="leading-3"> Vote </span>
@@ -440,12 +438,11 @@
                   {#if confettiForParticipation === participation.id}
                     <div class="absolute inset-0 pointer-events-none">
                       <Confetti
-                      amount={180}
-                      gravity={0.9}
-                      spread={80}
-                      duration={1600}
-                      colors={["#ec4899", "#a855f7", "#22d3ee"]}
-/>
+                        amount={180}
+                        noGravity
+                        xSpread={0.1}
+                        duration={1600}
+                      />
                     </div>
                   {/if}
                 </button>
@@ -464,22 +461,32 @@
           </h2>
 
           <div class="mt-5 space-y-3">
-            <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between">
+            <div
+              class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between"
+            >
               <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-400 flex items-center justify-center">
-                  <IconChallenge class="w-5 h-5 text-white" />
+                <div
+                  class="h-10 w-10 rounded-xl bg-gradient-to-r from-purple-500 to-cyan-400 flex items-center justify-center"
+                >
+                  <IconChallenge />
                 </div>
                 <div>
                   <p class="text-xs text-white/60">Challenges</p>
-                  <p class="text-[#00d9ff] font-bold">{activity.challengesCount}</p>
+                  <p class="text-[#00d9ff] font-bold">
+                    {activity.challengesCount}
+                  </p>
                 </div>
               </div>
             </div>
 
-            <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between">
+            <div
+              class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between"
+            >
               <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-xl bg-linear-to-r from-pink-500 to-purple-500 flex items-center justify-center">
-                  <IconParticipant class="w-5 h-5 text-white" />
+                <div
+                  class="h-10 w-10 rounded-xl bg-linear-to-r from-pink-500 to-purple-500 flex items-center justify-center"
+                >
+                  <IconParticipant />
                 </div>
                 <div>
                   <p class="text-xs text-white/60">Participants</p>
@@ -488,10 +495,14 @@
               </div>
             </div>
 
-            <div class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between">
+            <div
+              class="bg-[#0a0e1a]/40 border border-white/10 rounded-2xl p-4 flex items-center justify-between"
+            >
               <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-xl bg-linear-to-r from-orange-400 to-pink-500 flex items-center justify-center">
-                  <IconOeil class="w-5 h-5 text-white" />
+                <div
+                  class="h-10 w-10 rounded-xl bg-linear-to-r from-orange-400 to-pink-500 flex items-center justify-center"
+                >
+                  <IconOeil />
                 </div>
                 <div>
                   <p class="text-xs text-white/60">Vues</p>
@@ -507,14 +518,18 @@
             Estimez la difficulté du challenge
           </h2>
           <p class="mt-2 text-white/70">
-            Partagez votre avis votre ressenti sur la difficulté de ce challenge afin d'aider la communauté.
+            Partagez votre avis votre ressenti sur la difficulté de ce challenge
+            afin d'aider la communauté.
           </p>
 
           <div class="mt-4 flex items-center justify-between gap-2">
             {#each levelOptions as level}
               <button
                 type="button"
-                class="h-10 w-24 rounded-full border border-white/15 text-white/80 hover:bg-white/5 transition {selectedLevel === level ? 'bg-white/10 border-white/30 text-white' : ''}"
+                class="h-10 w-24 rounded-full border border-white/15 text-white/80 hover:bg-white/5 transition {selectedLevel ===
+                level
+                  ? 'bg-white/10 border-white/30 text-white'
+                  : ''}"
                 onclick={() => (selectedLevel = level)}
                 disabled={!currentUser}
               >
@@ -553,8 +568,5 @@
 
 <!-- MODAL PARTICIPATION -->
 {#if isParticipationModalOpen}
-  <ParticipationModal
-    bind:isOpen={isParticipationModalOpen}
-    challenge={challenge}
-  />
+  <ParticipationModal bind:isOpen={isParticipationModalOpen} {challenge} />
 {/if}
