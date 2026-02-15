@@ -1,5 +1,6 @@
 <script>
   import { onMount, onDestroy } from "svelte";
+  import { params } from "../router.js";
   import IconAdd from "../components/icon-add.svelte";
   import { getGameById } from "../lib/services/game.service.js";
   // Service pour récupérer les challenges d'un jeu
@@ -18,7 +19,8 @@
    */
 
   /** @type {Props} */
-  let { gameId } = $props();
+  // let { gameId } = $props();
+  const gameId = $params.gameId;
 
   // Etat page (liste challenges)
   let challenges = $state([]);

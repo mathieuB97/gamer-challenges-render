@@ -4,7 +4,7 @@
   import { Confetti } from "svelte-confetti";
 
   import { getCurrentUser } from "../lib/services/auth.service.js";
-  import { userStore } from "../lib/stores/user.store.js";
+  import { params } from "../router.js";
 
   import IconLike from "../components/icon-like.svelte";
   import IconPlay from "../components/icon-play.svelte";
@@ -62,19 +62,8 @@
   let userLoading = $state(true);
 
   // ---------------------------------------------
-  // Params URL
+  // Params URL (via store params du router)
   // ---------------------------------------------
-  let challengeId = null;
-  let gameId = $state(null);
-
-  function extractParams() {
-    const urlParams = new URLSearchParams(window.location.search);
-    gameId = urlParams.get("gameId");
-
-    const pathParts = window.location.pathname.split("/");
-    challengeId = pathParts.find((part) => /^\d+$/.test(part));
-  }
-  extractParams();
 
   // ---------------------------------------------
   // Data
@@ -104,18 +93,18 @@
 
   onMount(async () => {
     userLoading = true;
-    await getCurrentUser();
+    currentUser = await getCurrentUser();
     userLoading = false;
 
     try {
-      if (!challengeId) {
+      if (!$params.challengeId) {
         challenge = mockChallenge;
         participations = mockBestChallenges;
         errorMsg = "challengeId absent : affichage mock.";
         return;
       }
 
-      challenge = await getChallengeDetail(challengeId);
+      challenge = await getChallengeDetail($params.challengeId);
       participations = challenge.contributions;
 
       if (currentUser) {
@@ -124,7 +113,7 @@
       }
     } catch (error) {
       console.error("Erreur API challenge detail:", error);
-      challenge = { ...mockChallenge, id: Number(challengeId ?? 1) };
+      challenge = { ...mockChallenge, id: Number($params.challengeId ?? 1) };
       participations = mockBestChallenges;
       errorMsg = "API indisponible : affichage mock.";
     } finally {
@@ -250,7 +239,9 @@
         <div class="flex items-end h-full w-full mx-auto px-6 pb-10">
           <div class="col-left">
             <a
-              href={gameId ? `/jeux/${gameId}/challenges` : "/liste-challenges"}
+              href={$params.gameId
+                ? `/jeux/${$params.gameId}/challenges`
+                : "/liste-challenges"}
               class="mb-4 inline-flex items-center gap-2 text-xl text-white/80 hover:text-white transition"
             >
               <span><IconArrowLeft /></span>
