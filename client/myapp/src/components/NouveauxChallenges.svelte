@@ -3,13 +3,17 @@
   import IconArrowLeft from "./icon-arrow-left.svelte";
   import IconArrowRight from "./icon-arrow-right.svelte";
 
-  export let challenges = [];
-  export let title = "Nouveaux Challenges";
+  /**
+   * @typedef {Object} Props
+   * @property {any} [challenges]
+   * @property {string} [title]
+   */
 
-  let currentIndex = 0;
+  /** @type {Props} */
+  let { challenges = [], title = "Nouveaux Challenges" } = $props();
 
-  $: chunkedChallenges = chunkArray(challenges, 3);
-  $: maxIndex = chunkedChallenges.length;
+  let currentIndex = $state(0);
+
 
   function chunkArray(array, size) {
     if (!array || array.length === 0) return [];
@@ -22,6 +26,8 @@
 
   function nextSlide() { if (currentIndex < maxIndex - 1) currentIndex += 1; }
   function prevSlide() { if (currentIndex > 0) currentIndex -= 1; }
+  let chunkedChallenges = $derived(chunkArray(challenges, 3));
+  let maxIndex = $derived(chunkedChallenges.length);
 </script>
 
 <section class="nouveaux-challenges">
@@ -29,10 +35,10 @@
     <h2 class="text-3xl font-bold text-white">{title}</h2>
     {#if maxIndex > 1}
       <div class="flex gap-2">
-        <button on:click={prevSlide} class="btn-nav" disabled={currentIndex === 0}>
+        <button onclick={prevSlide} class="btn-nav" disabled={currentIndex === 0}>
           <IconArrowLeft />
         </button>
-        <button on:click={nextSlide} class="btn-nav" disabled={currentIndex === maxIndex - 1}>
+        <button onclick={nextSlide} class="btn-nav" disabled={currentIndex === maxIndex - 1}>
           <IconArrowRight />
         </button>
       </div>

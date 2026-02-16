@@ -1,6 +1,12 @@
 <script>
-  export let size = 18;     // taille par défaut
-  export let className = ""; // classes optionnelles
+  /**
+   * @typedef {Object} Props
+   * @property {number} [size] - taille par défaut
+   * @property {string} [className] - classes optionnelles
+   */
+
+  /** @type {Props} */
+  let { size = 18, className = "" } = $props();
 </script>
 
 <svg

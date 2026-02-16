@@ -1,6 +1,12 @@
 <script>
-  export let size = 24; // taille de l'icône
-  export let className = ""; // classes optionnelles
+  /**
+   * @typedef {Object} Props
+   * @property {number} [size] - taille de l'icône
+   * @property {string} [className] - classes optionnelles
+   */
+
+  /** @type {Props} */
+  let { size = 24, className = "" } = $props();
 </script>
 
 <svg

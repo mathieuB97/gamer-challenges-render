@@ -1,6 +1,6 @@
 <script>
   import "./styles/app.css";
-  import { currentComponent, params } from "./router.js";
+  import { currentComponent } from "./router.js";
   import Header from "./components/Header.svelte";
   import Footer from "./components/Footer.svelte";
   import { onMount } from "svelte";
@@ -14,12 +14,14 @@
     // 2️⃣ Récupère l'utilisateur courant depuis l'API
     await getCurrentUser();
   });
+
+  const SvelteComponent = $derived($currentComponent);
 </script>
 
 <div class="h-screen flex flex-col w-full max-w-7xl m-auto bg-[#0a0e1a]">
   <Header />
   <main class="flex-1 pt-4 pb-18 px-2">
-    <svelte:component this={$currentComponent} {...$params} />
+    <SvelteComponent />
   </main>
   <Footer />
 </div>

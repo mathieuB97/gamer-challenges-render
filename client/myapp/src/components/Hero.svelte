@@ -1,10 +1,16 @@
 <script>
-  export let title = {
+  /**
+   * @typedef {Object} Props
+   * @property {any} [title]
+   * @property {string} [paragraph]
+   * @property {string} [className]
+   */
+
+  /** @type {Props} */
+  let { title = {
     default: "Mettre un titre",
     highlight: "accrocheur ici",
-  };
-  export let paragraph = "Ajouter un paragraphe descriptif ici";
-  export let className = "";
+  }, paragraph = "Ajouter un paragraphe descriptif ici", className = "" } = $props();
 </script>
 
 <div
