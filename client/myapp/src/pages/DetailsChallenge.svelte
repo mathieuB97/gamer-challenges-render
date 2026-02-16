@@ -241,7 +241,7 @@
             <a
               href={$params.gameId
                 ? `/jeux/${$params.gameId}/challenges`
-                : "/liste-challenges"}
+                : `/liste-challenges/${$params.challengeId}`}
               class="mb-4 inline-flex items-center gap-2 text-xl text-white/80 hover:text-white transition"
             >
               <span><IconArrowLeft /></span>

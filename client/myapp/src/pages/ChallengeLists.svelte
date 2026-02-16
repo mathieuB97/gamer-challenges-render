@@ -22,7 +22,7 @@
   // let { gameId } = $props();
   const gameId = $params.gameId;
 
-  // Etat page (liste challenges)
+  // État page (liste challenges)
   let challenges = $state([]);
   let loading = $state(true);
   let errorMsg = $state("");
@@ -30,7 +30,7 @@
   // Modal description du jeu
   let isGameModalOpen = $state(false);
 
-  // Etats pour controler le pop-up de participation
+  // États pour contrôler le pop-up de participation
   let isParticipationModalOpen = $state(false); // Vrai = pop-up visible
   let selectedChallenge = $state(null); // Challenge sélectionné pour le pop-up
 
@@ -80,7 +80,9 @@
 
     // Récupère les challenges pour ce jeu
     try {
-      const gameChallenges = await getChallengesByGameId(gameId ?? mockGame.id);
+      const gameChallenges = await getChallengesByGameId(
+        Number(gameId) ?? mockGame.id,
+      );
       challenges = Array.isArray(gameChallenges) ? gameChallenges : [];
       // Pour chaque challenge, récupérer le pseudo du créateur
       await Promise.all(
@@ -298,7 +300,7 @@
                 <!-- Ligne 2 : boutons -->
                 <div class="mt-4 grid grid-cols-2 gap-3">
                   <a
-                    href={`/detail-challenge/${c.id}?gameId=${gameId}`}
+                    href={`/detail-challenge/${c.id}/${gameId}`}
                     class="w-full text-center font-bold py-2.5 rounded-lg border border-white/15 text-white/80
                            hover:bg-white/5 transition"
                   >
