@@ -150,9 +150,9 @@
 <div class="flex flex-col md:flex-row gap-6 w-full">
   <!-- Leaderboard -->
   <div
-    class="w-full md:w-64 bg-[#12172b] rounded-xl sticky top-20 h-132.5 overflow-hidden py-4"
+    class="w-full md:w-64 md:sticky top-20 h-[392px] md:h-128.5 overflow-hidden py-4 pb-4 md:pb-4 bg-[#12172b] rounded-xl"
   >
-    <div class="h-full overflow-y-auto px-4 py-4 scrollbar-thumb-gray-600">
+    <div class="h-full overflow-y-auto px-4 scrollbar-thumb-gray-600">
       <h2 class="text-xl mb-4">Leaderboard</h2>
       <div class="space-y-4">
         {#each leaderboardData as player, i ((player.rank, i))}
