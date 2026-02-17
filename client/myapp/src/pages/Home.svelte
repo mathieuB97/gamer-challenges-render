@@ -1,5 +1,6 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
+  import { onMount } from "svelte";
+  import { writable } from "svelte/store";
   import ChallengeCard from "../components/ChallengeCard.svelte";
   import SearchFilters from "../components/SearchFilters.svelte";
   import IconArrowLeft from "../components/icon-arrow-left.svelte";
@@ -20,12 +21,8 @@
 
   // Initialisation de la variable avec une valeur vide
   let topChallenges = [];
-  let topChallengesChunked = $state([]);
-  let leaderboard = $state([]);
   let newChallenges = $state([]);
-  let newChallengesChunked = $state([]);
   let filteredChallenges = $state([]);
-  let filteredChallengesChunked = $state([]);
 
   // États initialisés avec les données mock, seront mises à jour avec les vraies données
   let ongoingChallenges = $state(mockOngoingChallenges);
@@ -42,14 +39,40 @@
     return chunks;
   };
 
+  const sliderChunked = writable({ top: [], new: [], filtered: [] });
+
+  $effect(() => {
+    sliderChunked.set({
+      top: getSliderChunked("top"),
+      new: getSliderChunked("new"),
+      filtered: getSliderChunked("filtered"),
+    });
+  });
+
   // Variables pour tracker l'index de chaque carrousel
   let topChallengesIndex = $state(0);
   let newChallengesIndex = $state(0);
   let ongoingChallengesIndex = $state(0);
   let filteredChallengesIndex = $state(0);
 
-  // Diviser les challenges en groupes de 3 pour les carrousels
-  let ongoingChallengesChunked = $derived(chunkArray(ongoingChallenges, 3));
+  // Fonction pour adapter le nombre de slides affichés en fonction de la taille de l'écran
+  let chunkSize = $state(2);
+  function updateChunkSize() {
+    chunkSize = window.matchMedia("(min-width: 768px)").matches ? 3 : 2;
+  }
+
+  // Fonction utilitaire pour découper les sliders
+  function getSliderChunked(type) {
+    if (type === "top") return chunkArray(topChallenges, chunkSize);
+    if (type === "new") return chunkArray(newChallenges, chunkSize);
+    if (type === "filtered") return chunkArray(filteredChallenges, chunkSize);
+    if (type === "ongoing") return chunkArray(ongoingChallenges, chunkSize);
+    return [];
+  }
+  // Diviser les challenges en groupes de chunkSize pour les carrousels
+  let ongoingChallengesChunked = $derived(
+    chunkArray(ongoingChallenges, chunkSize),
+  );
 
   // Fonction pour charger toutes les données
   async function loadAllData() {
@@ -59,12 +82,10 @@
       // Charger les top challenges
       const topResponse = await getTopChallenges();
       topChallenges = topResponse.top_challenges || mockTopChallenges;
-      topChallengesChunked = chunkArray(topChallenges, 3);
 
       // Charger les nouveaux challenges (7 derniers)
       const latestChallengesData = await getLatestChallenges();
       newChallenges = latestChallengesData || mockNewChallenges;
-      newChallengesChunked = chunkArray(newChallenges, 3);
 
       // Charger le leaderboard
       const leaderboardResponse = await getLeaderboard();
@@ -73,9 +94,7 @@
       console.error("Erreur lors du chargement des données:", error);
       // Utiliser les données mock en cas d'erreur
       topChallenges = mockTopChallenges;
-      topChallengesChunked = chunkArray(topChallenges, 3);
       newChallenges = mockNewChallenges;
-      newChallengesChunked = chunkArray(newChallenges, 3);
       leaderboardData = mockLeaderboardData;
     } finally {
       isLoading = false;
@@ -96,27 +115,28 @@
         // Si aucun filtre n'est appliqué, réinitialiser
         isFilterApplied = false;
         filteredChallenges = [];
-        filteredChallengesChunked = [];
       } else {
         // Appliquer le filtre
         const result = await filterChallenges(filterParams);
         filteredChallenges = result || [];
-        filteredChallengesChunked = chunkArray(filteredChallenges, 3);
         isFilterApplied = true;
       }
     } catch (error) {
       console.error("Erreur lors du filtrage:", error);
       isFilterApplied = false;
       filteredChallenges = [];
-      filteredChallengesChunked = [];
     } finally {
       isLoading = false;
     }
   }
+  // Mutualisation de la mise à jour des chunks pour tous les sliders
 
   // Charger les données au montage du composant
   onMount(() => {
     loadAllData();
+    // Mettre à jour la taille des chunks en fonction de la taille de l'écran
+    updateChunkSize();
+    window.addEventListener("resize", updateChunkSize);
 
     // Recharger les données quand la page redevient visible
     // (par exemple après avoir voté sur une page de détail et être revenu)
@@ -130,6 +150,7 @@
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("resize", updateChunkSize);
     };
   });
 
@@ -150,7 +171,7 @@
 <div class="flex flex-col md:flex-row gap-6 w-full">
   <!-- Leaderboard -->
   <div
-    class="w-full md:w-64 md:sticky top-20 h-[392px] md:h-128.5 overflow-hidden py-4 pb-4 md:pb-4 bg-[#12172b] rounded-xl"
+    class="w-full md:w-64 md:sticky top-20 h-98 md:h-128.5 overflow-hidden py-4 pb-4 md:pb-4 bg-[#12172b] rounded-xl"
   >
     <div class="h-full overflow-y-auto px-4 scrollbar-thumb-gray-600">
       <h2 class="text-xl mb-4">Leaderboard</h2>
@@ -161,12 +182,12 @@
             <div
               class="absolute -top-2 -left-2 w-8 h-8 rounded-lg flex items-center justify-center z-10
 								{i + 1 === 1
-                ? 'bg-gradient-to-br from-yellow-400 to-yellow-600'
+                ? 'bg-linear-to-br from-yellow-400 to-yellow-600'
                 : i + 1 === 2
-                  ? 'bg-gradient-to-br from-gray-300 to-gray-500'
+                  ? 'bg-linear-to-br from-gray-300 to-gray-500'
                   : i + 1 === 3
-                    ? 'bg-gradient-to-br from-amber-600 to-amber-800'
-                    : 'bg-gradient-to-br from-[#1a2139] to-[#12172b]'}"
+                    ? 'bg-linear-to-br from-amber-600 to-amber-800'
+                    : 'bg-linear-to-br from-[#1a2139] to-[#12172b]'}"
             >
               <span class="font-bold">{i + 1 || player.rank}</span>
             </div>
@@ -220,12 +241,12 @@
               </button>
             {/if}
 
-            {#if filteredChallengesIndex < filteredChallengesChunked.length - 1}
+            {#if filteredChallengesIndex < $sliderChunked.filtered.length - 1}
               <button
                 onclick={() =>
                   nextSlide(
                     filteredChallengesIndex,
-                    filteredChallengesChunked.length,
+                    $sliderChunked.filtered.length,
                     (index) => (filteredChallengesIndex = index),
                   )}
                 class="flex items-center justify-center text-[#00d9ff]"
@@ -243,7 +264,7 @@
               class="flex transition-transform duration-300 ease-in-out"
               style="transform: translateX(-{filteredChallengesIndex * 100}%)"
             >
-              {#each filteredChallengesChunked as chunk, i}
+              {#each $sliderChunked.filtered as chunk}
                 <div class="w-full shrink-0 grid grid-cols-3 gap-4">
                   {#each chunk as challenge (challenge.id)}
                     <ChallengeCard {...challenge} />
@@ -282,12 +303,12 @@
             </button>
           {/if}
 
-          {#if topChallengesIndex < topChallengesChunked.length - 1}
+          {#if topChallengesIndex < $sliderChunked.top.length - 1}
             <button
               onclick={() =>
                 nextSlide(
                   topChallengesIndex,
-                  topChallengesChunked.length,
+                  $sliderChunked.top.length,
                   (index) => (topChallengesIndex = index),
                 )}
               class="flex items-center justify-center text-[#00d9ff]"
@@ -305,8 +326,10 @@
             class="flex transition-transform duration-300 ease-in-out"
             style="transform: translateX(-{topChallengesIndex * 100}%)"
           >
-            {#each topChallengesChunked as chunk, i}
-              <div class="w-full shrink-0 grid grid-cols-3 gap-4">
+            {#each $sliderChunked.top as chunk}
+              <div
+                class="w-full shrink-0 grid grid-cols-2 md:grid-cols-3 gap-4"
+              >
                 {#each chunk as challenge (challenge.id)}
                   <ChallengeCard {...challenge} />
                 {/each}
@@ -336,12 +359,12 @@
             </button>
           {/if}
 
-          {#if newChallengesIndex < newChallengesChunked.length - 1}
+          {#if newChallengesIndex < $sliderChunked.new.length - 1}
             <button
               onclick={() =>
                 nextSlide(
                   newChallengesIndex,
-                  newChallengesChunked.length,
+                  $sliderChunked.new.length,
                   (index) => (newChallengesIndex = index),
                 )}
               class="flex items-center justify-center text-[#00d9ff]"
@@ -359,8 +382,10 @@
             class="flex transition-transform duration-300 ease-in-out"
             style="transform: translateX(-{newChallengesIndex * 100}%)"
           >
-            {#each newChallengesChunked as chunk, i}
-              <div class="w-full shrink-0 grid grid-cols-3 gap-4">
+            {#each $sliderChunked.new as chunk}
+              <div
+                class="w-full shrink-0 grid grid-cols-2 md:grid-cols-3 gap-4"
+              >
                 {#each chunk as challenge (challenge.id)}
                   <ChallengeCard {...challenge} showVotes={false} />
                 {/each}
@@ -416,7 +441,9 @@
             style="transform: translateX(-{ongoingChallengesIndex * 100}%)"
           >
             {#each ongoingChallengesChunked as chunk, i}
-              <div class="w-full shrink-0 grid grid-cols-3 gap-4">
+              <div
+                class="w-full shrink-0 grid grid-cols-2 md:grid-cols-3 gap-4"
+              >
                 {#each chunk as challenge (challenge.id)}
                   <ChallengeCard {...challenge} />
                 {/each}
