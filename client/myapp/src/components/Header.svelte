@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import BrandLogo from "./Brand-logo.svelte";
   import { authStore, clearAuth, getAuth } from "../lib/stores/auth.svelte";
+  import { userStore } from "../lib/stores/user.store.js";
   import IconMenuBurger from "./icon-Menu-burger.svelte";
   import IconCloseMenuBurger from "./icon-close-Menu-burger.svelte";
   import Avatar from "./Avatar.svelte";
@@ -68,7 +69,7 @@
 
       <!-- Actions -->
       <div class="flex shrink sm:shrink-0 min-w-0 items-center gap-2 sm:gap-3">
-        {#if $authStore.token}
+        {#if $authStore.token && $userStore}
           <div class="flex items-center gap-3">
             <Avatar size={36} />
             <button
