@@ -3,7 +3,7 @@
   import IconLike from "./icon-like.svelte";
   import IconParticipant from "./icon-participant.svelte";
 
-  // En Svelte 5 (runes mode), utiliser $props() pour déstructurer toutes les propriétés
+  // En Svelte 5 (runes mode), $props() permet d'accéder à toutes les props passées au composant.
   let {
     id,
     title,
@@ -35,7 +35,8 @@
 
   function navigateToDetail() {
     if (gameId) {
-      page(`/detail-challenge/${id}?gameId=${gameId}`);
+      // Récupérer l'id du challenge et du jeu via le module page qui permet l'accès au store de navigation donc aux paramètres de l'URL
+      page(`/detail-challenge/${id}/${gameId}`);
     }
   }
 </script>
