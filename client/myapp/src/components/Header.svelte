@@ -11,31 +11,31 @@
 
   // Toggle menu mobile
   function toggleMobileMenu(event) {
-    event.stopPropagation();
+    event.preventDefault();
     mobileMenuOpen = !mobileMenuOpen;
+    console.log("trigger toggle");
   }
 
   function closeMobileMenu() {
     mobileMenuOpen = false;
   }
 
-  function handleClickOutside(event) {
-    if (!mobileMenuOpen) return;
-    if (mobileMenuEl && !mobileMenuEl.contains(event.target)) {
-      mobileMenuOpen = false;
-    }
-  }
-
   onMount(() => {
-    document.addEventListener("pointerdown", handleClickOutside);
     getAuth(); // hydrate token et userStore depuis localStorage
-  });
-
-  onDestroy(() => {
-    document.removeEventListener("pointerdown", handleClickOutside);
   });
 </script>
 
+{#if mobileMenuOpen}
+  <!-- Overlay -->
+  <div
+    class="absolute h-full inset-0 z-40 md:hidden backdrop-blur-xs"
+    role="button"
+    tabindex="0"
+    onclick={toggleMobileMenu}
+    onkeydown={(e) =>
+      (e.key === "Enter" || e.key === " ") && toggleMobileMenu()}
+  ></div>
+{/if}
 <header
   class="border-b border-white/10 bg-[#0a0e1a]/95 backdrop-blur-sm sticky top-0 z-50 px-4 md:px-2"
 >
@@ -97,22 +97,17 @@
     </div>
 
     {#if mobileMenuOpen}
-      <!-- Overlay -->
-      <div
-        class="fixed inset-0 z-40 bg-black/40 md:hidden"
-        role="button"
-        tabindex="0"
-        onclick={closeMobileMenu}
-        onkeydown={(e) =>
-          (e.key === "Enter" || e.key === " ") && closeMobileMenu()}
-      ></div>
-
       <!-- Mobile Menu -->
       <nav
         bind:this={mobileMenuEl}
         class="fixed top-[64px] left-0 right-0 z-50 md:hidden bg-[#0a0e1a] border-t border-white/10 px-4 py-4 space-y-3"
         onpointerdown={(e) => e.stopPropagation()}
       >
+        <a
+          href="/"
+          class="block w-full text-left text-white/90 hover:text-[#00d9ff] py-2"
+          onclick={closeMobileMenu}>Accueil</a
+        >
         <a
           href="/jeux"
           class="block w-full text-left text-white/90 hover:text-[#00d9ff] py-2"
