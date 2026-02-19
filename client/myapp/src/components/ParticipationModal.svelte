@@ -1,16 +1,21 @@
 <script>
   import { createParticipation } from "../lib/services/contribution.service.js";
 
-  // Props reçu depuis la page parent (ChallengeLists.svelte & DetailsChallenge.svelte) 
-  export let challenge = null; // L'objet challenge complet -> on récupère .id automatiquement
-  export let isOpen = false; // Contrôle l'affiche du pop-up (true = visible)
+  /**
+   * @typedef {Object} Props
+   * @property {any} [challenge] - Props reçu depuis la page parent (ChallengeLists.svelte & DetailsChallenge.svelte) - L'objet challenge complet -> on récupère .id automatiquement
+   * @property {boolean} [isOpen] - Contrôle l'affiche du pop-up (true = visible)
+   */
+
+  /** @type {Props} */
+  let { challenge = null, isOpen = $bindable(false) } = $props();
 
   // Variables locales du pop-up du formulaire
-  let videoUrl = ""; // lien de la vidéo saisi par l'utilisateur
-  let duration = ""; // Durée saisie (en minutes ou secondes selon le modèle back)
-  let loading = false; // Indique si l'envoi API est en cours → désactive les boutons
-  let errorMsg = ""; // Message d'erreur affiché en rouge
-  let successMsg = ""; // Message de succès affiché en vert
+  let videoUrl = $state(""); // lien de la vidéo saisi par l'utilisateur
+  let duration = $state(0); // Durée saisie (en minutes ou secondes selon le modèle back)
+  let loading = $state(false); // Indique si l'envoi API est en cours → désactive les boutons
+  let errorMsg = $state(""); // Message d'erreur affiché en rouge
+  let successMsg = $state(""); // Message de succès affiché en vert
 
   // Ferme le pop-up et réinitialise tout
   function closeModal() {
@@ -21,7 +26,7 @@
   // Vide les champs et messages après fermeture ou succès
   function resetForm() {
     videoUrl = "";
-    duration = "";
+    duration = null;
     successMsg = "";
     errorMsg = "";
   }
@@ -30,8 +35,8 @@
   async function handleSubmit() {
     errorMsg = "";
     successMsg = "";
-  
-  // Validation simple avant envoi
+
+    // Validation simple avant envoi
     if (!videoUrl || !duration) {
       errorMsg = "URL vidéo et durée sont obligatoires.";
       return;
@@ -69,26 +74,32 @@
     }
   }
 
-  // Ferme le pop-up avec la touche Échap
+  // Ferme le pop-up avec la touche ESC
   function handleKeydown(e) {
     if (e.key === "Escape" && isOpen) closeModal();
   }
 </script>
 
-<!-- Écoute la touche Échap sur toute la fenêtre -->
-<svelte:window on:keydown={handleKeydown} />
+<!-- Écoute la touche ESC sur toute la fenêtre -->
+<svelte:window onkeydown={handleKeydown} />
 
 <!-- Le pop-up s'affiche seulement quand isOpen est true -->
 {#if isOpen}
   <!-- Fond semi-transparent qui ferme le pop-up au clic extérieur -->
-  <div class="fixed inset-0 z-40 bg-black/60" on:click={closeModal}></div>
+  <div
+    class="fixed inset-0 z-40 bg-black/60"
+    role="button"
+    tabindex="0"
+    onclick={closeModal}
+    onkeydown={(e) => (e.key === "Enter" || e.key === " ") && closeModal()}
+  ></div>
 
   <!-- Conteneur centré du pop-up -->
   <div class="fixed inset-0 z-50 flex items-center justify-center px-4">
     <div
-      class="w-full max-w-2xl rounded-2xl border border-white/10 bg-[#141824]
-                   shadow-xl overflow-hidden"
-      on:click|stopPropagation
+      class="w-full max-w-2xl rounded-2xl border border-white/10 bg-[#141824] shadow-xl overflow-hidden"
+      role="dialog"
+      aria-modal="true"
     >
       <!-- En-tête du pop-up -->
       <div class="flex items-start justify-between gap-4 p-6">
@@ -104,7 +115,7 @@
           type="button"
           class="h-10 w-10 rounded-lg border border-white/15 text-white/80
                            hover:bg-white/5 transition flex items-center justify-center"
-          on:click={closeModal}
+          onclick={closeModal}
           aria-label="Fermer"
         >
           ✕
@@ -130,14 +141,20 @@
         {/if}
 
         <!-- Formulaire qui déclenche handleSubmit au submit -->
-        <form on:submit|preventDefault={handleSubmit} class="space-y-4">
+        <form
+          onsubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+          class="space-y-4"
+        >
           <!-- Champ URL vidéo -->
           <div>
             <label
               for="videoUrl"
               class="block text-sm font-semibold text-white mb-2"
             >
-            <!-- ← Texte du label (corrigé pour éviter l'erreur de compilation) -->
+              <!-- ← Texte du label (corrigé pour éviter l'erreur de compilation) -->
             </label>
             <input
               id="videoUrl"
@@ -176,7 +193,7 @@
               type="button"
               class="flex-1 py-2.5 rounded-lg border border-white/15 text-white/80
                                    hover:bg-white/5 transition font-medium"
-              on:click={closeModal}
+              onclick={closeModal}
               disabled={loading}
             >
               Annuler
@@ -198,8 +215,7 @@
 {/if}
 
 <style>
-  input,
-  textarea {
+  input {
     transition: border-color 0.2s;
   }
 </style>

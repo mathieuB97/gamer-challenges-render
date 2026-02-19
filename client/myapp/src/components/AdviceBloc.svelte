@@ -1,7 +1,13 @@
 <script>
-    export let className = "";
-    export let title = "Advice Title";
-    export let adviceList = ["liste a remplir", "avec des conseils"];
+    /**
+     * @typedef {Object} Props
+     * @property {string} [className]
+     * @property {string} [title]
+     * @property {any} [adviceList]
+     */
+
+    /** @type {Props} */
+    let { className = "", title = "Advice Title", adviceList = ["liste a remplir", "avec des conseils"] } = $props();
 </script>
 
 <div

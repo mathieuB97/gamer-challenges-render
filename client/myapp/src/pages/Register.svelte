@@ -5,11 +5,11 @@
     import { registerUser } from "../lib/services/auth.service";
     import page from "page";
 
-    let formData = {
+    let formData = $state({
         pseudo: "",
         email: "",
         password: "",
-    };
+    });
 
     async function register(e) {
         e.preventDefault();
@@ -54,7 +54,7 @@
                 placeholder="votre pseudo"
                 required={true}
                 mandatory={true}
-                on:input={(e) => handleInput("pseudo", e)}
+                oninput={(e) => handleInput("pseudo", e)}
             />
 
             <LabelInput
@@ -66,7 +66,7 @@
                 placeholder="votre email"
                 required={true}
                 mandatory={true}
-                on:input={(e) => handleInput("email", e)}
+                oninput={(e) => handleInput("email", e)}
             />
 
             <LabelInput
@@ -78,7 +78,7 @@
                 placeholder="votre mot de passe"
                 required={true}
                 mandatory={true}
-                on:input={(e) => handleInput("password", e)}
+                oninput={(e) => handleInput("password", e)}
             />
 
             <ButtonSubmit

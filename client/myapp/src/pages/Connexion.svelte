@@ -5,10 +5,10 @@
   import page from "page";
   import { setAuth } from "../lib/stores/auth.svelte";
 
-  const formData = {
+  const formData = $state({
     emailOrPseudo: "",
     password: "",
-  };
+  });
 
   let isLoading = false;
 
@@ -52,7 +52,7 @@
           placeholder="votre email ou votre pseudo"
           mandatory={true}
           required={true}
-          on:input={(e) => handleInput("emailOrPseudo", e)}
+          oninput={(e) => handleInput("emailOrPseudo", e)}
         />
 
         <LabelInput
@@ -64,7 +64,7 @@
           placeholder="Votre mot de passe"
           mandatory={true}
           required={true}
-          on:input={(e) => handleInput("password", e)}
+          oninput={(e) => handleInput("password", e)}
         />
 
         <button

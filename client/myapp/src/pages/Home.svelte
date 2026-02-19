@@ -1,11 +1,10 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
+  import { onMount } from "svelte";
+  import { writable } from "svelte/store";
   import ChallengeCard from "../components/ChallengeCard.svelte";
   import SearchFilters from "../components/SearchFilters.svelte";
-  import IconArrowLeft from "../components/icon-arrow-left.svelte";
-  import IconArrowRight from "../components/icon-arrow-right.svelte";
+  import Carousel from "../components/Carousel.svelte";
   import {
-    getChallenges,
     getLeaderboard,
     getLatestChallenges,
     filterChallenges,
@@ -18,38 +17,19 @@
   } from "../mock/data.js";
   import { getTopChallenges } from "../lib/services/vote.service.js";
 
-  // Initialisation de la variable avec une valeur vide
-  let topChallenges = [];
-  let topChallengesChunked = $state([]);
-  let leaderboard = $state([]);
-  let newChallenges = $state([]);
-  let newChallengesChunked = $state([]);
+  // Initialisation de la variable avec une valeur vide permet d'attendre les données avant de les afficher. Si les données ne peuvent pas être récupérées en base on utilise les données mock.
   let filteredChallenges = $state([]);
-  let filteredChallengesChunked = $state([]);
+  let topChallenges = $state([]);
+  let newChallenges = $state([]);
+  // TODO ongoingChallenges n'est pas encore implémenté côté backend, on utilise les données mock pour l'instant
 
-  // États initialisés avec les données mock, seront mises à jour avec les vraies données
+  // États initialisés avec les données mock, sont mises à jour avec les vraies données
   let ongoingChallenges = $state(mockOngoingChallenges);
   let leaderboardData = $state(mockLeaderboardData);
   let isLoading = $state(true);
   let isFilterApplied = $state(false);
 
-  // Fonction pour diviser un tableau en chunks
-  const chunkArray = (array, size) => {
-    const chunks = [];
-    for (let i = 0; i < array.length; i += size) {
-      chunks.push(array.slice(i, i + size));
-    }
-    return chunks;
-  };
-
-  // Variables pour tracker l'index de chaque carrousel
-  let topChallengesIndex = $state(0);
-  let newChallengesIndex = $state(0);
-  let ongoingChallengesIndex = $state(0);
   let filteredChallengesIndex = $state(0);
-
-  // Diviser les challenges en groupes de 3 pour les carrousels
-  let ongoingChallengesChunked = $derived(chunkArray(ongoingChallenges, 3));
 
   // Fonction pour charger toutes les données
   async function loadAllData() {
@@ -59,24 +39,19 @@
       // Charger les top challenges
       const topResponse = await getTopChallenges();
       topChallenges = topResponse.top_challenges || mockTopChallenges;
-      topChallengesChunked = chunkArray(topChallenges, 3);
 
       // Charger les nouveaux challenges (7 derniers)
       const latestChallengesData = await getLatestChallenges();
       newChallenges = latestChallengesData || mockNewChallenges;
-      newChallengesChunked = chunkArray(newChallenges, 3);
 
       // Charger le leaderboard
       const leaderboardResponse = await getLeaderboard();
       leaderboardData = leaderboardResponse || mockLeaderboardData;
-      
     } catch (error) {
       console.error("Erreur lors du chargement des données:", error);
       // Utiliser les données mock en cas d'erreur
       topChallenges = mockTopChallenges;
-      topChallengesChunked = chunkArray(topChallenges, 3);
       newChallenges = mockNewChallenges;
-      newChallengesChunked = chunkArray(newChallenges, 3);
       leaderboardData = mockLeaderboardData;
     } finally {
       isLoading = false;
@@ -84,29 +59,29 @@
   }
 
   // Fonction pour gérer le filtrage
-  async function handleFilter(event) {
+  async function handleFilter(filterParams) {
     try {
       isLoading = true;
       filteredChallengesIndex = 0;
-      const filterParams = event.detail;
 
-      if (!filterParams.gameId && !filterParams.level && filterParams.sortBy === 'recent') {
+      if (
+        !filterParams.gameId &&
+        !filterParams.level &&
+        filterParams.sortBy === "recent"
+      ) {
         // Si aucun filtre n'est appliqué, réinitialiser
         isFilterApplied = false;
         filteredChallenges = [];
-        filteredChallengesChunked = [];
       } else {
         // Appliquer le filtre
         const result = await filterChallenges(filterParams);
         filteredChallenges = result || [];
-        filteredChallengesChunked = chunkArray(filteredChallenges, 3);
         isFilterApplied = true;
       }
     } catch (error) {
       console.error("Erreur lors du filtrage:", error);
       isFilterApplied = false;
       filteredChallenges = [];
-      filteredChallengesChunked = [];
     } finally {
       isLoading = false;
     }
@@ -115,42 +90,15 @@
   // Charger les données au montage du composant
   onMount(() => {
     loadAllData();
-    
-    // Recharger les données quand la page redevient visible
-    // (par exemple après avoir voté sur une page de détail et être revenu)
-    const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        loadAllData();
-      }
-    };
-    
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
   });
-
-  // Fonctions de navigation
-  const nextSlide = (currentIndex, maxIndex, setIndex) => {
-    if (currentIndex < maxIndex - 1) {
-      setIndex(currentIndex + 1);
-    }
-  };
-
-  const prevSlide = (currentIndex, setIndex) => {
-    if (currentIndex > 0) {
-      setIndex(currentIndex - 1);
-    }
-  };
 </script>
 
 <div class="flex flex-col md:flex-row gap-6 w-full">
   <!-- Leaderboard -->
   <div
-    class="w-full md:w-64 bg-[#12172b] rounded-xl sticky top-20 h-132.5 overflow-hidden py-4"
+    class="w-full md:w-64 md:sticky top-20 h-98 md:h-128.5 overflow-hidden py-4 pb-4 md:pb-4 bg-[#12172b] rounded-xl"
   >
-    <div class="h-full overflow-y-auto px-4 py-4 scrollbar-thumb-gray-600">
+    <div class="h-full overflow-y-auto px-4 scrollbar-thumb-gray-600">
       <h2 class="text-xl mb-4">Leaderboard</h2>
       <div class="space-y-4">
         {#each leaderboardData as player, i ((player.rank, i))}
@@ -159,12 +107,12 @@
             <div
               class="absolute -top-2 -left-2 w-8 h-8 rounded-lg flex items-center justify-center z-10
 								{i + 1 === 1
-                ? 'bg-gradient-to-br from-yellow-400 to-yellow-600'
+                ? 'bg-linear-to-br from-yellow-400 to-yellow-600'
                 : i + 1 === 2
-                  ? 'bg-gradient-to-br from-gray-300 to-gray-500'
+                  ? 'bg-linear-to-br from-gray-300 to-gray-500'
                   : i + 1 === 3
-                    ? 'bg-gradient-to-br from-amber-600 to-amber-800'
-                    : 'bg-gradient-to-br from-[#1a2139] to-[#12172b]'}"
+                    ? 'bg-linear-to-br from-amber-600 to-amber-800'
+                    : 'bg-linear-to-br from-[#1a2139] to-[#12172b]'}"
             >
               <span class="font-bold">{i + 1 || player.rank}</span>
             </div>
@@ -194,231 +142,55 @@
   <!-- Challenges Section -->
   <div class="flex-1 space-y-8">
     <!-- Search Filters -->
-    <SearchFilters on:filter={handleFilter} />
+    <SearchFilters onFilter={handleFilter} />
 
     {#if isFilterApplied && filteredChallenges.length > 0}
-      <!-- Filtered Challenges Section -->
-      <section>
-        <div class="mb-6 flex items-center justify-between">
-          <h2 class="text-2xl">Résultats filtrés ({filteredChallenges.length})</h2>
-          <div class="carousel-navigation flex gap-2">
-            {#if filteredChallengesIndex > 0}
-              <button
-                onclick={() =>
-                  prevSlide(
-                    filteredChallengesIndex,
-                    (index) => (filteredChallengesIndex = index),
-                  )}
-                class="flex items-center justify-center text-[#00d9ff]"
-                title="Précédent"
-              >
-                <IconArrowLeft />
-              </button>
-            {/if}
-
-            {#if filteredChallengesIndex < filteredChallengesChunked.length - 1}
-              <button
-                onclick={() =>
-                  nextSlide(
-                    filteredChallengesIndex,
-                    filteredChallengesChunked.length,
-                    (index) => (filteredChallengesIndex = index),
-                  )}
-                class="flex items-center justify-center text-[#00d9ff]"
-                title="Suivant"
-              >
-                <IconArrowRight />
-              </button>
-            {/if}
-          </div>
-        </div>
-        <div class="relative">
-          <!-- Carousel Container -->
-          <div class="overflow-hidden">
-            <div
-              class="flex transition-transform duration-300 ease-in-out"
-              style="transform: translateX(-{filteredChallengesIndex * 100}%)"
-            >
-              {#each filteredChallengesChunked as chunk, i}
-                <div class="w-full shrink-0 grid grid-cols-3 gap-4">
-                  {#each chunk as challenge (challenge.id)}
-                    <ChallengeCard {...challenge} />
-                  {/each}
-                </div>
-              {/each}
-            </div>
-          </div>
-        </div>
-      </section>
+      <Carousel
+        items={filteredChallenges}
+        cardComponent={ChallengeCard}
+        sectionTitle={`Résultats filtrés (${filteredChallenges.length})`}
+        chunkSizeMobile={3}
+        chunkSizeDesktop={3}
+        gridColsMobile={3}
+        gridColsDesktop={3}
+      />
     {:else if isFilterApplied && filteredChallenges.length === 0}
       <div class="bg-[#12172b] rounded-xl p-8 text-center">
-        <p class="text-gray-400">Aucun challenge ne correspond à vos critères de recherche.</p>
+        <p class="text-gray-400">
+          Aucun challenge ne correspond à vos critères de recherche.
+        </p>
       </div>
     {/if}
 
-    <!-- Top Challenges Carousel -->
-    <section>
-      <div class="mb-6 flex items-center justify-between">
-        <h2 class="text-2xl">Top Challenges</h2>
+    <Carousel
+      items={topChallenges}
+      cardComponent={ChallengeCard}
+      sectionTitle="Top Challenges"
+      chunkSizeMobile={2}
+      chunkSizeDesktop={3}
+      gridColsMobile={2}
+      gridColsDesktop={3}
+    />
 
-        <div class="carousel-navigation flex gap-2">
-          {#if topChallengesIndex > 0}
-            <button
-              onclick={() =>
-                prevSlide(
-                  topChallengesIndex,
-                  (index) => (topChallengesIndex = index),
-                )}
-              class="flex items-center justify-center text-[#00d9ff]"
-              title="Précédent"
-            >
-              <IconArrowLeft />
-            </button>
-          {/if}
+    <Carousel
+      items={newChallenges}
+      cardComponent={ChallengeCard}
+      sectionTitle="Nouveaux challenges"
+      chunkSizeMobile={2}
+      chunkSizeDesktop={3}
+      gridColsMobile={2}
+      gridColsDesktop={3}
+      cardProps={{ showVotes: false }}
+    />
 
-          {#if topChallengesIndex < topChallengesChunked.length - 1}
-            <button
-              onclick={() =>
-                nextSlide(
-                  topChallengesIndex,
-                  topChallengesChunked.length,
-                  (index) => (topChallengesIndex = index),
-                )}
-              class="flex items-center justify-center text-[#00d9ff]"
-              title="Suivant"
-            >
-              <IconArrowRight />
-            </button>
-          {/if}
-        </div>
-      </div>
-      <div class="relative">
-        <!-- Carousel Container -->
-        <div class="overflow-hidden">
-          <div
-            class="flex transition-transform duration-300 ease-in-out"
-            style="transform: translateX(-{topChallengesIndex * 100}%)"
-          >
-            {#each topChallengesChunked as chunk, i}
-              <div class="w-full shrink-0 grid grid-cols-3 gap-4">
-                {#each chunk as challenge (challenge.id)}
-                  <ChallengeCard {...challenge} />
-                {/each}
-              </div>
-            {/each}
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- New Challenges Carousel -->
-    <section>
-      <div class="mb-6 flex items-center justify-between">
-        <h2 class="text-2xl">Nouveaux challenges</h2>
-        <div class="carousel-navigation flex gap-2">
-          {#if newChallengesIndex > 0}
-            <button
-              onclick={() =>
-                prevSlide(
-                  newChallengesIndex,
-                  (index) => (newChallengesIndex = index),
-                )}
-              class="flex items-center justify-center text-[#00d9ff]"
-              title="Précédent"
-            >
-              <IconArrowLeft />
-            </button>
-          {/if}
-
-          {#if newChallengesIndex < newChallengesChunked.length - 1}
-            <button
-              onclick={() =>
-                nextSlide(
-                  newChallengesIndex,
-                  newChallengesChunked.length,
-                  (index) => (newChallengesIndex = index),
-                )}
-              class="flex items-center justify-center text-[#00d9ff]"
-              title="Suivant"
-            >
-              <IconArrowRight />
-            </button>
-          {/if}
-        </div>
-      </div>
-      <div class="relative">
-        <!-- Carousel Container -->
-        <div class="overflow-hidden">
-          <div
-            class="flex transition-transform duration-300 ease-in-out"
-            style="transform: translateX(-{newChallengesIndex * 100}%)"
-          >
-            {#each newChallengesChunked as chunk, i}
-              <div class="w-full shrink-0 grid grid-cols-3 gap-4">
-                {#each chunk as challenge (challenge.id)}
-                  <ChallengeCard {...challenge} showVotes={false} />
-                {/each}
-              </div>
-            {/each}
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Ongoing Challenges Carousel -->
-    <section>
-      <div class="mb-6 flex items-center justify-between">
-        <h2 class="text-2xl">Défis en cours</h2>
-        <div class="flex gap-2">
-          <div class="carousel-navigation flex gap-2">
-            {#if ongoingChallengesIndex > 0}
-              <button
-                onclick={() =>
-                  prevSlide(
-                    ongoingChallengesIndex,
-                    (index) => (ongoingChallengesIndex = index),
-                  )}
-                class="flex items-center justify-center text-[#00d9ff]"
-                title="Précédent"
-              >
-                <IconArrowLeft />
-              </button>
-            {/if}
-
-            {#if ongoingChallengesIndex < ongoingChallengesChunked.length - 1}
-              <button
-                onclick={() =>
-                  nextSlide(
-                    ongoingChallengesIndex,
-                    ongoingChallengesChunked.length,
-                    (index) => (ongoingChallengesIndex = index),
-                  )}
-                class="flex items-center justify-center text-[#00d9ff]"
-                title="Suivant"
-              >
-                <IconArrowRight />
-              </button>
-            {/if}
-          </div>
-        </div>
-      </div>
-      <div class="relative">
-        <!-- Carousel Container -->
-        <div class="overflow-hidden">
-          <div
-            class="flex transition-transform duration-300 ease-in-out"
-            style="transform: translateX(-{ongoingChallengesIndex * 100}%)"
-          >
-            {#each ongoingChallengesChunked as chunk, i}
-              <div class="w-full shrink-0 grid grid-cols-3 gap-4">
-                {#each chunk as challenge (challenge.id)}
-                  <ChallengeCard {...challenge} />
-                {/each}
-              </div>
-            {/each}
-          </div>
-        </div>
-      </div>
-    </section>
+    <Carousel
+      items={ongoingChallenges}
+      cardComponent={ChallengeCard}
+      sectionTitle="Défis en cours"
+      chunkSizeMobile={2}
+      chunkSizeDesktop={3}
+      gridColsMobile={2}
+      gridColsDesktop={3}
+    />
   </div>
 </div>

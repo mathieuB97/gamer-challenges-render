@@ -2,8 +2,6 @@ import { writable } from 'svelte/store';
 import page from 'page';
 import Home from './pages/Home.svelte';
 import Games from './pages/Games.svelte';
-// import GameDetail from './pages/GameDetail.svelte';
-// import Challenges from './pages/Challenges.svelte';
 import About from './pages/About.svelte';
 import NotFound from './pages/NotFound.svelte';
 import Connexion from './pages/Connexion.svelte';
@@ -32,22 +30,6 @@ page('/jeux', () => {
     routeParams.set({});
 });
 
-/*
-je pense que cette route n'est pas nécessaire elle serait le détail d'un jeux. Nous avons déjà la page /liste-challenges/:id qui affiche les challenges d'un jeu spécifique
-*/
-// page('/jeux/:id', (ctx) => {
-//    currentComponent.set(GameDetail);
-//    routeParams.set({ gameId: ctx.params.id });
-// });
-
-/**
- * La route des challenges est commentée car nous avons déjà une route plus spécifique pour les challenges d’un jeu cf. /jeux/:id/challenges
- */
-// page('/challenges', () => {
-//     currentComponent.set(Challenges);
-//     routeParams.set({});
-// });
-
 page('/a-propos', () => {
     currentComponent.set(About);
     routeParams.set({});
@@ -68,12 +50,11 @@ page('/jeux/:id/challenges', (ctx) => {
     currentComponent.set(ChallengeLists);
     routeParams.set({ gameId: ctx.params.id });
 });
-// Option: rediriger l’ancienne route
-page('/liste-challenges/:id', (ctx) => page.redirect(`/jeux/${ctx.params.id}/challenges`));
+
 // Détail d’un challenge spécifique
-page('/detail-challenge/:id', (ctx) => {
+page('/detail-challenge/:challengeId/:gameId', (ctx) => {
     currentComponent.set(DetailsChallenge);
-    routeParams.set({ challengeId: ctx.params.id });
+    routeParams.set({ challengeId: ctx.params.challengeId, gameId: ctx.params.gameId });
 });
 
 
