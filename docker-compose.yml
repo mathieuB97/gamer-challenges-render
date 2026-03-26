@@ -7,6 +7,8 @@ services:
     profiles:
       - dev
       - prod
+    # Docker injecte ici les variables d'environnement définies dans .database.env (à la racine du projet)
+    # Elles seront accessibles dans le container via process.env
     env_file:
       - .database.env
     ports:

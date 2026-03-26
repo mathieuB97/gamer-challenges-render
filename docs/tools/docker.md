@@ -13,7 +13,94 @@ Nous avons créé trois conteneurs Docker distincts :
 
 Installez Docker et Docker Compose.
 
+
+## Injection des variables d'environnement dans les conteneurs Docker
+
+Lorsque vous utilisez Docker Compose avec la clé `env_file`, Docker lit le fichier d'environnement (ex : `.database.env`) sur votre machine hôte et injecte chaque variable comme variable d'environnement dans le conteneur ciblé.
+
+**Aucun volume n'est utilisé pour transmettre ces variables.** Elles sont transmises via le mécanisme d'environnement du système d'exploitation du conteneur.
+
+**Schéma du mécanisme :**
+
+```
+┌──────────────┐
+│ .database.env│
+└──────┬───────┘
+(lu par Docker Compose)
+       │
+       ▼
+┌────────────────────────────┐
+│ Variables d'env injectées  │
+│ dans le conteneur (API)    │
+└──────┬─────────────────────┘
+       │
+       ▼
+┌────────────────────────────┐
+│ process.env (Node.js)      │
+│ ou $NOM_VAR (sh/bash)      │
+└────────────────────────────┘
+```
+
+Ainsi, votre application (ex : Node.js) accède directement aux variables via `process.env`, sans avoir à lire le fichier .env ou .database.env elle-même.
+
+## Volumes Docker
+
+Les volumes Docker servent à **stocker de manière persistante les données** générées et utilisées par les conteneurs, même après leur arrêt ou suppression. Pour Postgres, cela signifie que la base de données (tables, utilisateurs, données) est conservée dans un volume dédié (ex : `projet-gamer-challenges_postgres_data`).
+
+### Commandes utiles
+
+- **Lister tous les volumes Docker :**
+  ```sh
+  docker volume ls
+  ```
+- **Supprimer un volume spécifique :**
+  ```sh
+  docker volume rm projet-gamer-challenges_postgres_data
+  ```
+- **Supprimer tous les volumes non utilisés :**
+  ```sh
+  docker volume prune
+  ```
+
+### Attention lors de la suppression d'un volume
+
+Supprimer un volume efface **définitivement toutes les données** qu'il contient. Pour Postgres, cela réinitialise la base de données : nouveaux utilisateurs, nouveaux mots de passe, base vide.
+
+> ⚠️ **Ne jamais supprimer un volume en production sans sauvegarde préalable !**
+
+En développement, cela permet de repartir d'une base propre, mais en production cela entraînerait une perte totale de données.
+
+### Cas d'usage typique en développement
+
+Si vous modifiez les variables d'environnement de la base (utilisateur, mot de passe, nom de la base) dans `.database.env`, il faut supprimer le volume pour que Postgres prenne en compte ces nouvelles valeurs :
+
+```sh
+docker compose down -v
+docker compose up
+```
+
+Cela supprime le volume associé au projet, puis relance les conteneurs avec une base fraîche, initialisée selon les nouvelles variables.
+
+
+
+
 ## Lancement des conteneurs
+
+```bash
+# Lancer les conteneurs normalement
+docker compose --profile <dev|prod> up
+
+# Si vous avez modifié le fichier d'environnement (.database.env),
+# il faut forcer la recréation des conteneurs pour que les nouvelles variables soient prises en compte :
+# 1. suppression le volume associé à la base de données pour éviter les conflits de données
+docker compose down -v
+# 2. relancer les conteneurs avec le profil souhaité
+docker compose --profile <dev|prod> up --force-recreate
+
+# Ou bien, pour tout réinitialiser (y compris les volumes, donc les données de la base !)
+# ATTENTION : cette commande supprime toutes les données persistées
+docker compose down -v && docker compose --profile <dev|prod> up --build
+```
 
 ### mode développement
 
@@ -65,12 +152,6 @@ docker compose up -d
 1. Prise en compte des nouveaux modules npm installés sans reconstruire l'image.
 2. Prise en compte des modifications de code backend et frontend sans reconstruire l'image.
 3. Affichage des logs en temps réel.
-
-### mode production (WIP)
-
-1. démarrage des conteneurs via PM2 pour le backend et via une build statique pour le frontend.
-2. Créer des fichiers distincts pour les logs d'erreurs pour chaque service : frontend, backend, base de données.
-3. idéalement, un email de notification en cas d'erreur critique.
 
 ## Issues
 
