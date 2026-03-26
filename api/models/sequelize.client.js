@@ -11,7 +11,7 @@ export { fn, col } from 'sequelize';
 // import dotenv pour lire le fichier .env
 import 'dotenv/config';
 
-// On récupère la string DATABASE_URL écrite dans le .env
+// On récupère la string DATABASE_URL injectée par Docker (.database.env)
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
 	// define configure le comportement par défaut de Sequelize
 	define: {
