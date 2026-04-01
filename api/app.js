@@ -34,6 +34,7 @@ app.use(cors({
 
 // Doit être AVANT les routes pour que req.body soit lisible
 app.use(express.json());
+app.get("/test-vote", (req, res) => res.json({ ok: true }));
 
 // 2. MIDDLEWARES PERSONNALISÉS
 // Doit être AVANT les routes pour que res.sendResponse existe dans les contrôleurs
